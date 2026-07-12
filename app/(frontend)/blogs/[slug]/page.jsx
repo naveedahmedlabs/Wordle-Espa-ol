@@ -23,12 +23,21 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: url,
     },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    other: {
+      'last-modified': post.publishedAt || '2026-05-15T00:05:00-04:00',
+      'article:modified_time': post.publishedAt || '2026-05-15T00:05:00-04:00',
+    },
     openGraph: {
       title,
       description,
       url,
       type: 'article',
       publishedTime: post.publishedAt,
+      modifiedTime: post.publishedAt || '2026-05-15T00:05:00-04:00',
       authors: [post.author || 'Wordle Unlimited'],
       images: post.featuredImage
         ? [
