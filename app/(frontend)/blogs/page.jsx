@@ -1,4 +1,4 @@
-import BlogsPage from '../../src/views/BlogsPage';
+import BlogsPage from '../../../src/views/BlogsPage';
 import { Suspense } from 'react';
 
 export const metadata = {

@@ -1,5 +1,5 @@
-import SingleBlogPage from '../../../src/views/SingleBlogPage';
-import { blogPosts } from '../../../src/data/blogPosts';
+import SingleBlogPage from '../../../../src/views/SingleBlogPage';
+import { blogPosts } from '../../../../src/data/blogPosts';
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;

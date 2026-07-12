@@ -1,7 +1,7 @@
 'use client';
 
-import BlogHeader from '../../src/components/BlogHeader';
-import Footer from '../../src/components/Footer';
+import BlogHeader from '../../../src/components/BlogHeader';
+import Footer from '../../../src/components/Footer';
 import { HelmetProvider } from 'react-helmet-async';
 
 export default function BlogsLayout({ children }) {
