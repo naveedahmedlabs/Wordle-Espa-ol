@@ -118,6 +118,121 @@ export default function SingleBlogPage({ post, relatedPosts = [] }) {
         <div className="blog-content" style={{ paddingBottom: '16px' }}>
            <RichText data={post.content} />
         </div>
+
+        <style dangerouslySetInnerHTML={{ __html: `
+          .blog-content {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--color-text-dark, #2d3748);
+            font-size: 18px;
+            line-height: 1.8;
+          }
+          
+          .blog-content h2,
+          .blog-content h3,
+          .blog-content h4,
+          .blog-content h5,
+          .blog-content h6 {
+            color: var(--color-text-dark, #1a202c);
+            font-weight: 800;
+            margin-top: 2em;
+            margin-bottom: 0.75em;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+          }
+          
+          .blog-content h2 { 
+            font-size: 2em; 
+            border-bottom: 2px solid var(--color-border, #eaeaea); 
+            padding-bottom: 0.4em; 
+          }
+          
+          .blog-content h3 { font-size: 1.5em; }
+          .blog-content h4 { font-size: 1.25em; }
+          
+          .blog-content p {
+            margin-bottom: 1.5em;
+          }
+          
+          .blog-content a {
+            color: #5BAD6F;
+            text-decoration: none;
+            border-bottom: 2px solid rgba(91, 173, 111, 0.4);
+            font-weight: 600;
+            transition: all 0.2s ease;
+          }
+          
+          .blog-content a:hover {
+            color: #4a9159;
+            border-bottom-color: #4a9159;
+            background-color: rgba(91, 173, 111, 0.1);
+          }
+          
+          .blog-content ul,
+          .blog-content ol {
+            margin-bottom: 1.5em;
+            padding-left: 1.5em;
+          }
+          
+          .blog-content li {
+            margin-bottom: 0.5em;
+          }
+          
+          .blog-content li::marker {
+            color: #5BAD6F;
+            font-weight: bold;
+          }
+          
+          .blog-content blockquote {
+            border-left: 4px solid #5BAD6F;
+            margin: 1.5em 0;
+            color: #4a5568;
+            font-style: italic;
+            background-color: var(--color-surface, #f7fafc);
+            padding: 1.2em 1.5em;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+          }
+          
+          .blog-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 2em 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: block;
+          }
+          
+          .blog-content strong {
+            font-weight: 700;
+            color: var(--color-text-dark, #1a202c);
+          }
+
+          .blog-content code {
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(0,0,0,0.05);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #e53e3e;
+          }
+
+          .blog-content pre {
+            background-color: #1a202c;
+            color: #f7fafc;
+            padding: 1.5em;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 1.5em 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+          }
+
+          .blog-content pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit;
+            border-radius: 0;
+          }
+        `}} />
       </article>
 
       {/* Automated Internal Links for SEO */}
