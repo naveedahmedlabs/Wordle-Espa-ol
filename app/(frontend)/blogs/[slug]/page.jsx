@@ -4,7 +4,7 @@ import config from '@payload-config';
 import { getPayload } from 'payload';
 import { notFound } from 'next/navigation';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 
 export async function generateMetadata({ params }) {

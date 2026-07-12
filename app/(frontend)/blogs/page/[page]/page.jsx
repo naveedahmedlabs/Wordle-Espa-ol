@@ -4,7 +4,8 @@ import Schema from '../../../Schema';
 import config from '@payload-config';
 import { getPayload } from 'payload';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+
 
 
 export default async function Page({ params }) {
