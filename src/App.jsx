@@ -757,13 +757,13 @@ export default function App() {
 
   useEffect(() => {
     // Enforce URL structure on initial load
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(location.search);
     const challengeParam = params.get('challenge');
 
     // If challenge is present, ensure we are on the language root
     if (challengeParam) {
       const rootPath = '/';
-      const currentPath = window.location.pathname;
+      const currentPath = location.pathname;
       const normalizedPath = currentPath.endsWith('/') && currentPath.length > 1 ? currentPath.slice(0, -1) : currentPath;
       
       if (normalizedPath !== rootPath) {
@@ -772,16 +772,17 @@ export default function App() {
       return;
     }
 
-    const path = window.location.pathname;
+    const path = location.pathname;
     const isDailyPath = path.includes('wordle-today') || path.includes('palabra-del-dia');
+    const isHintsPath = path.includes('wordle-hints-today') || path.includes('pistas-de-hoy');
 
-    if ((isDailyPath || currentView === 'hints') && !params.get('seed')) {
+    if ((isDailyPath || isHintsPath) && !params.get('seed')) {
       const now = getNYTDate();
       const seed = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
       
       const prefix = '';
       let slug = '';
-      if (currentView === 'hints') {
+      if (isHintsPath) {
         slug = language === 'es' ? 'pistas-de-hoy' : 'wordle-hints-today';
       } else {
         slug = language === 'es' ? 'palabra-del-dia' : 'wordle-today';
@@ -790,7 +791,7 @@ export default function App() {
       const newPath = `${prefix}/${slug}/?seed=${seed}`;
       navigate(newPath, { replace: true });
     }
-  }, [language, gameMode, currentView, navigate]);
+  }, [language, location.pathname, location.search]);
 
   useEffect(() => {
     // Persistent auto-save
