@@ -7,6 +7,7 @@ const CONTENT = {
       { label: 'Wordle UK', href: '/' },
       { label: 'UK Wordle Today', href: '/wordle-today/' },
       { label: 'UK Daily Hints', href: '/wordle-hints-today/' },
+      { label: 'Wordle Solver', href: '/wordle-solver/' },
       { label: 'Blog', href: '/blogs/' },
       { label: 'How to Play', href: '#how-to-play' },
       { label: 'FAQ', href: '#faq' },
