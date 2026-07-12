@@ -1,82 +1,31 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { blogPosts } from '../data/blogPosts';
+import { RichText } from '@payloadcms/richtext-lexical/react';
 
 // Wordle Green
 const PRIMARY_COLOR = '#5BAD6F';
 
-export default function SingleBlogPage() {
-  const { slug } = useParams();
-  const [post, setPost] = useState(null);
-  const [relatedPosts, setRelatedPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default function SingleBlogPage({ post, relatedPosts = [] }) {
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-    try {
-      const fetchedPost = blogPosts.find(p => p.slug === slug);
+    setLoading(false);
+    setTimeout(() => document.dispatchEvent(new Event('prerender-trigger')), 500);
+  }, [post]);
 
-      if (!fetchedPost) {
-        setError('Post not found');
-        return;
-      }
-
-      setPost(fetchedPost);
-
-      const fetchedRelated = blogPosts
-        .filter(p => p.slug !== slug)
-        .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-        .slice(0, 2);
-      setRelatedPosts(fetchedRelated);
-    } catch (err) {
-      console.error("Error loading post:", err);
-      setError('Error loading post');
-    } finally {
-      setLoading(false);
-      setTimeout(() => document.dispatchEvent(new Event('prerender-trigger')), 500);
-    }
-  }, [slug]);
-
-  if (loading) {
-    return <div style={{ padding: '60px 0', textAlign: 'center', color: 'var(--color-text-secondary)' }}>Loading post...</div>;
-  }
-
-  if (error || !post) {
+  if (!post) {
     return (
       <div style={{ padding: '60px 0', textAlign: 'center' }}>
-        <h2 style={{ color: 'var(--color-text-dark)' }}>{error || 'Post not found'}</h2>
+        <h2 style={{ color: 'var(--color-text-dark)' }}>Post not found</h2>
         <Link href="/blogs/" style={{ color: PRIMARY_COLOR, textDecoration: 'underline', marginTop: '16px', display: 'inline-block' }}>Return to Blogs</Link>
       </div>
     );
   }
 
-  const title = post.metaTitle || `${post.title} - Wordle Unlimited Blog`;
-  const description = post.metaDescription || post.excerpt;
-  const imageUrl = post.featuredImage || 'https://wordlegame.co.uk/icons.svg';
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: post.title,
-    description: description,
-    image: post.featuredImage ? [post.featuredImage] : undefined,
-    datePublished: post.publishedAt,
-    dateModified: post._updatedAt || post.publishedAt,
-    author: [{
-      '@type': 'Person',
-      name: post.author || 'Wordle Unlimited',
-      url: 'https://wordlegame.co.uk'
-    }]
-  };
-
   return (
     <div style={{ maxWidth: '780px', margin: '0 auto', padding: '20px 0' }}>
       
-
       {/* Back link */}
       <nav style={{ marginBottom: '28px', padding: '0 32px' }}>
         <Link href="/blogs/" style={{
@@ -118,21 +67,7 @@ export default function SingleBlogPage() {
             color: 'var(--color-text-secondary)',
             fontFamily: 'system-ui, -apple-system, sans-serif'
           }}>
-            {post.category && (
-              <span style={{
-                background: PRIMARY_COLOR,
-                color: '#fff',
-                padding: '4px 12px',
-                borderRadius: '999px',
-                fontSize: '12px',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px'
-              }}>
-                {post.category}
-              </span>
-            )}
-            <span>{post.author ? `By ${post.author} • ` : ''}{new Date(post.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span>Wordle Unlimited • {new Date(post.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </div>
 
           {/* Title */}
@@ -148,7 +83,7 @@ export default function SingleBlogPage() {
           </h1>
 
           {/* Excerpt */}
-          {post.excerpt && (
+          {post.metaDescription && (
             <p style={{
               fontSize: '18px',
               color: 'var(--color-text-secondary)',
@@ -157,13 +92,13 @@ export default function SingleBlogPage() {
               maxWidth: '680px',
               margin: '0 auto 24px'
             }}>
-              {post.excerpt}
+              {post.metaDescription}
             </p>
           )}
         </div>
 
         {/* Featured image */}
-        {post.featuredImage && (
+        {post.metaImage?.url && (
           <div style={{
             width: '100%',
             aspectRatio: '16/9',
@@ -172,15 +107,17 @@ export default function SingleBlogPage() {
             marginBottom: '36px'
           }}>
             <img
-              src={post.featuredImage}
-              alt={post.featuredImageAlt || post.title}
+              src={post.metaImage.url}
+              alt={post.metaImage.alt || post.title}
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
           </div>
         )}
 
         {/* Article body */}
-        <div className="blog-content" style={{ paddingBottom: '16px' }} dangerouslySetInnerHTML={{ __html: post.bodyHtml || '<p style="color: var(--color-text-secondary)">No content available.</p>' }} />
+        <div className="blog-content" style={{ paddingBottom: '16px' }}>
+           <RichText data={post.content} />
+        </div>
       </article>
 
       {/* Automated Internal Links for SEO */}
@@ -189,7 +126,7 @@ export default function SingleBlogPage() {
           <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: 'var(--color-text-dark)' }}>Keep Reading</h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px 0' }}>
             {relatedPosts.map(rp => (
-              <li key={rp._id} style={{ marginBottom: '12px' }}>
+              <li key={rp.id} style={{ marginBottom: '12px' }}>
                 <Link href={`/blogs/${rp.slug}/`} style={{ color: PRIMARY_COLOR, textDecoration: 'underline', textUnderlineOffset: '3px', fontWeight: 600 }}>
                   → {rp.title}
                 </Link>

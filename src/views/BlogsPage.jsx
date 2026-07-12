@@ -2,55 +2,19 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useParams } from 'next/navigation';
-import { blogPosts } from '../data/blogPosts';
 import '../styles/game.css';
 
-export default function BlogsPage() {
-  const params = useParams();
-  const pageParam = params?.page;
-  const searchParams = useSearchParams();
-  const pageStr = pageParam || searchParams.get('page');
-  const page = parseInt(pageStr || '1', 10);
-  const postsPerPage = 10;
-
-  const [posts, setPosts] = useState([]);
-  const [totalPosts, setTotalPosts] = useState(0);
-  const [loading, setLoading] = useState(true);
+export default function BlogsPage({ initialPosts = [], totalPages = 1, currentPage = 1 }) {
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    try {
-      const start = (page - 1) * postsPerPage;
-      const end = start + postsPerPage;
-
-      // Sort by publishedAt desc
-      const sortedPosts = [...blogPosts].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-      const slicedPosts = sortedPosts.slice(start, end);
-
-      setTotalPosts(sortedPosts.length);
-      setPosts(slicedPosts);
-    } catch (error) {
-      console.error("Error loading posts:", error);
-    } finally {
-      setLoading(false);
-      setTimeout(() => document.dispatchEvent(new Event('prerender-trigger')), 500);
-    }
-  }, [page]);
-
-  const totalPages = Math.ceil(totalPosts / postsPerPage);
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'Wordle Unlimited Blog',
-    description: 'Latest news, tips, and updates for Wordle Unlimited.',
-    url: 'https://wordlegame.co.uk/blogs',
-  };
+    setLoading(false);
+    setTimeout(() => document.dispatchEvent(new Event('prerender-trigger')), 500);
+  }, [initialPosts]);
 
   return (
     <section className="game-cards" style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
       
-
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '40px' }}>
         <div className="game-cards__heading" style={{ marginBottom: '12px' }}>
           <h1 className="game-cards__heading-text" style={{ fontSize: '28px', margin: 0 }}>Our Blog</h1>
@@ -64,15 +28,15 @@ export default function BlogsPage() {
         <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
           <p>Loading posts...</p>
         </div>
-      ) : posts.length > 0 ? (
+      ) : initialPosts.length > 0 ? (
         <div className="game-cards__grid">
-          {posts.map((post) => (
-            <Link key={post._id} href={`/blogs/${post.slug}/`} className="game-card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}>
-              {post.featuredImage ? (
+          {initialPosts.map((post) => (
+            <Link key={post.id} href={`/blogs/${post.slug}/`} className="game-card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}>
+              {post.metaImage?.url ? (
                 <div style={{ width: '100%', height: '160px', overflow: 'hidden', flexShrink: 0 }}>
                   <img
-                    src={post.featuredImage}
-                    alt={post.featuredImageAlt || post.title}
+                    src={post.metaImage.url}
+                    alt={post.metaImage.alt || post.title}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </div>
@@ -81,11 +45,11 @@ export default function BlogsPage() {
               )}
               <div className="game-card__info" style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                 <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 600 }}>
-                  {post.category || 'Article'} • {new Date(post.publishedAt).toLocaleDateString()}
+                  {new Date(post.createdAt).toLocaleDateString()}
                 </div>
                 <h3 className="game-card__name" style={{ fontSize: '18px', marginBottom: '8px' }}>{post.title}</h3>
                 <p className="game-card__desc" style={{ fontSize: '14px', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                  {post.excerpt}
+                  {post.metaDescription || ''}
                 </p>
               </div>
             </Link>
@@ -100,9 +64,9 @@ export default function BlogsPage() {
       {/* Pagination Controls */}
       {totalPages > 1 && (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '48px', marginBottom: '24px' }}>
-          {page > 1 ? (
+          {currentPage > 1 ? (
             <Link
-              href={page - 1 === 1 ? '/blogs/' : `/blogs/page/${page - 1}/`}
+              href={currentPage - 1 === 1 ? '/blogs/' : `/blogs/page/${currentPage - 1}/`}
               style={{
                 padding: '10px 20px',
                 borderRadius: '8px',
@@ -121,12 +85,12 @@ export default function BlogsPage() {
           )}
 
           <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--color-text-secondary)' }}>
-            Page {page} of {totalPages}
+            Page {currentPage} of {totalPages}
           </span>
 
-          {page < totalPages ? (
+          {currentPage < totalPages ? (
             <Link
-              href={`/blogs/page/${page + 1}/`}
+              href={`/blogs/page/${currentPage + 1}/`}
               style={{
                 padding: '10px 20px',
                 borderRadius: '8px',

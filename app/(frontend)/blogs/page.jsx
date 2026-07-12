@@ -1,6 +1,8 @@
 import BlogsPage from '../../../src/views/BlogsPage';
 import { Suspense } from 'react';
 import Schema from '../Schema';
+import config from '@payload-config';
+import { getPayload } from 'payload';
 
 export const metadata = {
   title: 'Wordle Unlimited Blog - Latest News & Updates',
@@ -31,18 +33,26 @@ export const metadata = {
   },
 };
 
-export default function Page() {
+export default async function Page() {
   const seo = {
     title: metadata.title,
     description: metadata.description,
     canonical: metadata.alternates.canonical,
   };
 
+  const payload = await getPayload({ config });
+  const result = await payload.find({
+    collection: 'posts',
+    limit: 10,
+    page: 1,
+    sort: '-createdAt'
+  });
+
   return (
     <>
       <Schema seo={seo} />
       <Suspense fallback={<div>Loading blogs...</div>}>
-        <BlogsPage />
+        <BlogsPage initialPosts={result.docs} totalPages={result.totalPages} currentPage={1} />
       </Suspense>
     </>
   );

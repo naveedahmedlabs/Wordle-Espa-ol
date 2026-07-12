@@ -1,11 +1,25 @@
 import SingleBlogPage from '../../../../src/views/SingleBlogPage';
-import { blogPosts } from '../../../../src/data/blogPosts';
 import Schema from '../../Schema';
+import config from '@payload-config';
+import { getPayload } from 'payload';
+import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
-  const post = blogPosts.find((p) => p.slug === slug);
+  const payload = await getPayload({ config });
+  
+  const result = await payload.find({
+    collection: 'posts',
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+    limit: 1,
+  });
+
+  const post = result.docs[0];
 
   if (!post) {
     return {
@@ -14,7 +28,8 @@ export async function generateMetadata({ params }) {
   }
 
   const title = post.metaTitle || `${post.title} - Wordle Unlimited Blog`;
-  const description = post.metaDescription || post.excerpt;
+  // For Lexical content, excerpt might not exist, using metaDescription
+  const description = post.metaDescription || ''; 
   const url = `https://wordlegame.co.uk/blogs/${slug}/`;
 
   return {
@@ -28,22 +43,22 @@ export async function generateMetadata({ params }) {
       follow: true,
     },
     other: {
-      'last-modified': post.publishedAt || '2026-05-15T00:05:00-04:00',
-      'article:modified_time': post.publishedAt || '2026-05-15T00:05:00-04:00',
+      'last-modified': post.updatedAt || post.createdAt,
+      'article:modified_time': post.updatedAt || post.createdAt,
     },
     openGraph: {
       title,
       description,
       url,
       type: 'article',
-      publishedTime: post.publishedAt,
-      modifiedTime: post.publishedAt || '2026-05-15T00:05:00-04:00',
-      authors: [post.author || 'Wordle Unlimited'],
-      images: post.featuredImage
+      publishedTime: post.createdAt,
+      modifiedTime: post.updatedAt || post.createdAt,
+      authors: ['Wordle Unlimited'],
+      images: post.metaImage?.url
         ? [
             {
-              url: post.featuredImage,
-              alt: post.featuredImageAlt || post.title,
+              url: post.metaImage.url,
+              alt: post.metaImage.alt || post.title,
             },
           ]
         : [],
@@ -52,7 +67,7 @@ export async function generateMetadata({ params }) {
       card: 'summary_large_image',
       title,
       description,
-      images: post.featuredImage ? [post.featuredImage] : [],
+      images: post.metaImage?.url ? [post.metaImage.url] : [],
     },
   };
 }
@@ -60,19 +75,49 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
-  const post = blogPosts.find((p) => p.slug === slug);
+  const payload = await getPayload({ config });
+  
+  const result = await payload.find({
+    collection: 'posts',
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+    limit: 1,
+  });
+
+  const post = result.docs[0];
+
+  if (!post) {
+    notFound();
+  }
+
+  // Fetch recent related posts (omitting current post)
+  const relatedResult = await payload.find({
+    collection: 'posts',
+    where: {
+      id: {
+        not_equals: post.id,
+      },
+    },
+    sort: '-createdAt',
+    limit: 2,
+  });
+
+  const relatedPosts = relatedResult.docs;
 
   const seo = {
-    title: post?.metaTitle || post?.title || 'Wordle Unlimited Blog',
-    description: post?.metaDescription || post?.excerpt,
+    title: post.metaTitle || post.title || 'Wordle Unlimited Blog',
+    description: post.metaDescription || '',
     canonical: `https://wordlegame.co.uk/blogs/${slug}/`,
-    modifiedDate: post?.publishedAt,
+    modifiedDate: post.updatedAt || post.createdAt,
   };
 
   return (
     <>
       <Schema seo={seo} />
-      <SingleBlogPage />
+      <SingleBlogPage post={post} relatedPosts={relatedPosts} />
     </>
   );
 }
