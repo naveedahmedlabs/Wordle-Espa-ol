@@ -4,6 +4,9 @@ import config from '@payload-config';
 import { getPayload } from 'payload';
 import { notFound } from 'next/navigation';
 
+export const revalidate = 60;
+
+
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
