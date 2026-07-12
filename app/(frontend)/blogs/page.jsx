@@ -1,5 +1,6 @@
 import BlogsPage from '../../../src/views/BlogsPage';
 import { Suspense } from 'react';
+import Schema from '../Schema';
 
 export const metadata = {
   title: 'Wordle Unlimited Blog - Latest News & Updates',
@@ -22,9 +23,18 @@ export const metadata = {
 };
 
 export default function Page() {
+  const seo = {
+    title: metadata.title,
+    description: metadata.description,
+    canonical: metadata.alternates.canonical,
+  };
+
   return (
-    <Suspense fallback={<div>Loading blogs...</div>}>
-      <BlogsPage />
-    </Suspense>
+    <>
+      <Schema seo={seo} />
+      <Suspense fallback={<div>Loading blogs...</div>}>
+        <BlogsPage />
+      </Suspense>
+    </>
   );
 }

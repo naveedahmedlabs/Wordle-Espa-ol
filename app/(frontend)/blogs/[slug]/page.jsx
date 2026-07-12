@@ -1,5 +1,6 @@
 import SingleBlogPage from '../../../../src/views/SingleBlogPage';
 import { blogPosts } from '../../../../src/data/blogPosts';
+import Schema from '../../Schema';
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
@@ -47,6 +48,22 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function Page() {
-  return <SingleBlogPage />;
+export default async function Page({ params }) {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+  const post = blogPosts.find((p) => p.slug === slug);
+
+  const seo = {
+    title: post?.metaTitle || post?.title || 'Wordle Unlimited Blog',
+    description: post?.metaDescription || post?.excerpt,
+    canonical: `https://wordlegame.co.uk/blogs/${slug}/`,
+    modifiedDate: post?.publishedAt,
+  };
+
+  return (
+    <>
+      <Schema seo={seo} />
+      <SingleBlogPage />
+    </>
+  );
 }

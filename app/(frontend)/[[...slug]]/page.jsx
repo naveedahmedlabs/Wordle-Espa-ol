@@ -1,6 +1,7 @@
 import App from '../../../src/App';
 import { Suspense } from 'react';
 import { getSEO } from '../../../src/seo';
+import Schema from '../Schema';
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
@@ -39,10 +40,18 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function Page() {
+export default async function Page({ params }) {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug || [];
+  const pathname = '/' + slug.join('/');
+  const seo = getSEO(pathname);
+
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <App />
-    </Suspense>
+    <>
+      <Schema seo={seo} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <App />
+      </Suspense>
+    </>
   );
 }
