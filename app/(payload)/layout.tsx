@@ -10,6 +10,7 @@ type Args = {
 
 const serverFunction: any = async function (args: any) {
   'use server'
+  // @ts-expect-error - handleServerFunctions is not typed in this version
   const { handleServerFunctions } = await import('@payloadcms/next/utilities')
   return handleServerFunctions({
     ...args,
