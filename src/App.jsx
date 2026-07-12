@@ -816,7 +816,7 @@ export default function App() {
     const now = getNYTDate();
     const seed = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
     
-    const prefix = language === 'en' ? '' : `/${language}`;
+    const prefix = (language === 'en' || language === 'uk') ? '' : `/${language}`;
     let newPath = prefix || '/';
     
     if (view === 'hints') {
@@ -909,7 +909,7 @@ export default function App() {
                 <span>🎮 Challenge Active ({answer.length} letters)</span>
                 <button 
                   onClick={() => {
-                    const prefix = language === 'en' ? '' : `/${language}`;
+                    const prefix = (language === 'en' || language === 'uk') ? '' : `/${language}`;
                     const rootPath = prefix || '/';
                     const url = `${window.location.origin}${rootPath}?challenge=wu_${btoa(answer.toLowerCase())}`;
                     navigator.clipboard.writeText(url);
