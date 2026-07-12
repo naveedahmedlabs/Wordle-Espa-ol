@@ -16,6 +16,14 @@ export async function generateMetadata({ params }) {
       canonical: seo.canonical,
       languages: seo.hreflang,
     },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    other: {
+      'last-modified': seo.modifiedDate,
+      'article:modified_time': seo.modifiedDate,
+    },
     openGraph: {
       title: seo.title,
       description: seo.description,
@@ -30,6 +38,7 @@ export async function generateMetadata({ params }) {
       ],
       locale: seo.isoLang,
       type: 'website',
+      modifiedTime: seo.modifiedDate,
     },
     twitter: {
       card: 'summary_large_image',

@@ -153,7 +153,7 @@ export default function App() {
     const validSlugs = ['wordle-today', 'palabra-del-dia', 'wordle-hints-today', 'pistas-de-hoy', 'privacy', 'privacidad', 'daily', 'hints'];
     const isRoot = path === '/';
     
-    const newMode = (path.includes('wordle-today') || path.includes('palabra-del-dia') || path.includes('/daily/')) ? 'daily' : 'unlimited';
+    const newMode = (path.includes('wordle-today') || path.includes('palabra-del-dia') || path.includes('wordle-hints-today') || path.includes('pistas-de-hoy') || path.includes('/daily/')) ? 'daily' : 'unlimited';
     
     if (path.startsWith('/blogs/') && path.length > 7) newView = 'single-blog';
     else if (path === '/blogs' || path === '/blogs/') newView = 'blogs';
@@ -695,7 +695,7 @@ export default function App() {
   };
 
   const handleModeChange = (mode) => {
-    if (mode === gameMode) return;
+    if (mode === gameMode && currentView === 'game') return;
     
     // Save current state before switching
     const currentKey = gameMode === 'daily' ? `wordle-state-daily-${language}` : `wordle-state-${language}`;

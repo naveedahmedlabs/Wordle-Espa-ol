@@ -8,12 +8,21 @@ export const metadata = {
   alternates: {
     canonical: 'https://wordlegame.co.uk/blogs/',
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  other: {
+    'last-modified': '2026-05-15T00:05:00-04:00',
+    'article:modified_time': '2026-05-15T00:05:00-04:00',
+  },
   openGraph: {
     title: 'Wordle Unlimited Blog - Latest News & Updates',
     description: 'Read the latest updates, tips, and articles about Wordle Unlimited.',
     url: 'https://wordlegame.co.uk/blogs/',
     siteName: 'Wordle UK',
     type: 'website',
+    modifiedTime: '2026-05-15T00:05:00-04:00',
   },
   twitter: {
     card: 'summary_large_image',
