@@ -19,23 +19,7 @@ const CONTENT = {
         accentColor: '#9B8FD9',
         bgColor: '#F0EEFF',
       },
-      {
-        name: 'Spelling Bee',
-        desc: 'Make words from 7 letters. Find the pangram!',
-        icon: '/images/games/spellingbee-icon.webp',
-        url: '#',
-        accentColor: '#D4A843',
-        bgColor: '#FFF8E0',
-      },
-      {
-        name: 'Waffle',
-        desc: 'Swap letters to solve 6 words on the grid',
-        icon: '/images/games/waffle-icon.webp',
-        url: '#',
-        accentColor: '#5BAD6F',
-        bgColor: '#EDFBF1',
-      },
-    ]
+      ]
   },
 
 };

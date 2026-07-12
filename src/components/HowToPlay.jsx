@@ -1,37 +1,31 @@
 const CONTENT = {
 
   uk: {
-    heading: 'How to play Wordle?',
+    heading: 'How to Play',
     steps: [
       {
         num: 1,
-        title: 'Make your first guess',
+        title: 'Make a Guess',
         desc: 'Type any valid 5-letter word and press Enter to submit your guess.',
         img: '/img/howto-1.webp',
       },
       {
         num: 2,
-        title: 'Check the Letter Colours',
+        title: 'Understand the Colours',
         desc: 'The game provides feedback with three colours:\n🟩 Green: Correct letter in the right position.\n🟨 Yellow: Correct letter in the wrong position.\n⬜ Grey: Letter is not in the word.',
         img: '/img/howto-2.webp',
       },
       {
         num: 3,
-        title: 'Use the Feedback to Adjust Your Guess',
-        desc: 'Modify your next word based on the hints. Avoid grey letters, reposition yellow ones, and keep green ones.',
+        title: 'Make Subsequent Guesses',
+        desc: 'Each new guess must be a valid 5-letter word. You have a maximum of 6 attempts to solve the puzzle.',
         img: '/img/howto-3.webp',
       },
       {
         num: 4,
-        title: 'Keep Guessing Within 6 Tries',
-        desc: 'You have six attempts to figure out the secret word.',
+        title: 'Win or Lose',
+        desc: 'Guess the word correctly within 6 tries to win, or the game will reveal the correct answer.',
         img: '/img/howto-4.webp',
-      },
-      {
-        num: 5,
-        title: 'Win or Learn the Answer',
-        desc: 'If you guess the word correctly, you win! If not, the game reveals the correct word.',
-        img: '/img/howto-5.webp',
       },
     ]
   },

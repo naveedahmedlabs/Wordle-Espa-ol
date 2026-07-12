@@ -20,9 +20,7 @@ export default function WordleIntro({ language = 'en', mode = 'unlimited' }) {
       ],
       pageLinks: [
         { label: 'UK Wordle Today', to: '/wordle-today/' },
-        { label: 'UK Daily Hints', to: '/wordle-hints-today/' },
-        { label: 'US Version', to: '/' },
-        { label: 'Español', to: '/es/' }
+        { label: 'UK Daily Hints', to: '/wordle-hints-today/' }
       ]
     },
 

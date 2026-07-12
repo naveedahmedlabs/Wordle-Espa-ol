@@ -23,6 +23,8 @@ import NotFound from './components/NotFound';
 import FeedbackModal from './components/FeedbackModal';
 import SEO from './components/SEO';
 import { BASE_URL, getSEO } from './seo';
+import SolverPage from './views/SolverPage';
+import VariantsPage from './views/VariantsPage';
 
 import BlogHeader from './components/BlogHeader';
 import { getNYTDate } from './dateUtils';
@@ -140,6 +142,9 @@ export default function App() {
     if (normPath.includes('wordle-hints-today')) return 'hints';
     if (normPath.includes('wordle-today')) return 'game';
     if (normPath.includes('/privacy')) return 'privacy';
+    if (normPath.includes('/wordle-solver')) return 'solver';
+    const variantMatch = normPath.match(/\/(\d+)-letter-words/);
+    if (variantMatch) return `variants:${variantMatch[1]}`;
     
     return '404';
   });
@@ -150,7 +155,7 @@ export default function App() {
     const path = location.pathname;
     
     let newView = 'game';
-    const validSlugs = ['wordle-today', 'palabra-del-dia', 'wordle-hints-today', 'pistas-de-hoy', 'privacy', 'privacidad', 'daily', 'hints'];
+    const validSlugs = ['wordle-today', 'palabra-del-dia', 'wordle-hints-today', 'pistas-de-hoy', 'privacy', 'privacidad', 'daily', 'hints', 'wordle-solver', '-letter-words'];
     const isRoot = path === '/';
     
     const newMode = (path.includes('wordle-today') || path.includes('palabra-del-dia') || path.includes('wordle-hints-today') || path.includes('pistas-de-hoy') || path.includes('/daily/')) ? 'daily' : 'unlimited';
@@ -159,6 +164,8 @@ export default function App() {
     else if (path === '/blogs' || path === '/blogs/') newView = 'blogs';
     else if (path.includes('wordle-hints-today') || path.includes('pistas-de-hoy') || path.includes('/hints/')) newView = 'hints';
     else if (path.includes('/privacy') || path.includes('/privacidad')) newView = 'privacy';
+    else if (path.includes('/wordle-solver')) newView = 'solver';
+    else if (path.match(/\/\d+-letter-words/)) newView = `variants:${path.match(/\/(\d+)-letter-words/)[1]}`;
     else if (!isRoot && !validSlugs.some(slug => path.includes(slug))) newView = '404';
 
     if (newMode !== gameMode) setGameMode(newMode);
@@ -865,10 +872,15 @@ export default function App() {
       )}
 
       <main style={{ flex: 1, marginTop: '80px' }}>
+        <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', borderWidth: 0 }}>Wordle UK - Unlimited Free Word Puzzle Game Online</h1>
         {currentView === 'hints' ? (
           <HintsPage language={language} onBack={() => handleViewChange('game')} />
         ) : currentView === 'privacy' ? (
           <PrivacyPage language={language} />
+        ) : currentView === 'solver' ? (
+          <SolverPage language={language} />
+        ) : currentView.startsWith('variants:') ? (
+          <VariantsPage length={currentView.split(':')[1]} language={language} />
         ) : currentView === '404' ? (
           <NotFound language={language} onHome={() => navigate(language === 'en' ? '/' : `/${language}/`)} />
         ) : (
@@ -919,6 +931,21 @@ export default function App() {
                 </button>
               </div>
             )}
+            
+            <div className="uk-spelling-callout" style={{
+              background: '#f8f9fa',
+              color: '#495057',
+              padding: '8px 16px',
+              borderRadius: '8px',
+              textAlign: 'center',
+              fontSize: '14px',
+              fontWeight: '600',
+              maxWidth: '500px',
+              margin: '0 auto 16px auto',
+              border: '1px solid #dee2e6'
+            }}>
+              🇬🇧 UK-only word list — British spellings accepted!
+            </div>
 
             <div className="game" id="game" style={{ marginTop: isChallengeMode ? '60px' : '0' }}>
               <div className="game__board-wrapper" style={{ position: 'relative' }}>

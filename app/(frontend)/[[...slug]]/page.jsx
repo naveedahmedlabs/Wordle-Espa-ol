@@ -14,15 +14,23 @@ export async function generateMetadata({ params }) {
     description: seo.description,
     alternates: {
       canonical: seo.canonical,
-      languages: seo.hreflang,
+      languages: {
+        'en-gb': seo.canonical,
+        'x-default': seo.canonical,
+      },
     },
     robots: {
       index: true,
       follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
     },
     other: {
       'last-modified': seo.modifiedDate,
       'article:modified_time': seo.modifiedDate,
+      'geo.country': 'GB',
+      'geo.placename': 'United Kingdom',
     },
     openGraph: {
       title: seo.title,

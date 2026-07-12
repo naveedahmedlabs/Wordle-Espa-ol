@@ -30,9 +30,9 @@ export const ROUTE_GROUPS = {
 
 export const SEO_DATA = {
   '/': {
-    title: 'Wordle - Play Wordle Online',
-    description: 'Play Wordle online for free. Enjoy unlimited word puzzles and guess new words anytime.',
-    isoLang: 'en-US',
+    title: 'Wordle UK - Unlimited Free Word Puzzle Game Online',
+    description: 'Play Wordle UK free — unlimited daily word puzzles with British English spelling. No downloads, no sign-up. Guess the 5-letter word in 6 tries!',
+    isoLang: 'en_GB',
     group: 'unlimited',
   },
   '/wordle-today/': {
@@ -88,10 +88,24 @@ function formatDate(d, isoLang) {
 // a canonical pointing at a route that doesn't exist in our sitemap.
 export function getSEO(pathname) {
   const key = normalizePath(pathname);
-  const matched = SEO_DATA[key];
+  
+  // Dynamic route handling
+  let dynamicData = null;
+  const letterWordsMatch = key.match(/^\/(\d+)-letter-words\/$/);
+  if (letterWordsMatch) {
+    const length = letterWordsMatch[1];
+    dynamicData = {
+      title: `${length}-Letter Words for Wordle UK - British English List`,
+      description: `Explore the complete list of ${length}-letter British English words. Perfect for Wordle variants and improving your vocabulary.`,
+      isoLang: 'en_GB',
+      group: 'unlimited',
+    };
+  }
+
+  const matched = SEO_DATA[key] || dynamicData;
   const canonicalKey = matched ? key : '/';
   const data = matched || SEO_DATA['/'];
-  const siblings = ROUTE_GROUPS[data.group];
+  const siblings = ROUTE_GROUPS[data.group] || { 'en-US': canonicalKey };
 
   // Daily pages specified by the user:
   // homepage, /wordle-today/, /uk/wordle-today/, /es/palabra-del-dia/

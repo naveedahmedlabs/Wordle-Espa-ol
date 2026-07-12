@@ -8,8 +8,8 @@ const CONTENT = {
         desc: 'Maximize your chances in Wordle Unlimited by opening with vowel-heavy words. Words containing "A", "E", "O", and common consonants like "R", "S", and "T" (such as "STARE", "ROAST", or "ARISE") give you an immediate advantage.'
       },
       {
-        title: '2. Analyze Colour Hints Carefully',
-        desc: 'Every guess provides crucial feedback. A green tile means the letter is perfectly placed, while a yellow tile indicates the letter belongs in the hidden word but needs to be moved. Use this data logically to formulate your next attempt.'
+        title: '2. Analyze Hint Positioning',
+        desc: 'Instead of just finding correct letters, visualize where those letters frequently appear in English words. If a letter is yellow, strategically place it in a different common slot for your next guess.'
       },
       {
         title: '3. Never Re-use Dead Letters',

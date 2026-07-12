@@ -6,32 +6,44 @@ const CONTENT = {
     heading: 'Frequently Asked Questions',
     faqs: [
       {
-        q: "What is Wordle Unlimited?",
-        a: "Wordle Unlimited is an unrestricted version of the wildly popular daily word puzzle. Your goal is to deduce a hidden five-letter mystery word within six guesses, using colour-coded hints to guide your logic."
+        q: "Why was my guess rejected as 'Not in word list'?",
+        a: "Wordle UK uses a strict British English dictionary. If your guess is rejected, it may be a proper noun, an invalid word, or spelled using US conventions instead of UK conventions (e.g., try 'COLOUR' instead of 'COLOR')."
       },
       {
-        q: "How exactly do you play the game?",
-        a: "Begin by typing any valid 5-letter word and hitting Enter. The tiles will flip to reveal colours: Green means the letter is perfectly placed, Yellow means it's in the word but in the wrong spot, and Grey means it's completely absent."
+        q: "Are British spellings supported in this version?",
+        a: "Yes! Unlike generic versions of the game, Wordle UK natively accepts and occasionally features words with British English spellings as the daily solution."
       },
       {
-        q: "Is it possible to play more than one game a day?",
-        a: "Absolutely! While the original game restricts you to a single daily puzzle, our platform allows you to play infinite, back-to-back matches to practice and refine your skills without ever hitting a paywall or limit."
+        q: "What happens to my stats if I clear my browser cache?",
+        a: "Your game statistics, including win rate and daily streaks, are saved locally in your browser's storage. If you clear your cache or use a private browsing window, your stats will be reset."
       },
       {
-        q: "What happens if I run out of guesses?",
-        a: "If you use up all six attempts without finding the answer, the game will reveal the hidden word to you. You can immediately hit 'New Game' to try again with a fresh puzzle."
+        q: "Can I transfer my stats to a new phone or computer?",
+        a: "Currently, all game data is stored locally on the device you are using. Because there is no central account system, transferring stats across different devices is not supported."
       },
       {
-        q: "Do I need to download an app to play?",
-        a: "No downloads are necessary. You can play directly in your web browser on any device—including iPhones, Android smartphones, iPads, and desktop computers—with full mobile responsiveness."
+        q: "How do I turn on Hard Mode?",
+        a: "You can enable Hard Mode by clicking the gear icon (Settings) in the top right corner and toggling the Hard Mode switch. It must be turned on before making your first guess."
       },
       {
-        q: "Can I share my winning streak with friends?",
-        a: "Yes! Once you solve a puzzle, you can use the built-in share feature to copy your result. It generates a grid of coloured emoji squares (🟩 🟨 ⬜) that shows your guessing journey without spoiling the actual word."
+        q: "What makes Hard Mode different from the standard game?",
+        a: "In Hard Mode, any clues you uncover must be used in all subsequent guesses. For example, if you find a green 'A', every following guess must contain an 'A' in that exact position."
       },
       {
-        q: "Who invented the original game?",
-        a: "The core concept was developed by software engineer Josh Wardle in 2021 as a gift for his partner, before eventually becoming a global phenomenon and being acquired by The New York Times."
+        q: "Why am I seeing the same daily word as yesterday?",
+        a: "The daily puzzle updates at midnight local time. If you are seeing yesterday's word, try refreshing the page or checking that your device's timezone and date are set correctly."
+      },
+      {
+        q: "The game froze or isn't loading properly, how do I fix it?",
+        a: "This is usually caused by a network glitch or a strict ad-blocker. Try refreshing the page, disabling aggressive content blockers, or updating your browser to the latest version."
+      },
+      {
+        q: "Can I play previous daily puzzles that I missed?",
+        a: "The 'UK Wordle Today' puzzle is locked to the current calendar date. However, you can play as many random puzzles as you like in the 'Unlimited' mode to make up for missed days."
+      },
+      {
+        q: "Does Wordle UK require an active internet connection?",
+        a: "An internet connection is required to load the page initially and to fetch the daily puzzle. Once loaded, you can finish your current game offline, but you'll need a connection to start a new one."
       }
     ]
   },
