@@ -107,11 +107,8 @@ export function getSEO(pathname) {
   const data = matched || SEO_DATA['/'];
   const siblings = ROUTE_GROUPS[data.group] || { 'en-US': canonicalKey };
 
-  // Daily pages specified by the user:
-  // homepage, /wordle-today/, /uk/wordle-today/, /es/palabra-del-dia/
-  const dailyPages = ['/', '/wordle-today/'];
-  const isHints = data.group === 'hints';
-  const isDaily = dailyPages.includes(canonicalKey) || isHints;
+  const isPrivacy = data.group === 'privacy' || canonicalKey.includes('privacy') || canonicalKey.includes('privacidad');
+  const isDaily = !isPrivacy;
 
   let modifiedDate = null;
   let targetDateForMeta = getNYTDate();
@@ -128,13 +125,13 @@ export function getSEO(pathname) {
   }
 
   if (isDaily) {
-    const year = targetDateForMeta.getUTCFullYear();
-    const month = String(targetDateForMeta.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(targetDateForMeta.getUTCDate()).padStart(2, '0');
-    modifiedDate = `${year}-${month}-${day}T00:05:00-04:00`;
+    const year = targetDateForMeta.getFullYear();
+    const month = String(targetDateForMeta.getMonth() + 1).padStart(2, '0');
+    const day = String(targetDateForMeta.getDate()).padStart(2, '0');
+    modifiedDate = `${year}-${month}-${day}T04:05:00.000Z`;
   } else {
-    // Static pages: do not update daily. Use a fixed baseline date.
-    modifiedDate = '2026-05-15T00:05:00-04:00';
+    // Static privacy pages: do not update daily. Use fixed baseline date.
+    modifiedDate = '2026-05-15T04:05:00.000Z';
   }
 
   let title = data.title;

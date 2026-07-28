@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { buildConfig } from "payload";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
@@ -106,8 +107,10 @@ export default buildConfig({
   editor: lexicalEditor({}),
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || "",
+      connectionString: (process.env.DATABASE_URL || process.env.DATABASE_URI || "").replace('&channel_binding=require', '').replace('?channel_binding=require', ''),
+      ssl: { rejectUnauthorized: false },
     },
+    push: false,
   }),
   secret:
     process.env.PAYLOAD_SECRET ||

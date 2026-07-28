@@ -1,19 +1,4 @@
 #!/usr/bin/env node
-// Server-side cron version of update-sitemap.js.
-//
-// Intended to be uploaded to Hostinger (or any cPanel/SSH host) OUTSIDE the
-// public web root, e.g. ~/cron/server-cron-sitemap.js, and triggered by a
-// daily cron job. Unlike the build-time scripts/update-sitemap.js — which
-// writes to the project's public/ folder — this version writes the sitemap
-// straight into the live document root so the <lastmod> timestamps refresh
-// without a full redeploy.
-//
-// Usage on the server:
-//   node ~/cron/server-cron-sitemap.js
-//
-// Override the output path for add-on domains or non-standard web roots:
-//   SITEMAP_OUTPUT_PATH=~/domains/example.com/public_html/sitemap.xml \
-//     node ~/cron/server-cron-sitemap.js
 
 import fs from 'fs';
 import os from 'os';
@@ -21,37 +6,42 @@ import path from 'path';
 
 const DOMAIN = 'https://wordlegame.co.uk';
 
-// Pages whose content actually changes day-to-day get today's timestamp; the
-// rest (home, locale roots, privacy) carry a static date that only bumps when
-// the page's *content* changes — Google ignores hourly churn on stable URLs.
-const STATIC_DATE = '2026-05-15T00:00:00+00:00';
-const now = new Date();
-const today = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}T00:00:00+00:00`;
+// Calculate NYT / Wordle date (00:00 NYT / 04:05 UTC)
+function getNYTDate() {
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+  const parts = formatter.formatToParts(new Date());
+  const y = parseInt(parts.find(p => p.type === 'year').value, 10);
+  const m = parseInt(parts.find(p => p.type === 'month').value, 10);
+  const d = parseInt(parts.find(p => p.type === 'day').value, 10);
+  return { year: y, month: String(m).padStart(2, '0'), day: String(d).padStart(2, '0') };
+}
+
+const nyt = getNYTDate();
+const today = `${nyt.year}-${nyt.month}-${nyt.day}T04:05:00.000Z`;
+const STATIC_DATE = '2026-05-15T04:05:00.000Z';
 
 const URLS = [
-  ['/', today, '1.00'],
-
-  ['/wordle-today/', today, '1.00'],
-  ['/wordle-hints-today/', today, '1.00'],
-
-  ['/uk/', STATIC_DATE, '1.00'],
-  ['/es/', STATIC_DATE, '1.00'],
-
-  ['/uk/wordle-today/', today, '1.00'],
-  ['/uk/wordle-hints-today/', today, '1.00'],
-
-  ['/es/palabra-del-dia/', today, '1.00'],
-  ['/es/pistas-de-hoy/', today, '1.00'],
-
-  ['/privacy/', STATIC_DATE, '0.30'],
-  ['/uk/privacy/', STATIC_DATE, '0.30'],
-  ['/es/privacidad/', STATIC_DATE, '0.30'],
+  ['/', today, '1.00', 'daily'],
+  ['/wordle-today/', today, '0.80', 'daily'],
+  ['/wordle-hints-today/', today, '0.80', 'daily'],
+  ['/uk/', STATIC_DATE, '0.80', 'monthly'],
+  ['/es/', STATIC_DATE, '0.80', 'monthly'],
+  ['/uk/wordle-today/', today, '0.80', 'daily'],
+  ['/uk/wordle-hints-today/', today, '0.80', 'daily'],
+  ['/es/palabra-del-dia/', today, '0.80', 'daily'],
+  ['/es/pistas-de-hoy/', today, '0.80', 'daily'],
+  ['/privacy/', STATIC_DATE, '0.30', 'monthly'],
+  ['/uk/privacy/', STATIC_DATE, '0.30', 'monthly'],
+  ['/es/privacidad/', STATIC_DATE, '0.30', 'monthly'],
 ];
 
-// Resolve where to write: SITEMAP_OUTPUT_PATH wins, then ~/public_html/sitemap.xml.
 const rawTarget = process.env.SITEMAP_OUTPUT_PATH
   || path.join(os.homedir(), 'public_html', 'sitemap.xml');
-// Expand a leading ~ in case the env var was set without shell expansion.
 const targetPath = rawTarget.startsWith('~')
   ? path.join(os.homedir(), rawTarget.slice(1).replace(/^[/\\]/, ''))
   : rawTarget;
@@ -59,59 +49,58 @@ const targetPath = rawTarget.startsWith('~')
 async function buildXml() {
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-  for (const [url, lastmod, priority] of URLS) {
-    xml += `
-  <url>
+  for (const [url, lastmod, priority, changefreq] of URLS) {
+    xml += `  <url>
     <loc>${DOMAIN}${url}</loc>
     <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
-  </url>`;
+  </url>\n`;
   }
 
-  // Fetch blogs dynamically
+  // Fetch blogs dynamically from Sanity
   try {
-    const query = encodeURIComponent('*[_type == "post" && defined(slug.current)]{ "slug": slug.current, _updatedAt }');
+    const query = encodeURIComponent('*[_type == "post" && defined(slug.current)]{ "slug": slug.current, _updatedAt, publishedAt }');
     const res = await fetch(`https://v4hsbbd1.api.sanity.io/v2024-01-01/data/query/production?query=${query}`);
     const data = await res.json();
     
     if (data && data.result) {
-      xml += `
-  <url>
+      xml += `  <url>
     <loc>${DOMAIN}/blogs/</loc>
     <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.80</priority>
-  </url>`;
+  </url>\n`;
 
       const totalPages = Math.ceil(data.result.length / 10);
       for (let i = 2; i <= totalPages; i++) {
-        xml += `
-  <url>
+        xml += `  <url>
     <loc>${DOMAIN}/blogs/page/${i}/</loc>
     <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.60</priority>
-  </url>`;
+  </url>\n`;
       }
 
       data.result.forEach(post => {
-        const lastmod = post._updatedAt || today;
-        xml += `
-  <url>
+        const lastmod = post._updatedAt || post.publishedAt || STATIC_DATE;
+        xml += `  <url>
     <loc>${DOMAIN}/blogs/${post.slug}/</loc>
-    <lastmod>${lastmod}</lastmod>
+    <lastmod>${new Date(lastmod).toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.70</priority>
-  </url>`;
+  </url>\n`;
       });
     }
   } catch (error) {
     log('error', `Failed to fetch Sanity blogs: ${error.message}`);
   }
 
-  xml += `\n</urlset>`;
+  xml += `</urlset>`;
   return xml;
 }
 
 function log(level, msg) {
-  // ISO timestamp + level + message — cron log lines stay greppable.
   console.log(`[${new Date().toISOString()}] ${level.toUpperCase()} ${msg}`);
 }
 
@@ -119,7 +108,6 @@ async function main() {
   const dir = path.dirname(targetPath);
   if (!fs.existsSync(dir)) {
     log('error', `target directory does not exist: ${dir}`);
-    log('error', `check SITEMAP_OUTPUT_PATH or the cron user's homedir`);
     return;
   }
 
@@ -130,29 +118,25 @@ async function main() {
     fs.renameSync(tmpPath, targetPath);
   } catch (err) {
     log('error', `failed to write ${targetPath}: ${err.message}`);
-    try { fs.unlinkSync(tmpPath); } catch { /* tmp may not exist */ }
+    try { fs.unlinkSync(tmpPath); } catch {}
     return;
   }
 
   log('info', `sitemap written: ${targetPath} (${URLS.length} static urls + blogs, ${xml.length} bytes)`);
 }
 
-// Option A: Run once immediately if manually invoked
 if (process.argv.includes('--run-once')) {
   main().then(() => process.exit(0));
 } else {
-  // Option B: Run as a background daemon using node-cron (Hostinger Node.js Plan)
   import('node-cron').then((cron) => {
     log('info', 'Starting sitemap cron daemon (runs daily at midnight)...');
-    // Run immediately on startup
     main();
-    // Schedule to run at 00:00 every day
     cron.schedule('0 0 * * *', () => {
       log('info', 'Running scheduled daily sitemap update...');
       main();
     });
   }).catch((err) => {
-    log('error', 'node-cron package not found. Run "npm install node-cron" or run this script with --run-once');
+    log('error', 'node-cron package not found. Running once...');
     main().then(() => process.exit(0));
   });
 }

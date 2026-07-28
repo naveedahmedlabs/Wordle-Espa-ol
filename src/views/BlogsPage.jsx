@@ -30,19 +30,21 @@ export default function BlogsPage({ initialPosts = [], totalPages = 1, currentPa
         </div>
       ) : initialPosts.length > 0 ? (
         <div className="game-cards__grid">
-          {initialPosts.map((post) => (
-            <Link key={post.id} href={`/blogs/${post.slug}/`} className="game-card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}>
-              {post.metaImage?.url ? (
-                <div style={{ width: '100%', height: '160px', overflow: 'hidden', flexShrink: 0 }}>
-                  <img
-                    src={post.metaImage.url}
-                    alt={post.metaImage.alt || post.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </div>
-              ) : (
-                <div style={{ width: '100%', height: '160px', background: 'var(--color-surface-hover)', flexShrink: 0 }}></div>
-              )}
+          {initialPosts.map((post) => {
+            const cardImgUrl = typeof post.metaImage === 'string' ? post.metaImage : post.metaImage?.url;
+            return (
+              <Link key={post.id || post.slug} href={`/blogs/${post.slug}/`} className="game-card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}>
+                {cardImgUrl ? (
+                  <div style={{ width: '100%', height: '160px', overflow: 'hidden', flexShrink: 0 }}>
+                    <img
+                      src={cardImgUrl}
+                      alt={post.metaImage?.alt || post.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                ) : (
+                  <div style={{ width: '100%', height: '160px', background: 'var(--color-surface-hover)', flexShrink: 0 }}></div>
+                )}
               <div className="game-card__info" style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                 <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 600 }}>
                   {new Date(post.createdAt).toLocaleDateString()}
@@ -52,8 +54,9 @@ export default function BlogsPage({ initialPosts = [], totalPages = 1, currentPa
                   {post.metaDescription || ''}
                 </p>
               </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       ) : (
         <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--color-text-secondary)' }}>

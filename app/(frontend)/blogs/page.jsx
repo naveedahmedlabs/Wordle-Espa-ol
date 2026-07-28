@@ -1,12 +1,11 @@
 import BlogsPage from '../../../src/views/BlogsPage';
 import { Suspense } from 'react';
 import Schema from '../Schema';
+import { fetchSanityPosts } from '../../../src/lib/sanity';
 import config from '@payload-config';
 import { getPayload } from 'payload';
 
 export const dynamic = 'force-dynamic';
-
-
 
 export const metadata = {
   title: 'Wordle Unlimited Blog - Latest News & Updates',
@@ -44,19 +43,35 @@ export default async function Page() {
     canonical: metadata.alternates.canonical,
   };
 
-  const payload = await getPayload({ config });
-  const result = await payload.find({
-    collection: 'posts',
-    limit: 10,
-    page: 1,
-    sort: '-createdAt'
-  });
+  let initialPosts = [];
+  let totalPages = 1;
+
+  try {
+    const sanityData = await fetchSanityPosts(0, 10);
+    initialPosts = sanityData.posts;
+    totalPages = sanityData.totalPages;
+  } catch (err) {
+    console.error('Error fetching Sanity posts:', err);
+    try {
+      const payload = await getPayload({ config });
+      const result = await payload.find({
+        collection: 'posts',
+        limit: 10,
+        page: 1,
+        sort: '-createdAt',
+      });
+      initialPosts = result.docs;
+      totalPages = result.totalPages;
+    } catch (e) {
+      console.error('Fallback Payload error:', e);
+    }
+  }
 
   return (
     <>
       <Schema seo={seo} />
       <Suspense fallback={<div>Loading blogs...</div>}>
-        <BlogsPage initialPosts={result.docs} totalPages={result.totalPages} currentPage={1} />
+        <BlogsPage initialPosts={initialPosts} totalPages={totalPages} currentPage={1} />
       </Suspense>
     </>
   );
