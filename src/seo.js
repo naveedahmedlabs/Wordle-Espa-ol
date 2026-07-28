@@ -108,6 +108,7 @@ export function getSEO(pathname) {
   const siblings = ROUTE_GROUPS[data.group] || { 'en-US': canonicalKey };
 
   const isPrivacy = data.group === 'privacy' || canonicalKey.includes('privacy') || canonicalKey.includes('privacidad');
+  const isHints = data.group === 'hints';
   const isDaily = !isPrivacy;
 
   let modifiedDate = null;
