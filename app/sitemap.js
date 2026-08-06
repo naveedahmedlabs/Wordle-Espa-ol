@@ -29,10 +29,10 @@ export default async function sitemap() {
   try {
     const sanitySlugs = await fetchAllSanitySlugs();
     if (sanitySlugs && sanitySlugs.length > 0) {
-      const todayISO = new Date().toISOString();
+      const todayNYT = getSEO('/').modifiedDate;
       const blogIndex = {
         url: `${BASE_URL}/blogs/`,
-        lastModified: todayISO,
+        lastModified: new Date(todayNYT),
         changeFrequency: 'daily',
         priority: 0.8,
       };
@@ -42,7 +42,7 @@ export default async function sitemap() {
       for (let i = 2; i <= totalPages; i++) {
         paginationRoutes.push({
           url: `${BASE_URL}/blogs/page/${i}/`,
-          lastModified: todayISO,
+          lastModified: new Date(todayNYT),
           changeFrequency: 'daily',
           priority: 0.6,
         });
@@ -73,10 +73,10 @@ export default async function sitemap() {
         },
       });
 
-      const todayISO = new Date().toISOString();
+      const todayNYT = getSEO('/').modifiedDate;
       const blogIndex = {
         url: `${BASE_URL}/blogs/`,
-        lastModified: todayISO,
+        lastModified: new Date(todayNYT),
         changeFrequency: 'daily',
         priority: 0.8,
       };
@@ -86,7 +86,7 @@ export default async function sitemap() {
       for (let i = 2; i <= totalPages; i++) {
         paginationRoutes.push({
           url: `${BASE_URL}/blogs/page/${i}/`,
-          lastModified: todayISO,
+          lastModified: new Date(todayNYT),
           changeFrequency: 'daily',
           priority: 0.6,
         });

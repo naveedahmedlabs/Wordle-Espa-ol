@@ -10,13 +10,13 @@
     <loc>https://wordlegame.co.uk/wordle-today/</loc>
     <lastmod>2026-08-06T04:05:00.000Z</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.80</priority>
+    <priority>1.00</priority>
   </url>
   <url>
     <loc>https://wordlegame.co.uk/wordle-hints-today/</loc>
     <lastmod>2026-08-06T04:05:00.000Z</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.80</priority>
+    <priority>1.00</priority>
   </url>
   <url>
     <loc>https://wordlegame.co.uk/privacy/</loc>
