@@ -29,15 +29,7 @@ const URLS = [
   ['/', today, '1.00', 'daily'],
   ['/wordle-today/', today, '0.80', 'daily'],
   ['/wordle-hints-today/', today, '0.80', 'daily'],
-  ['/uk/', STATIC_DATE, '0.80', 'monthly'],
-  ['/es/', STATIC_DATE, '0.80', 'monthly'],
-  ['/uk/wordle-today/', today, '0.80', 'daily'],
-  ['/uk/wordle-hints-today/', today, '0.80', 'daily'],
-  ['/es/palabra-del-dia/', today, '0.80', 'daily'],
-  ['/es/pistas-de-hoy/', today, '0.80', 'daily'],
   ['/privacy/', STATIC_DATE, '0.30', 'monthly'],
-  ['/uk/privacy/', STATIC_DATE, '0.30', 'monthly'],
-  ['/es/privacidad/', STATIC_DATE, '0.30', 'monthly'],
 ];
 
 const rawTarget = process.env.SITEMAP_OUTPUT_PATH

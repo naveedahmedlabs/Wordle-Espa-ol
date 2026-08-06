@@ -2,55 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://wordlegame.co.uk/</loc>
-    <lastmod>2026-07-28T04:05:00.000Z</lastmod>
+    <lastmod>2026-08-06T04:05:00.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.00</priority>
   </url>
   <url>
     <loc>https://wordlegame.co.uk/wordle-today/</loc>
-    <lastmod>2026-07-28T04:05:00.000Z</lastmod>
+    <lastmod>2026-08-06T04:05:00.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://wordlegame.co.uk/wordle-hints-today/</loc>
-    <lastmod>2026-07-28T04:05:00.000Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://wordlegame.co.uk/uk/</loc>
-    <lastmod>2026-05-15T04:05:00.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://wordlegame.co.uk/es/</loc>
-    <lastmod>2026-05-15T04:05:00.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://wordlegame.co.uk/uk/wordle-today/</loc>
-    <lastmod>2026-07-28T04:05:00.000Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://wordlegame.co.uk/uk/wordle-hints-today/</loc>
-    <lastmod>2026-07-28T04:05:00.000Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://wordlegame.co.uk/es/palabra-del-dia/</loc>
-    <lastmod>2026-07-28T04:05:00.000Z</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://wordlegame.co.uk/es/pistas-de-hoy/</loc>
-    <lastmod>2026-07-28T04:05:00.000Z</lastmod>
+    <lastmod>2026-08-06T04:05:00.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.80</priority>
   </url>
@@ -61,16 +25,28 @@
     <priority>0.30</priority>
   </url>
   <url>
-    <loc>https://wordlegame.co.uk/uk/privacy/</loc>
-    <lastmod>2026-05-15T04:05:00.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.30</priority>
+    <loc>https://wordlegame.co.uk/blogs/</loc>
+    <lastmod>2026-08-06T04:05:00.000Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://wordlegame.co.uk/es/privacidad/</loc>
-    <lastmod>2026-05-15T04:05:00.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.30</priority>
+    <loc>https://wordlegame.co.uk/blogs/page/2/</loc>
+    <lastmod>2026-08-06T04:05:00.000Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://wordlegame.co.uk/blogs/page/3/</loc>
+    <lastmod>2026-08-06T04:05:00.000Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://wordlegame.co.uk/blogs/page/4/</loc>
+    <lastmod>2026-08-06T04:05:00.000Z</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.60</priority>
   </url>
   <url>
     <loc>https://wordlegame.co.uk/blogs/wordle-hard-mode-strategy/</loc>

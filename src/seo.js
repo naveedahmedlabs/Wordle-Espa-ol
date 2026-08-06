@@ -15,16 +15,16 @@ export const OG_IMAGE = `${BASE_URL}/og-image.png`;
 // alternates and the JSON-LD breadcrumb.
 export const ROUTE_GROUPS = {
   unlimited: {
-    'en-US': '/',
+    'en-GB': '/',
   },
   today: {
-    'en-US': '/wordle-today/',
+    'en-GB': '/wordle-today/',
   },
   hints: {
-    'en-US': '/wordle-hints-today/',
+    'en-GB': '/wordle-hints-today/',
   },
   privacy: {
-    'en-US': '/privacy/',
+    'en-GB': '/privacy/',
   },
 };
 
@@ -32,25 +32,25 @@ export const SEO_DATA = {
   '/': {
     title: 'Wordle UK - Unlimited Free Word Puzzle Game Online',
     description: 'Play Wordle UK free — unlimited daily word puzzles with British English spelling. No downloads, no sign-up. Guess the 5-letter word in 6 tries!',
-    isoLang: 'en_GB',
+    isoLang: 'en-GB',
     group: 'unlimited',
   },
   '/wordle-today/': {
-    title: "Wordle Today - Play Today's Wordle",
-    description: 'Play Wordle Today and solve the daily word puzzle. A new Wordle challenge is available every day.',
-    isoLang: 'en-US',
+    title: "Wordle Today UK - Play Today's Wordle",
+    description: 'Play Wordle Today UK and solve the daily word puzzle. A new British English Wordle challenge is available every day.',
+    isoLang: 'en-GB',
     group: 'today',
   },
   '/wordle-hints-today/': {
     title: "Daily Wordle Hints UK - Today's Word of the Day",
     description: "Get the best hints and clues for today's UK Word of the Day. We provide categorized hints to help you solve today's puzzle.",
-    isoLang: 'en-US',
+    isoLang: 'en-GB',
     group: 'hints',
   },
   '/privacy/': {
-    title: 'Privacy Policy - Wordle',
-    description: 'Read the Wordle Privacy Policy. Learn how we handle your data, what we collect, and your rights under UK GDPR.',
-    isoLang: 'en-US',
+    title: 'Privacy Policy - Wordle UK',
+    description: 'Read the Wordle UK Privacy Policy. Learn how we handle your data, what we collect, and your rights under UK GDPR.',
+    isoLang: 'en-GB',
     group: 'privacy',
   },
 };
@@ -75,7 +75,7 @@ export function normalizePath(pathname) {
 import { getWordleNumber } from './dateUtils';
 
 function formatDate(d, isoLang) {
-  return d.toLocaleDateString(isoLang === 'es' ? 'es-ES' : isoLang === 'en-US' ? 'en-US' : 'en-US', {
+  return d.toLocaleDateString('en-GB', {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
@@ -105,9 +105,9 @@ export function getSEO(pathname) {
   const matched = SEO_DATA[key] || dynamicData;
   const canonicalKey = matched ? key : '/';
   const data = matched || SEO_DATA['/'];
-  const siblings = ROUTE_GROUPS[data.group] || { 'en-US': canonicalKey };
+  const siblings = ROUTE_GROUPS[data.group] || { 'en-GB': canonicalKey };
 
-  const isPrivacy = data.group === 'privacy' || canonicalKey.includes('privacy') || canonicalKey.includes('privacidad');
+  const isPrivacy = data.group === 'privacy' || canonicalKey.includes('privacy');
   const isHints = data.group === 'hints';
   const isDaily = !isPrivacy;
 
@@ -141,16 +141,8 @@ export function getSEO(pathname) {
   if (isHints) {
     const puzzleNumber = getWordleNumber(targetDateForMeta);
     const formattedDate = formatDate(targetDateForMeta, data.isoLang);
-    if (data.isoLang === 'es') {
-      title = `Pistas Wordle de Hoy (#${puzzleNumber}) – Clues y Respuesta para ${formattedDate}`;
-      description = `Obtén pistas sin spoilers para Wordle #${puzzleNumber} el ${formattedDate}, incluyendo la letra inicial, vocales, letras repetidas, dificultad y la respuesta de hoy.`;
-    } else if (data.isoLang === 'en-US') {
-      title = `Wordle Hints Today UK (#${puzzleNumber}) – Clues & Answer for ${formattedDate}`;
-      description = `Get spoiler-free hints for Wordle #${puzzleNumber} on ${formattedDate}, including the starting letter, vowels, repeated letters, difficulty and today's answer.`;
-    } else {
-      title = `Wordle Hints Today (#${puzzleNumber}) – Clues & Answer for ${formattedDate}`;
-      description = `Get spoiler-free hints for Wordle #${puzzleNumber} on ${formattedDate}, including the starting letter, vowels, repeated letters, difficulty and today's answer.`;
-    }
+    title = `Wordle Hints Today UK (#${puzzleNumber}) – Clues & Answer for ${formattedDate}`;
+    description = `Get spoiler-free hints for Wordle #${puzzleNumber} on ${formattedDate}, including the starting letter, vowels, repeated letters, difficulty and today's answer.`;
   }
 
   return {
@@ -160,7 +152,7 @@ export function getSEO(pathname) {
     group: data.group,
     canonicalPath: canonicalKey,
     canonical: `${BASE_URL}${canonicalKey}`,
-    hreflang: { 'en-US': `${BASE_URL}${siblings['en-US']}` },
+    hreflang: { 'en-GB': `${BASE_URL}${siblings['en-GB'] || canonicalKey}` },
     modifiedDate,
     isDaily,
   };

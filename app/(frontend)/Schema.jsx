@@ -48,7 +48,7 @@ export default function Schema({ seo }) {
         "@type": "WebPage",
         "@id": `${canonical || 'https://wordlegame.co.uk/'}#webpage`,
         "url": canonical || 'https://wordlegame.co.uk/',
-        "inLanguage": "en",
+        "inLanguage": "en-GB",
         "name": title || "Wordle Game UK",
         "isPartOf": {
           "@id": "https://wordlegame.co.uk/#website"

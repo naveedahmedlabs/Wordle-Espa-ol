@@ -18,17 +18,9 @@ const staticDate = '2026-05-15T04:05:00.000Z';
 async function generateSitemap() {
   const urls = [
     ['/', today, '1.00', 'daily'],
-    ['/wordle-today/', today, '0.80', 'daily'],
-    ['/wordle-hints-today/', today, '0.80', 'daily'],
-    ['/uk/', staticDate, '0.80', 'monthly'],
-    ['/es/', staticDate, '0.80', 'monthly'],
-    ['/uk/wordle-today/', today, '0.80', 'daily'],
-    ['/uk/wordle-hints-today/', today, '0.80', 'daily'],
-    ['/es/palabra-del-dia/', today, '0.80', 'daily'],
-    ['/es/pistas-de-hoy/', today, '0.80', 'daily'],
+    ['/wordle-today/', today, '1.00', 'daily'],
+    ['/wordle-hints-today/', today, '1.00', 'daily'],
     ['/privacy/', staticDate, '0.30', 'monthly'],
-    ['/uk/privacy/', staticDate, '0.30', 'monthly'],
-    ['/es/privacidad/', staticDate, '0.30', 'monthly'],
   ];
 
   try {
@@ -37,6 +29,11 @@ async function generateSitemap() {
     const data = await res.json();
     
     if (data && data.result) {
+      urls.push(['/blogs/', today, '0.80', 'daily']);
+      const totalPages = Math.ceil(data.result.length / 10);
+      for (let i = 2; i <= totalPages; i++) {
+        urls.push([`/blogs/page/${i}/`, today, '0.60', 'daily']);
+      }
       data.result.forEach(post => {
         const pubDate = post._updatedAt || post.publishedAt || staticDate;
         urls.push([`/blogs/${post.slug}/`, new Date(pubDate).toISOString(), '0.70', 'weekly']);

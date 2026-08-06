@@ -3,16 +3,25 @@ import { fetchAllSanitySlugs } from '../src/lib/sanity';
 import config from '@payload-config';
 import { getPayload } from 'payload';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function sitemap() {
   const routes = Object.keys(SEO_DATA);
 
   const staticRoutes = routes.map((route) => {
     const seo = getSEO(route);
+    let priority = 0.8;
+    if (route === '/') {
+      priority = 1.0;
+    } else if (seo.group === 'privacy') {
+      priority = 0.3;
+    }
     return {
       url: seo.canonical,
       lastModified: seo.modifiedDate ? new Date(seo.modifiedDate) : new Date(),
       changeFrequency: seo.isDaily ? 'daily' : 'monthly',
-      priority: route === '/' ? 1 : 0.8,
+      priority,
     };
   });
 
@@ -20,12 +29,33 @@ export default async function sitemap() {
   try {
     const sanitySlugs = await fetchAllSanitySlugs();
     if (sanitySlugs && sanitySlugs.length > 0) {
-      blogRoutes = sanitySlugs.map((post) => ({
+      const todayISO = new Date().toISOString();
+      const blogIndex = {
+        url: `${BASE_URL}/blogs/`,
+        lastModified: todayISO,
+        changeFrequency: 'daily',
+        priority: 0.8,
+      };
+
+      const totalPages = Math.ceil(sanitySlugs.length / 10);
+      const paginationRoutes = [];
+      for (let i = 2; i <= totalPages; i++) {
+        paginationRoutes.push({
+          url: `${BASE_URL}/blogs/page/${i}/`,
+          lastModified: todayISO,
+          changeFrequency: 'daily',
+          priority: 0.6,
+        });
+      }
+
+      const postRoutes = sanitySlugs.map((post) => ({
         url: `${BASE_URL}/blogs/${post.slug}/`,
         lastModified: new Date(post._updatedAt || post.publishedAt || post._createdAt || Date.now()),
         changeFrequency: 'weekly',
         priority: 0.7,
       }));
+
+      blogRoutes = [blogIndex, ...paginationRoutes, ...postRoutes];
     } else {
       throw new Error('No Sanity slugs found');
     }
@@ -43,12 +73,33 @@ export default async function sitemap() {
         },
       });
 
-      blogRoutes = result.docs.map((post) => ({
+      const todayISO = new Date().toISOString();
+      const blogIndex = {
+        url: `${BASE_URL}/blogs/`,
+        lastModified: todayISO,
+        changeFrequency: 'daily',
+        priority: 0.8,
+      };
+
+      const totalPages = Math.ceil(result.docs.length / 10);
+      const paginationRoutes = [];
+      for (let i = 2; i <= totalPages; i++) {
+        paginationRoutes.push({
+          url: `${BASE_URL}/blogs/page/${i}/`,
+          lastModified: todayISO,
+          changeFrequency: 'daily',
+          priority: 0.6,
+        });
+      }
+
+      const postRoutes = result.docs.map((post) => ({
         url: `${BASE_URL}/blogs/${post.slug}/`,
         lastModified: new Date(post.updatedAt || post.createdAt),
         changeFrequency: 'weekly',
         priority: 0.7,
       }));
+
+      blogRoutes = [blogIndex, ...paginationRoutes, ...postRoutes];
     } catch (payloadErr) {
       console.error('Payload fallback sitemap error:', payloadErr);
     }
