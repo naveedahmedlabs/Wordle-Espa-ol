@@ -7,13 +7,13 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
   try {
-    // Revalidate paths in Next.js cache
+    // Revalidate all pages and layout in Next.js cache
+    revalidatePath('/', 'layout');
     revalidatePath('/sitemap.xml');
     revalidatePath('/');
     revalidatePath('/wordle-today/');
     revalidatePath('/wordle-hints-today/');
-    revalidatePath('/es/palabra-del-dia/');
-    revalidatePath('/es/pistas-de-hoy/');
+    revalidatePath('/blogs');
 
     let staticFileUpdated = false;
 
