@@ -6,13 +6,16 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "pages:build": "npx @cloudflare/next-on-pages",
     "start": "next start",
     "lint": "next lint",
     "generate:types": "payload generate:types"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1",
     "next-sitemap": "^4.2.3",
-    "typescript": "~6.0.2"
+    "typescript": "~6.0.2",
+    "wrangler": "^4"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.86.0",
