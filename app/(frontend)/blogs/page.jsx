@@ -8,10 +8,10 @@ import { getPayload } from 'payload';
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Wordle Unlimited Blog - Latest News & Updates',
-  description: 'Read the latest updates, tips, and articles about Wordle Unlimited.',
+  title: 'Blog de Wordle en Español - Consejos, Guías y Noticias',
+  description: 'Descubre los mejores consejos, estrategias y guías sobre Wordle y la Palabra del Día.',
   alternates: {
-    canonical: 'https://wordlegame.co.uk/blogs/',
+    canonical: 'https://lapalabradeldia.co/blogs/',
   },
   robots: {
     index: true,
@@ -22,17 +22,17 @@ export const metadata = {
     'article:modified_time': '2026-05-15T00:05:00-04:00',
   },
   openGraph: {
-    title: 'Wordle Unlimited Blog - Latest News & Updates',
-    description: 'Read the latest updates, tips, and articles about Wordle Unlimited.',
-    url: 'https://wordlegame.co.uk/blogs/',
-    siteName: 'Wordle UK',
+    title: 'Blog de Wordle en Español - Consejos, Guías y Noticias',
+    description: 'Descubre los mejores consejos, estrategias y guías sobre Wordle y la Palabra del Día.',
+    url: 'https://lapalabradeldia.co/blogs/',
+    siteName: 'La Palabra del Día',
     type: 'website',
     modifiedTime: '2026-05-15T00:05:00-04:00',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Wordle Unlimited Blog - Latest News & Updates',
-    description: 'Read the latest updates, tips, and articles about Wordle Unlimited.',
+    title: 'Blog de Wordle en Español - Consejos, Guías y Noticias',
+    description: 'Descubre los mejores consejos, estrategias y guías sobre Wordle y la Palabra del Día.',
   },
 };
 

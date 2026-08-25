@@ -7,7 +7,7 @@
 // homepage entry — that way unknown query strings, share/challenge links and
 // missing trailing slashes can never produce a wrong canonical for Google.
 
-export const BASE_URL = 'https://wordlegame.co.uk';
+export const BASE_URL = 'https://lapalabradeldia.co';
 import { getNYTDate } from './dateUtils';
 export const OG_IMAGE = `${BASE_URL}/og-image.png`;
 
@@ -15,42 +15,46 @@ export const OG_IMAGE = `${BASE_URL}/og-image.png`;
 // alternates and the JSON-LD breadcrumb.
 export const ROUTE_GROUPS = {
   unlimited: {
-    'en-GB': '/',
+    'es': '/',
+    'es-ES': '/',
   },
   today: {
-    'en-GB': '/wordle-today/',
+    'es': '/wordle-today/',
+    'es-ES': '/wordle-today/',
   },
   hints: {
-    'en-GB': '/wordle-hints-today/',
+    'es': '/wordle-hints-today/',
+    'es-ES': '/wordle-hints-today/',
   },
   privacy: {
-    'en-GB': '/privacy/',
+    'es': '/privacy/',
+    'es-ES': '/privacy/',
   },
 };
 
 export const SEO_DATA = {
   '/': {
-    title: 'Wordle UK - Unlimited Free Word Puzzle Game Online',
-    description: 'Play Wordle UK free — unlimited daily word puzzles with British English spelling. No downloads, no sign-up. Guess the 5-letter word in 6 tries!',
-    isoLang: 'en-GB',
+    title: 'Wordle Español - Juego de Palabras Ilimitado Gratis Online',
+    description: 'Juega a Wordle en español gratis — adivina palabras ilimitadas de 5 letras en español sin descargas ni registros. ¡Resuelve el desafío en 6 intentos!',
+    isoLang: 'es-ES',
     group: 'unlimited',
   },
   '/wordle-today/': {
-    title: "Wordle Today UK - Play Today's Wordle",
-    description: 'Play Wordle Today UK and solve the daily word puzzle. A new British English Wordle challenge is available every day.',
-    isoLang: 'en-GB',
+    title: 'Palabra del Día - Juega al Wordle de Hoy en Español',
+    description: 'Juega a la Palabra del Día en español y resuelve el puzle diario. Un nuevo reto de Wordle en español disponible cada día.',
+    isoLang: 'es-ES',
     group: 'today',
   },
   '/wordle-hints-today/': {
-    title: "Daily Wordle Hints UK - Today's Word of the Day",
-    description: "Get the best hints and clues for today's UK Word of the Day. We provide categorized hints to help you solve today's puzzle.",
-    isoLang: 'en-GB',
+    title: 'Pistas Wordle Hoy - Claves y Solución de la Palabra del Día',
+    description: 'Consigue las mejores pistas sin spoilers para el Wordle en español de hoy. Pistas por categorías, número de vocales y solución diaria.',
+    isoLang: 'es-ES',
     group: 'hints',
   },
   '/privacy/': {
-    title: 'Privacy Policy - Wordle UK',
-    description: 'Read the Wordle UK Privacy Policy. Learn how we handle your data, what we collect, and your rights under UK GDPR.',
-    isoLang: 'en-GB',
+    title: 'Política de Privacidad - La Palabra del Día',
+    description: 'Consulta la política de privacidad de La Palabra del Día. Conoce cómo gestionamos los datos locales y tus derechos de privacidad.',
+    isoLang: 'es-ES',
     group: 'privacy',
   },
 };
@@ -74,8 +78,8 @@ export function normalizePath(pathname) {
 
 import { getWordleNumber } from './dateUtils';
 
-function formatDate(d, isoLang) {
-  return d.toLocaleDateString('en-GB', {
+function formatDate(d, isoLang = 'es-ES') {
+  return d.toLocaleDateString(isoLang, {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
@@ -95,9 +99,9 @@ export function getSEO(pathname) {
   if (letterWordsMatch) {
     const length = letterWordsMatch[1];
     dynamicData = {
-      title: `${length}-Letter Words for Wordle UK - British English List`,
-      description: `Explore the complete list of ${length}-letter British English words. Perfect for Wordle variants and improving your vocabulary.`,
-      isoLang: 'en_GB',
+      title: `Palabras de ${length} Letras para Wordle Español`,
+      description: `Explora la lista completa de palabras en español de ${length} letras. Ideal para variantes de Wordle y enriquecer tu vocabulario.`,
+      isoLang: 'es-ES',
       group: 'unlimited',
     };
   }
@@ -105,9 +109,9 @@ export function getSEO(pathname) {
   const matched = SEO_DATA[key] || dynamicData;
   const canonicalKey = matched ? key : '/';
   const data = matched || SEO_DATA['/'];
-  const siblings = ROUTE_GROUPS[data.group] || { 'en-GB': canonicalKey };
+  const siblings = ROUTE_GROUPS[data.group] || { 'es': canonicalKey, 'es-ES': canonicalKey };
 
-  const isPrivacy = data.group === 'privacy' || canonicalKey.includes('privacy');
+  const isPrivacy = data.group === 'privacy' || canonicalKey.includes('privacy') || canonicalKey.includes('privacidad');
   const isHints = data.group === 'hints';
   const isDaily = !isPrivacy;
 
@@ -141,8 +145,8 @@ export function getSEO(pathname) {
   if (isHints) {
     const puzzleNumber = getWordleNumber(targetDateForMeta);
     const formattedDate = formatDate(targetDateForMeta, data.isoLang);
-    title = `Wordle Hints Today UK (#${puzzleNumber}) – Clues & Answer for ${formattedDate}`;
-    description = `Get spoiler-free hints for Wordle #${puzzleNumber} on ${formattedDate}, including the starting letter, vowels, repeated letters, difficulty and today's answer.`;
+    title = `Pistas Wordle de Hoy (#${puzzleNumber}) – Claves y Solución para ${formattedDate}`;
+    description = `Pistas sin spoilers para el Wordle #${puzzleNumber} del ${formattedDate}: letra inicial, número de vocales, letras repetidas, dificultad y la respuesta de hoy.`;
   }
 
   return {
@@ -152,7 +156,10 @@ export function getSEO(pathname) {
     group: data.group,
     canonicalPath: canonicalKey,
     canonical: `${BASE_URL}${canonicalKey}`,
-    hreflang: { 'en-GB': `${BASE_URL}${siblings['en-GB'] || canonicalKey}` },
+    hreflang: {
+      'es': `${BASE_URL}${siblings['es'] || canonicalKey}`,
+      'es-ES': `${BASE_URL}${siblings['es-ES'] || canonicalKey}`
+    },
     modifiedDate,
     isDaily,
   };

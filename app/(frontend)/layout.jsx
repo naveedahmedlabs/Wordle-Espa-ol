@@ -5,13 +5,13 @@ import StyledComponentsRegistry from './registry';
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'Wordle UK - Play Unlimited Wordle Online',
-  description: 'Play Wordle UK online for free. Guess unlimited words, test your vocabulary, and enjoy endless Wordle puzzles with no download.',
+  title: 'Wordle Español - Juego de Palabras Ilimitado Online Gratis',
+  description: 'Juega a Wordle en español online gratis. Adivina palabras ilimitadas de 5 letras, pon a prueba tu vocabulario y disfruta del reto de la palabra del día.',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en-GB">
+    <html lang="es">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#6aaa64" />

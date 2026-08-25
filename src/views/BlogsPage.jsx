@@ -17,16 +17,16 @@ export default function BlogsPage({ initialPosts = [], totalPages = 1, currentPa
       
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '40px' }}>
         <div className="game-cards__heading" style={{ marginBottom: '12px' }}>
-          <h1 className="game-cards__heading-text" style={{ fontSize: '28px', margin: 0 }}>Our Blog</h1>
+          <h1 className="game-cards__heading-text" style={{ fontSize: '28px', margin: 0 }}>Blog</h1>
         </div>
         <p style={{ color: 'var(--color-text-secondary)', fontSize: '16px', margin: 0 }}>
-          Latest news, tips, and updates.
+          Últimas noticias, consejos y guías de Wordle.
         </p>
       </div>
 
       {loading ? (
         <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
-          <p>Loading posts...</p>
+          <p>Cargando artículos...</p>
         </div>
       ) : initialPosts.length > 0 ? (
         <div className="game-cards__grid">
@@ -47,7 +47,7 @@ export default function BlogsPage({ initialPosts = [], totalPages = 1, currentPa
                 )}
               <div className="game-card__info" style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                 <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 600 }}>
-                  {new Date(post.createdAt).toLocaleDateString()}
+                  {new Date(post.createdAt).toLocaleDateString('es-ES')}
                 </div>
                 <h3 className="game-card__name" style={{ fontSize: '18px', marginBottom: '8px' }}>{post.title}</h3>
                 <p className="game-card__desc" style={{ fontSize: '14px', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
@@ -60,7 +60,7 @@ export default function BlogsPage({ initialPosts = [], totalPages = 1, currentPa
         </div>
       ) : (
         <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
-          <p>No blog posts found.</p>
+          <p>No se encontraron artículos.</p>
         </div>
       )}
 
@@ -81,14 +81,14 @@ export default function BlogsPage({ initialPosts = [], totalPages = 1, currentPa
                 boxShadow: '0 2px 4px var(--color-shadow)'
               }}
             >
-              ← Previous
+              ← Anterior
             </Link>
           ) : (
-            <span style={{ padding: '10px 20px', color: 'var(--color-text-secondary)', opacity: 0.5, fontWeight: 600 }}>← Previous</span>
+            <span style={{ padding: '10px 20px', color: 'var(--color-text-secondary)', opacity: 0.5, fontWeight: 600 }}>← Anterior</span>
           )}
 
           <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--color-text-secondary)' }}>
-            Page {currentPage} of {totalPages}
+            Página {currentPage} de {totalPages}
           </span>
 
           {currentPage < totalPages ? (
@@ -105,10 +105,10 @@ export default function BlogsPage({ initialPosts = [], totalPages = 1, currentPa
                 boxShadow: '0 2px 4px var(--color-shadow)'
               }}
             >
-              Next →
+              Siguiente →
             </Link>
           ) : (
-            <span style={{ padding: '10px 20px', color: 'var(--color-text-secondary)', opacity: 0.5, fontWeight: 600 }}>Next →</span>
+            <span style={{ padding: '10px 20px', color: 'var(--color-text-secondary)', opacity: 0.5, fontWeight: 600 }}>Siguiente →</span>
           )}
         </div>
       )}

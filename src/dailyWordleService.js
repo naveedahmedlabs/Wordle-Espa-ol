@@ -8,7 +8,7 @@ const formatDateISO = (date) => {
   return `${y}-${m}-${d}`;
 };
 
-const buildRecord = (language, date) => {
+const buildRecord = (language = 'es', date) => {
   const data = getDailyWord(language, date);
   return {
     puzzle_date: formatDateISO(date),
@@ -23,11 +23,11 @@ const buildRecord = (language, date) => {
   };
 };
 
-export async function recordTodayWord(language, date = getNYTDate()) {
+export async function recordTodayWord(language = 'es', date = getNYTDate()) {
   return buildRecord(language, date);
 }
 
-export async function fetchPastWords(language, fromDate, days = 14) {
+export async function fetchPastWords(language = 'es', fromDate, days = 14) {
   const fallback = [];
   for (let i = 1; i <= days; i++) {
     const d = new Date(fromDate);
@@ -37,7 +37,7 @@ export async function fetchPastWords(language, fromDate, days = 14) {
   return fallback;
 }
 
-export function getYesterdayWord(language, fromDate = getNYTDate()) {
+export function getYesterdayWord(language = 'es', fromDate = getNYTDate()) {
   const d = new Date(fromDate);
   d.setDate(d.getDate() - 1);
   return buildRecord(language, d);

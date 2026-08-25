@@ -1,47 +1,45 @@
 const CONTENT = {
-
-  uk: {
-    heading: 'Tips and Strategy',
+  es: {
+    heading: 'Consejos y Estrategias para Wordle',
     tips: [
       {
-        title: '1. Choose an Optimal Starting Word',
-        desc: 'Maximize your chances in Wordle Unlimited by opening with vowel-heavy words. Words containing "A", "E", "O", and common consonants like "R", "S", and "T" (such as "STARE", "ROAST", or "ARISE") give you an immediate advantage.'
+        title: '1. Elige una Palabra Inicial Óptima',
+        desc: 'Aumenta tus probabilidades abriendo con palabras ricas en vocales y consonantes comunes en español como "A", "E", "O", "R", "S" y "T" (por ejemplo: "AUDIO", "CANTO" o "SERIO").'
       },
       {
-        title: '2. Analyze Hint Positioning',
-        desc: 'Instead of just finding correct letters, visualize where those letters frequently appear in English words. If a letter is yellow, strategically place it in a different common slot for your next guess.'
+        title: '2. Analiza la Posición de las Pistas',
+        desc: 'Si una letra sale en amarillo, colócala en una posición diferente y habitual en palabras en español para tu siguiente intento.'
       },
       {
-        title: '3. Never Re-use Dead Letters',
-        desc: 'Pay close attention to grey tiles. If a letter turns grey, it is entirely absent from the target word. Exclude these dead letters from all subsequent guesses to quickly narrow down the dictionary of possibilities.'
+        title: '3. No Reutilices Letras Descartadas',
+        desc: 'Presta atención a las casillas grises. Si una letra se muestra gris, no pertenece a la palabra; descártala de tus siguientes intentos para reducir posibilidades rápidamente.'
       },
       {
-        title: '4. Leverage Syllable Patterns',
-        desc: 'English vocabulary follows predictable structures. Once you uncover a few green or yellow hints, try visualizing common prefixes (like "RE-" or "UN-") and standard suffixes (like "-ING", "-ED", or "-ER").'
+        title: '4. Aprovecha Patrones y Terminaciones Comunes',
+        desc: 'El vocabulario en español sigue estructuras predecibles. Fíjate en prefijos habituales (como "RE-", "DES-") y terminaciones frecuentes (como "-AR", "-ER", "-IR", "-ON", "-AS", "-OS").'
       },
       {
-        title: '5. Play Wordle Unlimited to Build Skills',
-        desc: 'Unlike the daily limit on traditional Wordle games, our unlimited mode lets you play back-to-back puzzles. This constant, unrestricted practice is the absolute fastest way to improve your vocabulary recall and pattern recognition.'
+        title: '5. Juega en Modo Ilimitado para Entrenar',
+        desc: 'A diferencia de la restricción de una sola partida diaria, el modo ilimitado te permite practicar cuantas veces quieras para mejorar tu agilidad mental y vocabulario.'
       },
       {
-        title: '6. Employ a Burner Word When Stuck',
-        desc: 'If you have too many possibilities and only one or two guesses remaining, consider sacrificing a turn by playing a completely different word made entirely of unused letters. This rapid elimination strategy can reveal the exact consonants you need.'
+        title: '6. Usa una Palabra de Descarte si te Bloqueas',
+        desc: 'Si tienes muchas opciones posibles y te quedan pocos intentos, prueba una palabra compuesta totalmente por letras nuevas para despejar dudas rápidamente.'
       },
       {
-        title: '7. Take Your Time',
-        desc: 'There is no ticking clock in this puzzle game. Pause to think critically about letter combinations rather than rushing your keyboard entries. A thoughtful guess is always better than a rushed mistake.'
+        title: '7. Tómate tu Tiempo',
+        desc: 'En Wordle no hay límite de tiempo ni reloj en contra. Reflexiona con calma sobre cada combinación de letras antes de confirmar tu jugada.'
       },
       {
-        title: '8. Hunt for Double Letters',
-        desc: 'Don\'t forget that words can frequently contain duplicate letters (e.g., "APPLE", "BLOOD", "EERIE"). If you are missing a slot and no remaining letters seem to fit, consider reusing a green or yellow letter you\'ve already discovered.'
+        title: '8. Atención a las Letras Repetidas',
+        desc: 'Recuerda que una palabra puede contener letras repetidas (ej. "CASAS", "PERRO", "LLAVE"). Si no encuentras letras que encajen, considera repetir una letra ya descubierta.'
       }
     ]
   },
-
 };
 
-export default function Tips({ language = 'en' }) {
-  const c = CONTENT.uk;
+export default function Tips({ language = 'es' }) {
+  const c = CONTENT.es;
 
   return (
     <section className="tips" id="wordle-tips">

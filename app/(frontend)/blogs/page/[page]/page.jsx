@@ -12,9 +12,9 @@ export default async function Page({ params }) {
   const page = parseInt(resolvedParams.page || '1', 10);
   
   const seo = {
-    title: `Wordle Unlimited Blog - Page ${page}`,
-    description: `Read the latest updates, tips, and articles about Wordle Unlimited. Page ${page}.`,
-    canonical: `https://wordlegame.co.uk/blogs/page/${page}/`,
+    title: `Blog de Wordle en Español - Página ${page}`,
+    description: `Descubre los mejores consejos, estrategias y guías sobre Wordle y la Palabra del Día. Página ${page}.`,
+    canonical: `https://lapalabradeldia.co/blogs/page/${page}/`,
   };
 
   let initialPosts = [];

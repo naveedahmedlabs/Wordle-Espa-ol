@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/xml; charset=utf-8");
 
-$domain = 'https://wordlegame.co.uk';
+$domain = 'https://lapalabradeldia.co';
 
 // Calculate NYT / Wordle date in UTC
 $today = gmdate('Y-m-d\TH:i:s.000\Z');
@@ -11,16 +11,8 @@ $urls = [
     ['/', $today, '1.00', 'daily'],
     ['/wordle-today/', $today, '0.80', 'daily'],
     ['/wordle-hints-today/', $today, '0.80', 'daily'],
-    ['/uk/', $staticDate, '0.80', 'monthly'],
-    ['/es/', $staticDate, '0.80', 'monthly'],
-    ['/uk/wordle-today/', $today, '0.80', 'daily'],
-    ['/uk/wordle-hints-today/', $today, '0.80', 'daily'],
-    ['/es/palabra-del-dia/', $today, '0.80', 'daily'],
-    ['/es/pistas-de-hoy/', $today, '0.80', 'daily'],
     ['/blogs/', $today, '0.80', 'daily'],
     ['/privacy/', $staticDate, '0.30', 'monthly'],
-    ['/uk/privacy/', $staticDate, '0.30', 'monthly'],
-    ['/es/privacidad/', $staticDate, '0.30', 'monthly'],
 ];
 
 // Fetch from Sanity

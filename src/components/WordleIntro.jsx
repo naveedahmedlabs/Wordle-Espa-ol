@@ -1,32 +1,30 @@
 import React from 'react';
 import Link from 'next/link';
 
-export default function WordleIntro({ language = 'en', mode = 'unlimited' }) {
+export default function WordleIntro({ language = 'es', mode = 'unlimited' }) {
   const content = {
-
-    uk: {
+    es: {
       daily: {
-        title: "Wordle UK Today - Play Today's UK Wordle",
-        description: 'Play Wordle UK Today and solve the daily British English word puzzle. A new UK Wordle challenge is available every day.',
+        title: 'Palabra del Día - Juega al Wordle de Hoy en Español',
+        description: 'Juega a la Palabra del Día en español y resuelve el desafío diario de palabras. Un nuevo reto de Wordle en español disponible cada 24 horas.',
       },
       unlimited: {
-        title: 'Wordle Unlimited UK - Play UK Wordle Online',
-        description: 'Play Wordle Unlimited UK online for free. Enjoy unlimited British English word puzzles and guess new words anytime.',
+        title: 'Wordle Español Ilimitado - Juega Online Gratis',
+        description: 'Juega a Wordle en español online gratis e ilimitado. Disfruta de puzles infinitos de palabras en español y pon a prueba tu vocabulario.',
       },
       anchorLinks: [
-        { label: 'How to play', href: '#how-to-play' },
-        { label: 'Tips', href: '#tips' },
-        { label: 'FAQ', href: '#faq' }
+        { label: 'Cómo jugar', href: '#how-to-play' },
+        { label: 'Consejos', href: '#wordle-tips' },
+        { label: 'Preguntas Frecuentes', href: '#faq' }
       ],
       pageLinks: [
-        { label: 'UK Wordle Today', to: '/wordle-today/' },
-        { label: 'UK Daily Hints', to: '/wordle-hints-today/' }
+        { label: 'Palabra del Día', to: '/wordle-today/' },
+        { label: 'Pistas de Hoy', to: '/wordle-hints-today/' }
       ]
     },
-
   };
 
-  const langSet = content.uk;
+  const langSet = content.es;
   const c = mode === 'daily' ? langSet.daily : langSet.unlimited;
   const anchorLinks = langSet.anchorLinks;
   const pageLinks = langSet.pageLinks;

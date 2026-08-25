@@ -30,28 +30,26 @@ import BlogHeader from './components/BlogHeader';
 import { getNYTDate } from './dateUtils';
 
 const UI_TEXT = {
-  
-  uk: {
-    play: 'Play',
-    playHelp: 'Press the «Play» button to start playing',
+  es: {
+    play: 'Jugar',
+    playHelp: 'Presiona el botón «Jugar» para comenzar',
     invalidTitle: '404',
-    invalidSubtitle: 'Challenge Not Found',
-    invalidDesc: 'The challenge link is invalid or the word doesn\'t exist.',
-    playStandard: 'Play Standard Wordle',
-    notEnough: 'Not enough letters',
-    notInList: 'Not in word list',
+    invalidSubtitle: 'Desafío no encontrado',
+    invalidDesc: 'El enlace del desafío no es válido o la palabra no existe.',
+    playStandard: 'Jugar a Wordle Estándar',
+    notEnough: 'No hay suficientes letras',
+    notInList: 'No está en la lista de palabras',
     winPrefix: 'Wordle',
-    winSuffix: 'You Win! 🏆',
-    lostPrefix: 'The answer was: ',
-    winMessages: ['Genius!', 'Magnificent!', 'Impressive!', 'Splendid!', 'Great!', 'Phew!'],
-    guessFirst: 'Guess the first word!',
-    wordleGame: 'Wordle Game',
-    wordleDesc: 'Guess the hidden word in 6 attempts!',
-    dailyFinished: 'You have finished today\'s Wordle!',
-    nextWord: 'Next word in:',
-    tryUnlimited: 'Try Wordle Unlimited'
-  },
-  
+    winSuffix: '¡Has ganado! 🏆',
+    lostPrefix: 'La palabra era: ',
+    winMessages: ['¡Genial!', '¡Magnífico!', '¡Impresionante!', '¡Espléndido!', '¡Muy bien!', '¡Por poco!'],
+    guessFirst: '¡Adivina la primera palabra!',
+    wordleGame: 'Juego Wordle',
+    wordleDesc: '¡Adivina la palabra oculta en 6 intentos!',
+    dailyFinished: '¡Ya has completado el Wordle de hoy!',
+    nextWord: 'Siguiente palabra en:',
+    tryUnlimited: 'Probar Wordle Ilimitado'
+  }
 };
 
 function evaluateGuess(guess, answer) {
@@ -115,7 +113,7 @@ export default function App() {
     }
   };
 
-  const language = 'uk';
+  const language = 'es';
 
   const [gameMode, setGameMode] = useState(() => {
     if (typeof window === 'undefined') return 'unlimited';
@@ -123,7 +121,7 @@ export default function App() {
     if (params.get('challenge')) return 'unlimited';
     
     const path = window.location.pathname;
-    if (path.includes('wordle-today')) return 'daily';
+    if (path.includes('wordle-today') || path.includes('palabra-del-dia')) return 'daily';
     const normPath = path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path;
     const isRoot = normPath === '' || normPath === '/';
     if (isRoot) return 'unlimited';
@@ -139,16 +137,15 @@ export default function App() {
     if (normPath === '' || normPath === '/') return 'game';
     if (normPath === '/blogs') return 'blogs';
     if (path.startsWith('/blogs/') && path.length > 7) return 'single-blog';
-    if (normPath.includes('wordle-hints-today')) return 'hints';
-    if (normPath.includes('wordle-today')) return 'game';
-    if (normPath.includes('/privacy')) return 'privacy';
+    if (normPath.includes('wordle-hints-today') || normPath.includes('pistas-de-hoy')) return 'hints';
+    if (normPath.includes('wordle-today') || normPath.includes('palabra-del-dia')) return 'game';
+    if (normPath.includes('/privacy') || normPath.includes('/privacidad')) return 'privacy';
     if (normPath.includes('/wordle-solver')) return 'solver';
     const variantMatch = normPath.match(/\/(\d+)-letter-words/);
     if (variantMatch) return `variants:${variantMatch[1]}`;
     
     return '404';
   });
-
 
   // Sync state with location
   useEffect(() => {
@@ -177,7 +174,7 @@ export default function App() {
     }
   }, [location.pathname]);
 
-  const ui = UI_TEXT.uk;
+  const ui = UI_TEXT.es;
 
   // Per-route SEO copy now lives in src/seo.js and is rendered by <SEO />
   // below. This memo only computes the JSON-LD graph, which still needs the
@@ -188,25 +185,6 @@ export default function App() {
     const seo = getSEO(location.pathname);
     const isDaily = gameMode === 'daily';
     const isHints = currentView === 'hints';
-    const isTodayDaily = (() => {
-    if (currentView !== 'game' || gameMode !== 'daily') return false;
-    const now = getNYTDate();
-    const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
-    const seed = params.get('seed');
-
-    let effectiveDate = now;
-    const dateMatch = location.pathname.match(/\d{4}-\d{2}-\d{2}/);
-    if (dateMatch) {
-      effectiveDate = new Date(dateMatch[0]);
-    } else if (seed && /^\d{8}$/.test(seed)) {
-      const y = seed.substring(0, 4);
-      const m = seed.substring(4, 6);
-      const d = seed.substring(6, 8);
-      effectiveDate = new Date(y, m - 1, d);
-    }
-    
-    return effectiveDate.toDateString() === now.toDateString();
-    })();
 
     const isPrivacy = currentView === 'privacy';
     const now = getNYTDate();
@@ -229,16 +207,16 @@ export default function App() {
     const { title, description: desc, canonicalPath: seoPath, isoLang } = seo;
 
     const faqData = {
-      uk: [
-        { q: "What is Wordle Unlimited?", a: "Wordle Unlimited is an unrestricted version of the wildly popular daily word puzzle. Your goal is to deduce a hidden five-letter mystery word within six guesses, using colour-coded hints to guide your logic." },
-        { q: "How exactly do you play the game?", a: "Begin by typing any valid 5-letter word and hitting Enter. The tiles will flip to reveal colours: Green means the letter is perfectly placed, Yellow means it's in the word but in the wrong spot, and Grey means it's completely absent." },
-        { q: "Is it possible to play more than one game a day?", a: "Absolutely! While the original game restricts you to a single daily puzzle, our platform allows you to play infinite, back-to-back matches to practice and refine your skills without ever hitting a paywall or limit." },
-        { q: "What happens if I run out of guesses?", a: "If you use up all six attempts without finding the answer, the game will reveal the hidden word to you. You can immediately hit 'New Game' to try again with a fresh puzzle." },
-        { q: "Do I need to download an app to play?", a: "No downloads are necessary. You can play directly in your web browser on any device—including iPhones, Android smartphones, iPads, and desktop computers—with full mobile responsiveness." }
+      es: [
+        { q: "¿Qué es Wordle en Español?", a: "Wordle en Español es una versión libre y accesible del popular juego de palabras. Tu objetivo es descubrir una palabra oculta de 5 letras en un máximo de seis intentos con la ayuda de pistas por colores." },
+        { q: "¿Cómo se juega exactamente?", a: "Escribe cualquier palabra válida de 5 letras y pulsa Enter. Las casillas cambiarán de color: Verde indica letra correcta en la posición exacta, Amarillo indica que la letra está en la palabra pero en otra posición, y Gris indica que no está en la palabra." },
+        { q: "¿Se puede jugar más de una partida al día?", a: "¡Por supuesto! Puedes jugar el reto diario («Palabra del Día») una vez cada 24 horas, o disfrutar de partidas ilimitadas y consecutivas en el modo «Ilimitado» sin ningún límite ni coste." },
+        { q: "¿Qué ocurre si agoto los 6 intentos?", a: "Si no aciertas en 6 intentos, el juego te mostrará la palabra correcta. Podrás pulsar 'Nueva Partida' para jugar de nuevo inmediatamente." },
+        { q: "¿Es necesario descargar alguna aplicación?", a: "No, no necesitas descargar nada. Puedes jugar directamente desde el navegador de tu móvil, tablet o PC de forma rápida y gratuita." }
       ]
     };
 
-    const currentFaqs = faqData.uk;
+    const currentFaqs = faqData.es;
 
     const schemaGraph = {
       "@context": "https://schema.org",
@@ -246,7 +224,7 @@ export default function App() {
         {
           "@type": "Organization",
           "@id": `${baseUrl}/#organization`,
-          "name": "Wordle Game UK",
+          "name": "La Palabra del Día",
           "url": baseUrl,
           "logo": {
             "@type": "ImageObject",
@@ -255,7 +233,7 @@ export default function App() {
             "contentUrl": `${baseUrl}/logo.png`,
             "width": 512,
             "height": 512,
-            "caption": "Wordle Game UK"
+            "caption": "La Palabra del Día"
           },
           "image": { "@id": `${baseUrl}/#logo` }
         },
@@ -263,8 +241,8 @@ export default function App() {
           "@type": "WebSite",
           "@id": `${baseUrl}/#website`,
           "url": baseUrl,
-          "name": "Wordle Game UK",
-          "alternateName": "Wordle Unlimited",
+          "name": "La Palabra del Día",
+          "alternateName": "Wordle Español Ilimitado",
           "publisher": { "@id": `${baseUrl}/#organization` },
           "inLanguage": isoLang
         },
@@ -285,7 +263,7 @@ export default function App() {
         ...(!['single-blog', 'blogs'].includes(currentView) && !isHints ? [{
           "@type": "WebApplication",
           "@id": `${baseUrl}/#webapp`,
-          "name": "Wordle Unlimited",
+          "name": "Wordle Español Ilimitado",
           "url": `${baseUrl}${seoPath}`,
           "applicationCategory": "GameApplication",
           "operatingSystem": "All",
@@ -300,7 +278,7 @@ export default function App() {
           "inLanguage": isoLang,
           "aggregateRating": {
             "@type": "AggregateRating",
-            "ratingValue": "4.3",
+            "ratingValue": "4.8",
             "bestRating": "5",
             "worstRating": "1",
             "ratingCount": "3690"
@@ -325,7 +303,7 @@ export default function App() {
             {
               "@type": "ListItem",
               "position": 1,
-              "item": { "@type": "WebPage", "@id": baseUrl, "url": baseUrl, "name": "Home" }
+              "item": { "@type": "WebPage", "@id": baseUrl, "url": baseUrl, "name": "Inicio" }
             },
             ...(isDaily || isHints || isPrivacy ? [{
               "@type": "ListItem",

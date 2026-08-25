@@ -43,8 +43,8 @@ export default function SingleBlogPage({ post, relatedPosts = [] }) {
   if (!post) {
     return (
       <div style={{ padding: '60px 0', textAlign: 'center' }}>
-        <h2 style={{ color: 'var(--color-text-dark)' }}>Post not found</h2>
-        <Link href="/blogs/" style={{ color: PRIMARY_COLOR, textDecoration: 'underline', marginTop: '16px', display: 'inline-block' }}>Return to Blogs</Link>
+        <h2 style={{ color: 'var(--color-text-dark)' }}>Artículo no encontrado</h2>
+        <Link href="/blogs/" style={{ color: PRIMARY_COLOR, textDecoration: 'underline', marginTop: '16px', display: 'inline-block' }}>Volver al Blog</Link>
       </div>
     );
   }
@@ -72,7 +72,7 @@ export default function SingleBlogPage({ post, relatedPosts = [] }) {
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
-          ← Back to Blogs
+          ← Volver al Blog
         </Link>
       </nav>
 
@@ -93,7 +93,7 @@ export default function SingleBlogPage({ post, relatedPosts = [] }) {
             color: 'var(--color-text-secondary)',
             fontFamily: 'system-ui, -apple-system, sans-serif'
           }}>
-            <span>Wordle Unlimited • {new Date(post.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span>La Palabra del Día • {new Date(post.createdAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </div>
 
           {/* Title */}
@@ -272,7 +272,7 @@ export default function SingleBlogPage({ post, relatedPosts = [] }) {
       {/* Automated Internal Links for SEO */}
       {relatedPosts.length > 0 && (
         <div style={{ marginTop: '32px', marginBottom: '64px', padding: '32px', background: 'var(--color-surface)', borderRadius: '12px', border: '1px solid var(--color-border, #eaeaea)' }}>
-          <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: 'var(--color-text-dark)' }}>Keep Reading</h3>
+          <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '16px', color: 'var(--color-text-dark)' }}>Seguir Leyendo</h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px 0' }}>
             {relatedPosts.map(rp => (
               <li key={rp.id} style={{ marginBottom: '12px' }}>
@@ -284,8 +284,8 @@ export default function SingleBlogPage({ post, relatedPosts = [] }) {
           </ul>
 
           <div style={{ textAlign: 'center', marginTop: '32px', paddingTop: '24px', borderTop: '1px solid var(--color-border, #eaeaea)' }}>
-            <h4 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '12px', color: 'var(--color-text-dark)' }}>Ready to play?</h4>
-            <p style={{ marginBottom: '16px', color: 'var(--color-text-secondary)', fontSize: '15px' }}>Test your skills with our free, unlimited version of the game.</p>
+            <h4 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '12px', color: 'var(--color-text-dark)' }}>¿Listo para jugar?</h4>
+            <p style={{ marginBottom: '16px', color: 'var(--color-text-secondary)', fontSize: '15px' }}>Pon a prueba tu vocabulario con nuestra versión gratuita e ilimitada de Wordle.</p>
             <Link href="/" style={{
               display: 'inline-block',
               background: 'var(--color-text-dark)',
@@ -296,7 +296,7 @@ export default function SingleBlogPage({ post, relatedPosts = [] }) {
               textDecoration: 'none',
               fontSize: '15px'
             }}>
-              Play Wordle Unlimited Now
+              Jugar a Wordle Ahora
             </Link>
           </div>
         </div>

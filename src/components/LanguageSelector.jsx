@@ -1,12 +1,12 @@
 import React from 'react';
 
-export default function LanguageSelector({ currentLanguage }) {
+export default function LanguageSelector({ currentLanguage = 'es' }) {
   const languages = [
     { 
-      code: 'uk', 
-      name: 'English (UK)', 
+      code: 'es', 
+      name: 'Español', 
       path: '/', 
-      flag: 'https://flagcdn.com/w40/gb.png' 
+      flag: 'https://flagcdn.com/w40/es.png' 
     }
   ];
 

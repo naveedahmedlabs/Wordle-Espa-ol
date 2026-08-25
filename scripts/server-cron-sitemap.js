@@ -4,7 +4,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-const DOMAIN = 'https://wordlegame.co.uk';
+const DOMAIN = 'https://lapalabradeldia.co';
 
 // Calculate NYT / Wordle date (00:00 NYT / 04:05 UTC)
 function getNYTDate() {

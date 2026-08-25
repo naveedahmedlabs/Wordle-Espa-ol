@@ -1,59 +1,53 @@
 import { useState } from 'react';
 
 const CONTENT = {
-
-  uk: {
-    heading: 'Frequently Asked Questions',
+  es: {
+    heading: 'Preguntas Frecuentes',
     faqs: [
       {
-        q: "Why was my guess rejected as 'Not in word list'?",
-        a: "Wordle UK uses a strict British English dictionary. If your guess is rejected, it may be a proper noun, an invalid word, or spelled using US conventions instead of UK conventions (e.g., try 'COLOUR' instead of 'COLOR')."
+        q: "¿Por qué mi intento fue rechazado como 'No está en la lista'?",
+        a: "Wordle en Español utiliza un diccionario verificado de palabras válidas de 5 letras en español. Si tu palabra no es aceptada, puede ser un nombre propio o una palabra no reconocida en el diccionario estándar."
       },
       {
-        q: "Are British spellings supported in this version?",
-        a: "Yes! Unlike generic versions of the game, Wordle UK natively accepts and occasionally features words with British English spellings as the daily solution."
+        q: "¿Se admiten acentos y tildes en el juego?",
+        a: "Para facilitar la jugabilidad y la introducción de letras, el juego procesa las palabras en mayúsculas sin distinguir tildes gráficas."
       },
       {
-        q: "What happens to my stats if I clear my browser cache?",
-        a: "Your game statistics, including win rate and daily streaks, are saved locally in your browser's storage. If you clear your cache or use a private browsing window, your stats will be reset."
+        q: "¿Qué ocurre con mis estadísticas si borro la memoria del navegador?",
+        a: "Tus estadísticas (partidas jugadas, victorias y rachas) se guardan localmente en el almacenamiento de tu navegador. Si limpias los datos o juegas en modo incógnito, el historial se reiniciará."
       },
       {
-        q: "Can I transfer my stats to a new phone or computer?",
-        a: "Currently, all game data is stored locally on the device you are using. Because there is no central account system, transferring stats across different devices is not supported."
+        q: "¿Puedo transferir mis estadísticas a otro móvil o PC?",
+        a: "Actualmente todos los datos se conservan únicamente en el dispositivo y navegador que utilizas. No se requiere registro de cuentas para jugar."
       },
       {
-        q: "How do I turn on Hard Mode?",
-        a: "You can enable Hard Mode by clicking the gear icon (Settings) in the top right corner and toggling the Hard Mode switch. It must be turned on before making your first guess."
+        q: "¿Cómo activo el Modo Difícil?",
+        a: "Puedes activar el Modo Difícil haciendo clic en el icono de engranaje (Ajustes) en la esquina superior derecha antes de ingresar tu primer intento."
       },
       {
-        q: "What makes Hard Mode different from the standard game?",
-        a: "In Hard Mode, any clues you uncover must be used in all subsequent guesses. For example, if you find a green 'A', every following guess must contain an 'A' in that exact position."
+        q: "¿En qué consiste el Modo Difícil?",
+        a: "En el Modo Difícil, cualquier pista revelada (letras verdes o amarillas) debe ser utilizada obligatoriamente en todos los intentos posteriores."
       },
       {
-        q: "Why am I seeing the same daily word as yesterday?",
-        a: "The daily puzzle updates at midnight local time. If you are seeing yesterday's word, try refreshing the page or checking that your device's timezone and date are set correctly."
+        q: "¿A qué hora se actualiza la Palabra del Día?",
+        a: "El desafío diario se renueva cada día a medianoche según la hora local. Si no ves la nueva palabra, prueba refrescar la página."
       },
       {
-        q: "The game froze or isn't loading properly, how do I fix it?",
-        a: "This is usually caused by a network glitch or a strict ad-blocker. Try refreshing the page, disabling aggressive content blockers, or updating your browser to the latest version."
+        q: "¿Puedo jugar partidas anteriores de días pasados?",
+        a: "El reto 'Palabra del Día' está fijado a la fecha actual. No obstante, puedes jugar todas las partidas que desees en el modo 'Ilimitado'."
       },
       {
-        q: "Can I play previous daily puzzles that I missed?",
-        a: "The 'UK Wordle Today' puzzle is locked to the current calendar date. However, you can play as many random puzzles as you like in the 'Unlimited' mode to make up for missed days."
-      },
-      {
-        q: "Does Wordle UK require an active internet connection?",
-        a: "An internet connection is required to load the page initially and to fetch the daily puzzle. Once loaded, you can finish your current game offline, but you'll need a connection to start a new one."
+        q: "¿Se necesita conexión a internet para jugar?",
+        a: "Necesitas conexión para cargar la página inicialmente. Una vez cargada, puedes completar tu partida sin interrupciones."
       }
     ]
   },
-
 };
 
-export default function FAQ({ language = 'en' }) {
+export default function FAQ({ language = 'es' }) {
   const [openIdx, setOpenIdx] = useState(0);
 
-  const c = CONTENT.uk;
+  const c = CONTENT.es;
 
   const toggle = (idx) => {
     setOpenIdx(openIdx === idx ? -1 : idx);

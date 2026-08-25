@@ -15,7 +15,8 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: seo.canonical,
       languages: {
-        'en-gb': seo.canonical,
+        'es': seo.canonical,
+        'es-ES': seo.canonical,
         'x-default': seo.canonical,
       },
     },
@@ -29,22 +30,20 @@ export async function generateMetadata({ params }) {
     other: {
       'last-modified': seo.modifiedDate,
       'article:modified_time': seo.modifiedDate,
-      'geo.country': 'GB',
-      'geo.placename': 'United Kingdom',
     },
     openGraph: {
       title: seo.title,
       description: seo.description,
       url: seo.canonical,
-      siteName: 'Wordle UK',
+      siteName: 'La Palabra del Día',
       images: [
         {
-          url: 'https://wordlegame.co.uk/og-image.png',
+          url: 'https://lapalabradeldia.co/og-image.png',
           width: 1200,
           height: 630,
         },
       ],
-      locale: seo.isoLang,
+      locale: 'es_ES',
       type: 'website',
       modifiedTime: seo.modifiedDate,
     },
@@ -52,7 +51,7 @@ export async function generateMetadata({ params }) {
       card: 'summary_large_image',
       title: seo.title,
       description: seo.description,
-      images: ['https://wordlegame.co.uk/og-image.png'],
+      images: ['https://lapalabradeldia.co/og-image.png'],
     },
   };
 }

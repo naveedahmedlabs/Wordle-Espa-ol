@@ -1,78 +1,86 @@
-# 🟩 Wordle Unlimited ⬜🟨
+# 🟩 La Palabra del Día - Wordle en Español ⬜🟨
 
-A premium, fully localized, and SEO-optimized Wordle experience. Play the original daily puzzle, unlimited mode, or challenge your friends with custom words.
+Una experiencia de juego de palabras de 5 letras en español, diseñada para ser rápida, accesible, optimizada para SEO y completamente gratuita. Juega al desafío diario, entrena en modo ilimitado o reta a tus amigos.
 
-![Wordle Banner](./public/wordle-banner.png)
+🌐 **Sitio Web Oficial**: [https://lapalabradeldia.co](https://lapalabradeldia.co)  
+📄 **Términos de Servicio**: [https://lapalabradeldia.co/privacy/](https://lapalabradeldia.co/privacy/)
 
-## 🌟 Key Features
+---
 
-- **🌍 Multi-Language Support**: Fully localized in English (US), English (UK), and Spanish.
-- **📅 Daily Mode**: Solve the official **"Word of the Day"** (or **"La Palabra del Día"**) every 24 hours.
-- **♾️ Unlimited Mode**: Never stop playing! New words on demand.
-- **💡 Daily Hints**: Categorized hints to help you solve the daily puzzle without spoiling the answer.
-- **🤝 Challenge Mode**: Create custom word links and challenge your friends.
-- **📈 Advanced Stats**: Track your win streaks and guess distribution across all modes.
-- **🎨 Premium UI**: Modern, responsive design with animations, dark mode, and sleek aesthetics.
-- **🔍 SEO Optimized**: Dynamic meta tags, canonical links, and language-specific keywords (**"La Palabra del Día"**) for maximum search visibility.
+## 🌟 Características Principales
 
-## 🛠️ Tech Stack
+- **📅 Palabra del Día**: Un reto diario nuevo cada 24 horas sincronizado a medianoche.
+- **♾️ Modo Ilimitado**: Juega tantas partidas como quieras sin esperas ni límites diarios.
+- **💡 Pistas Diarias**: Pistas estructuradas sin spoilers (categoría gramatical, recuento de vocales/consonantes, letras repetidas y letra inicial).
+- **🤝 Modo Desafío**: Genera enlaces con palabras personalizadas para desafiar a tus amigos.
+- **📈 Estadísticas Locales**: Guarda victorias, partidas jugadas y rachas directamente en el almacenamiento de tu navegador.
+- **🎨 Interfaz Responsiva y Accesible**: Compatible con dispositivos móviles, tabletas y ordenadores con modo oscuro y modo difícil.
+- **☁️ Listo para Cloudflare Pages**: Configuración de cabeceras de seguridad y caché optimizadas.
 
-- **Framework**: [React.js](https://reactjs.org/)
-- **Styling**: Vanilla CSS (Premium Custom Design)
-- **Icons**: Custom SVG Icons
-- **Deployment**: Vite-ready
+---
 
-## 🚀 Getting Started
+## 📚 Diccionario Propio en Español
 
-### Prerequisites
+Este proyecto utiliza su **propia base de datos y diccionario lexicográfico independiente en español** (`wordDbEs.js`), compilado y curado a partir de listas de vocabulario de 5 letras y categorizado con pistas propias y niveles de dificultad.
 
-- [Node.js](https://nodejs.org/) (v14 or higher)
-- npm or yarn
+---
 
-### Installation
+## ⚖️ Política de Uso Justo y Términos (Fair Use Policy)
 
-1. Clone the repository:
+El uso de este proyecto y del código fuente está sujeto a las siguientes directrices de **Uso Justo (Fair Use)**:
+
+1. **Uso Personal y Educativo**: Este software se proporciona únicamente con fines educativos, de aprendizaje y de entretenimiento personal no comercial.
+2. **Prohibición de Abuso**: Queda terminantemente prohibido el uso de herramientas automatizadas, bots, scraping intensivo o cualquier acción que interfiera o sobrecargue la infraestructura del servicio en [https://lapalabradeldia.co](https://lapalabradeldia.co).
+3. **Respeto a los Términos**: Para más detalles sobre las condiciones de uso, consulta nuestros [Términos de Servicio](https://lapalabradeldia.co/privacy/).
+
+---
+
+## ⚠️ Descargo de Responsabilidad y Marcas Registradas (Disclaimer)
+
+- **Sin Afiliación**: Este proyecto es una creación independiente de código abierto y **NO está afiliado, asociado, autorizado, respaldado ni conectado de ninguna manera oficial con The New York Times Company (NYT), ni con el juego original Wordle, ni con ninguna de sus filiales o subsidiarias**.
+- **Marcas Registradas**: "Wordle" es una marca registrada de The New York Times Company. Todas las marcas registradas, nombres de productos y logotipos mencionados en este proyecto pertenecen a sus respectivos propietarios.
+- El concepto de juego de adivinanza de palabras es de dominio público y las mecánicas aquí desarrolladas representan una implementación propia e independiente para el idioma español.
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Frontend**: React, Styled Components & CSS Moderno
+- **Diccionario**: Base de datos de palabras en español (`src/wordDbEs.js`)
+- **Despliegue**: Optimizado para Cloudflare Pages / Vercel
+
+---
+
+## 🚀 Inicio Rápido Local
+
+### Prerrequisitos
+
+- [Node.js](https://nodejs.org/) (v18.0.0 o superior)
+- npm, pnpm o yarn
+
+### Instalación
+
+1. Clona el repositorio:
    ```bash
-   git clone https://github.com/Naveed-CoLab/Wordle-Unlimited.git
+   git clone https://github.com/tu-usuario/wordle-es.git
+   cd wordle-es
    ```
 
-2. Install dependencies:
+2. Instala las dependencias:
    ```bash
    npm install
    ```
 
-3. Run the development server:
+3. Inicia el servidor local:
    ```bash
    npm run dev
    ```
 
-## 📍 Localization Slugs
-
-The application uses dynamic routing for different locales and SEO optimization:
-
-- **English (US)**: `/` (Default)
-- **English (UK)**: `/uk/` (Regional spellings like "colour")
-- **Spanish**: `/es/` (Full Spanish localization)
-
-### SEO-Optimized Daily Slugs:
-- `/wordle-today` (English)
-- `/es/palabra-del-dia` (Spanish)
-
-## 🧩 Project Structure
-
-```text
-src/
-├── components/     # UI Components (Grid, Keyboard, Header, etc.)
-├── words.js        # Word validation and random logic
-├── wordDb.js       # English/UK word database
-├── wordDbEs.js     # Spanish word database
-└── App.jsx         # Main application logic & SEO engine
-```
-
-## 📝 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+4. Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
 ---
 
-Built with ❤️ for word game lovers. 🟩🟩🟩🟩🟩
+## 📝 Licencia
+
+Distribuido bajo la Licencia [MIT](LICENSE).

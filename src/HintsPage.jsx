@@ -4,67 +4,9 @@ import Link from 'next/link';
 import { getDailyWord } from './words';
 import Breadcrumbs from './components/Breadcrumbs';
 import { recordTodayWord, fetchPastWords } from './dailyWordleService';
-
-
 import { getNYTDate, getWordleNumber } from './dateUtils';
 
 const CONTENT = {
-  en: {
-    title: 'Wordle Hints Today',
-    titleWithDate: (date) => `Wordle Hints Today – Clues & Answer for ${date}`,
-    intro:
-      "Need today's Wordle hints without spoilers? Get categorized clues, a starting-letter hint, a vowel hint, a difficulty score and today's Wordle answer — all updated daily.",
-    difficulty: "Today's Difficulty",
-    unlockHint: (n) => `Click to unlock Hint #${n}`,
-    hideAnswer: 'Hide Answer',
-    revealAnswer: 'Show Today\'s Wordle Answer',
-    pastAnswers: 'Past Wordle Answers',
-    yesterdayTitle: "Yesterday's Wordle Answer",
-    puzzleNumber: 'Wordle',
-    structuredHintsTitle: 'Today\'s Wordle Hints (No Spoilers)',
-    meaningTitle: 'Meaning of Today\'s Wordle Answer',
-    bestStartersTitle: 'Best Wordle Starting Words',
-    tipsTitle: 'Wordle Tips & Strategy',
-    relatedGamesTitle: 'More Word Games to Try',
-    historyTitle: 'About Wordle & The Daily Puzzle',
-    faqTitle: 'Wordle Today – FAQs',
-    hintLabels: {
-      category: 'Hint 1 — Part of Speech',
-      vowels: 'Hint 2 — Vowel Count',
-      start: 'Hint 3 — Starting Letter',
-      end: 'Hint 4 — Ending Letter',
-      repeat: 'Hint 5 — Repeated Letters?',
-      length: 'Hint 6 — Meaning'
-    }
-  },
-  uk: {
-    title: 'Wordle Hints Today',
-    titleWithDate: (date) => `Wordle Hints Today – Clues & Answer for ${date}`,
-    intro:
-      "Need today's UK Wordle hints without spoilers? Get clues, starting-letter hints, vowel hints, the difficulty score and today's Wordle answer — refreshed every day for British English players.",
-    difficulty: "Today's Difficulty",
-    unlockHint: (n) => `Click to unlock Hint #${n}`,
-    hideAnswer: 'Hide Answer',
-    revealAnswer: 'Show Today\'s Wordle Answer',
-    pastAnswers: 'Past Wordle Answers',
-    yesterdayTitle: "Yesterday's Wordle Answer",
-    puzzleNumber: 'Wordle',
-    structuredHintsTitle: 'Today\'s Wordle Hints (No Spoilers)',
-    meaningTitle: 'Meaning of Today\'s Wordle Answer',
-    bestStartersTitle: 'Best Wordle Starting Words',
-    tipsTitle: 'Wordle Tips & Strategy',
-    relatedGamesTitle: 'More Word Games to Try',
-    historyTitle: 'About Wordle & The Daily Puzzle',
-    faqTitle: 'Wordle Today – FAQs',
-    hintLabels: {
-      category: 'Hint 1 — Part of Speech',
-      vowels: 'Hint 2 — Vowel Count',
-      start: 'Hint 3 — Starting Letter',
-      end: 'Hint 4 — Ending Letter',
-      repeat: 'Hint 5 — Repeated Letters?',
-      length: 'Hint 6 — Meaning'
-    }
-  },
   es: {
     title: 'Pistas Wordle de Hoy',
     titleWithDate: (date) => `Pistas Wordle de Hoy – Pistas y Respuesta para ${date}`,
@@ -96,20 +38,6 @@ const CONTENT = {
 };
 
 const BEST_STARTERS = {
-  en: [
-    { word: 'CRANE', why: 'Covers common consonants C, R, N plus 2 well-placed vowels.' },
-    { word: 'SLATE', why: 'High-frequency letters and a strong vowel pair (A, E).' },
-    { word: 'TRACE', why: 'Hits the most common English letters by frequency.' },
-    { word: 'AUDIO', why: 'Best vowel-heavy opener — eliminates 4 vowels in one go.' },
-    { word: 'RAISE', why: 'Strong second guess after a vowel-heavy opener.' }
-  ],
-  uk: [
-    { word: 'CRANE', why: 'Covers common consonants C, R, N plus 2 well-placed vowels.' },
-    { word: 'SLATE', why: 'High-frequency letters and a strong vowel pair (A, E).' },
-    { word: 'STARE', why: 'Excellent UK English opener, hits 4 top-10 letters.' },
-    { word: 'AUDIO', why: 'Best vowel-heavy opener — eliminates 4 vowels in one go.' },
-    { word: 'RAISE', why: 'Strong second guess after a vowel-heavy opener.' }
-  ],
   es: [
     { word: 'AIRES', why: 'Cubre cuatro vocales y la consonante R, muy común.' },
     { word: 'CASOS', why: 'Letras de alta frecuencia en español.' },
@@ -120,22 +48,8 @@ const BEST_STARTERS = {
 };
 
 const TIPS = {
-  en: [
-    'Open with a word that has at least 3 unique vowels — AUDIO, ADIEU, OUIJA — to map the skeleton fast.',
-    'Avoid burning two guesses on words that share repeated letters early in the game.',
-    'After two guesses, eliminate consonants aggressively (try CHUNK, GLYPH, JUMPY).',
-    'Use yellow letters to reposition rather than re-guessing the same pattern.',
-    'In hard mode, keep every confirmed green/yellow locked — it forces sharper deductions.'
-  ],
-  uk: [
-    'Open with a word that has at least 3 unique vowels — AUDIO, ADIEU, OUIJA — to map the skeleton fast.',
-    'Avoid burning two guesses on words that share repeated letters early in the game.',
-    'After two guesses, eliminate consonants aggressively (try CHUNK, GLYPH, JUMPY).',
-    'Use yellow letters to reposition rather than re-guessing the same pattern.',
-    'In hard mode, keep every confirmed green/yellow locked — it forces sharper deductions.'
-  ],
   es: [
-    'Empieza con una palabra con muchas vocales: AIRES, OUIJA, AÚLLA, para mapear el esqueleto rápido.',
+    'Empieza con una palabra con muchas vocales: AIRES, OUIJA, TENIA, para mapear el esqueleto rápido.',
     'Evita gastar dos intentos con letras repetidas al inicio.',
     'Después de dos intentos, descarta consonantes en bloque.',
     'Aprovecha las letras amarillas para reposicionarlas, no para repetir el mismo patrón.',
@@ -144,11 +58,39 @@ const TIPS = {
 };
 
 const RELATED_GAMES = [
-  { name: 'Wordle Today', to: '/wordle-today/', desc: 'Play today\'s daily Wordle puzzle.' },
-  { name: 'Wordle Unlimited', to: '/', desc: 'Unlimited rounds — no daily cap.' },
-  { name: 'UK Wordle', to: '/', desc: 'British English version of Wordle.' },
-  { name: 'Wordle Español', to: '/es/', desc: 'Palabra del día en español.' }
+  { name: 'Palabra del Día', to: '/wordle-today/', desc: 'Juega al desafío diario de Wordle en español.' },
+  { name: 'Wordle Ilimitado', to: '/', desc: 'Partidas infinitas sin límite de espera diario.' },
+  { name: 'Pistas de Hoy', to: '/wordle-hints-today/', desc: 'Pistas y solución guiada del reto de hoy.' }
 ];
+
+const FAQS = {
+  es: [
+    {
+      q: '¿Cuál es la respuesta del Wordle de hoy?',
+      a: 'La respuesta está oculta por defecto. Usa primero las pistas estructuradas (categoría, vocales, letra inicial) y luego pulsa "Mostrar Respuesta de Hoy" para revelarla.'
+    },
+    {
+      q: '¿Cómo se eligen las pistas?',
+      a: 'Cada pista revela una propiedad sin spoiler: categoría, vocales, letra inicial, letra final, letras repetidas y longitud.'
+    },
+    {
+      q: '¿Cuándo se actualiza el Wordle?',
+      a: 'Cada día a medianoche en tu zona horaria local. Esta página se actualiza automáticamente.'
+    },
+    {
+      q: '¿Cuál fue la palabra de ayer?',
+      a: 'Mira la sección "Wordle de Ayer" y la lista de las últimas 14 palabras más abajo.'
+    },
+    {
+      q: '¿Cuáles son las mejores palabras para empezar?',
+      a: 'AIRES, CASOS, OREAS y TENIA son aperturas populares con muchas vocales y consonantes frecuentes.'
+    },
+    {
+      q: '¿Es el Wordle oficial del NYT?',
+      a: 'No. Es un Wordle independiente en español con las mismas reglas, actualizado a diario.'
+    }
+  ]
+};
 
 const VOWELS = new Set(['A', 'E', 'I', 'O', 'U']);
 
@@ -178,34 +120,21 @@ function analyseWord(word) {
 function buildStructuredHints(word, language, labels, dictData) {
   const info = analyseWord(word);
   
-  const posEn = dictData?.partOfSpeech || 'noun / verb / adjective';
-  const defEn = dictData?.definition || 'A common five-letter word used in everyday conversation.';
   const posEs = dictData?.partOfSpeech === 'noun' ? 'sustantivo' : dictData?.partOfSpeech === 'verb' ? 'verbo' : dictData?.partOfSpeech === 'adjective' ? 'adjetivo' : 'sustantivo / verbo / adjetivo';
   const defEs = dictData?.definition || 'Una palabra común de cinco letras usada en la conversación diaria.';
 
-  if (language === 'es') {
-    return [
-      { label: labels.category, text: `La respuesta se usa comúnmente como un ${posEs}.` },
-      { label: labels.vowels, text: `Contiene ${info.vowelCount} vocal${info.vowelCount === 1 ? '' : 'es'} y ${info.consonantCount} consonante${info.consonantCount === 1 ? '' : 's'}.` },
-      { label: labels.start, text: `La palabra comienza con la letra "${info.first}".` },
-      { label: labels.end, text: `La palabra termina con la letra "${info.last}".` },
-      { label: labels.repeat, text: info.repeated ? 'Sí — contiene una letra repetida.' : 'No — todas las letras son únicas.' },
-      { label: labels.length, text: `Significado: ${defEs}` }
-    ];
-  }
-
   return [
-    { label: labels.category, text: `The answer is commonly used as a ${posEn}.` },
-    { label: labels.vowels, text: `It contains ${info.vowelCount} vowel${info.vowelCount === 1 ? '' : 's'} and ${info.consonantCount} consonant${info.consonantCount === 1 ? '' : 's'}.` },
-    { label: labels.start, text: `Today's Wordle starts with the letter "${info.first}".` },
-    { label: labels.end, text: `Today's Wordle ends with the letter "${info.last}".` },
-    { label: labels.repeat, text: info.repeated ? 'Yes — today\'s word has a repeated letter.' : 'No — every letter in today\'s word is unique.' },
-    { label: labels.length, text: `Meaning: ${defEn}` }
+    { label: labels.category, text: `La respuesta se usa comúnmente como un ${posEs}.` },
+    { label: labels.vowels, text: `Contiene ${info.vowelCount} vocal${info.vowelCount === 1 ? '' : 'es'} y ${info.consonantCount} consonante${info.consonantCount === 1 ? '' : 's'}.` },
+    { label: labels.start, text: `La palabra comienza con la letra "${info.first}".` },
+    { label: labels.end, text: `La palabra termina con la letra "${info.last}".` },
+    { label: labels.repeat, text: info.repeated ? 'Sí — contiene una letra repetida.' : 'No — todas las letras son únicas.' },
+    { label: labels.length, text: `Significado: ${defEs}` }
   ];
 }
 
 function formatDate(d, language) {
-  return d.toLocaleDateString(language === 'es' ? 'es-ES' : language === 'uk' ? 'en-GB' : 'en-US', {
+  return d.toLocaleDateString('es-ES', {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
@@ -214,94 +143,13 @@ function formatDate(d, language) {
 }
 
 function formatShortDate(d, language) {
-  return d.toLocaleDateString(language === 'es' ? 'es-ES' : language === 'uk' ? 'en-GB' : 'en-US', {
+  return d.toLocaleDateString('es-ES', {
     month: 'short',
     day: 'numeric'
   });
 }
 
-const FAQS = {
-  en: [
-    {
-      q: 'What is today\'s Wordle answer?',
-      a: 'Today\'s Wordle answer is hidden by default on this page. Use the structured hints first (category, vowel count, starting letter), then click "Show Today\'s Wordle Answer" to reveal the word.'
-    },
-    {
-      q: 'How are the Wordle hints chosen?',
-      a: 'Each hint reveals a single, non-spoiler property of today\'s word — its category, vowel count, starting letter, ending letter, whether letters repeat, and word length. They are designed to nudge you toward the answer without giving it away.'
-    },
-    {
-      q: 'When does the daily Wordle update?',
-      a: 'A new Wordle puzzle drops every day at midnight in your local time zone. This hints page refreshes automatically with today\'s puzzle number, difficulty and clues.'
-    },
-    {
-      q: 'What\'s yesterday\'s Wordle answer?',
-      a: 'Scroll down to the "Yesterday\'s Wordle Answer" section to see the previous day\'s word. We also list the past 14 daily Wordle answers further down the page.'
-    },
-    {
-      q: 'What are the best starting words?',
-      a: 'CRANE, SLATE, TRACE, AUDIO and RAISE are widely considered the strongest openers. They cover the most common English letters and vowel combinations.'
-    },
-    {
-      q: 'Is this the official NYT Wordle?',
-      a: 'No — this is an independent unlimited Wordle clone. Our daily word rotates on a different schedule from the NYT Wordle, but the rules are identical.'
-    }
-  ],
-  uk: [
-    {
-      q: 'What is today\'s Wordle answer?',
-      a: 'Today\'s Wordle answer is hidden by default. Use the structured hints first (category, vowel count, starting letter), then tap "Show Today\'s Wordle Answer" to reveal the word.'
-    },
-    {
-      q: 'How are the Wordle hints chosen?',
-      a: 'Each hint reveals a single, non-spoiler property of today\'s word — its category, vowel count, starting letter, ending letter, whether letters repeat, and word length.'
-    },
-    {
-      q: 'When does the daily Wordle update?',
-      a: 'A new puzzle drops every day at midnight in your local time zone (UK time for British players). The hints page refreshes automatically.'
-    },
-    {
-      q: 'What\'s yesterday\'s Wordle answer?',
-      a: 'See the "Yesterday\'s Wordle Answer" section just below today\'s puzzle, plus a list of the past 14 daily answers.'
-    },
-    {
-      q: 'What are the best starting words?',
-      a: 'CRANE, SLATE, STARE, AUDIO and RAISE are popular openers — they cover the most common English letters.'
-    },
-    {
-      q: 'Is this the official NYT Wordle?',
-      a: 'No. This is an independent Wordle clone with the same rules, refreshed daily for British English players.'
-    }
-  ],
-  es: [
-    {
-      q: '¿Cuál es la respuesta del Wordle de hoy?',
-      a: 'La respuesta está oculta por defecto. Usa primero las pistas estructuradas (categoría, vocales, letra inicial) y luego pulsa "Mostrar Respuesta de Hoy" para revelarla.'
-    },
-    {
-      q: '¿Cómo se eligen las pistas?',
-      a: 'Cada pista revela una propiedad sin spoiler: categoría, vocales, letra inicial, letra final, letras repetidas y longitud.'
-    },
-    {
-      q: '¿Cuándo se actualiza el Wordle?',
-      a: 'Cada día a medianoche en tu zona horaria local. Esta página se actualiza automáticamente.'
-    },
-    {
-      q: '¿Cuál fue la palabra de ayer?',
-      a: 'Mira la sección "Wordle de Ayer" y la lista de las últimas 14 palabras más abajo.'
-    },
-    {
-      q: '¿Cuáles son las mejores palabras para empezar?',
-      a: 'AIRES, OUIJA, TENIA y CASOS son aperturas populares con muchas vocales y consonantes frecuentes.'
-    },
-    {
-      q: '¿Es el Wordle oficial del NYT?',
-      a: 'No. Es un Wordle independiente con las mismas reglas, actualizado a diario.'
-    }
-  ]
-};
-
-export default function HintsPage({ language = 'en' }) {
+export default function HintsPage({ language = 'es' }) {
   const [dailyData, setDailyData] = useState(null);
   const [unlockedHints, setUnlockedHints] = useState([]);
   const [history, setHistory] = useState([]);
@@ -326,42 +174,25 @@ export default function HintsPage({ language = 'en' }) {
     }
     setTargetDate(target);
 
-    const data = getDailyWord(language, target);
+    const data = getDailyWord('es', target);
     setDailyData(data);
 
-    if (language === 'en') {
-      fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${(data.word || '').toLowerCase()}`)
-        .then(res => res.json())
-        .then(json => {
-          if (Array.isArray(json) && json[0] && json[0].meanings) {
-            const meaning = json[0].meanings[0];
-            const def = meaning.definitions[0];
-            setDictionaryData({
-              partOfSpeech: meaning.partOfSpeech || '',
-              definition: def.definition || '',
-              example: def.example || ''
-            });
-          }
-        })
-        .catch(() => {});
-    }
+    recordTodayWord('es', target);
 
-    recordTodayWord(language, target);
-
-    fetchPastWords(language, target, 14).then((rows) => {
+    fetchPastWords('es', target, 14).then((rows) => {
       setHistory(rows);
       setYesterday(rows[0] || null);
     });
   }, [language]);
 
-  const c = CONTENT[language] || CONTENT.en;
+  const c = CONTENT.es;
 
   const structuredHints = useMemo(() => {
     if (!dailyData) return [];
-    return buildStructuredHints(dailyData.word, language, c.hintLabels, dictionaryData);
-  }, [dailyData, language, c.hintLabels, dictionaryData]);
+    return buildStructuredHints(dailyData.word, 'es', c.hintLabels, dictionaryData);
+  }, [dailyData, c.hintLabels, dictionaryData]);
 
-  const formattedDate = useMemo(() => formatDate(targetDate, language), [targetDate, language]);
+  const formattedDate = useMemo(() => formatDate(targetDate, 'es'), [targetDate]);
 
   if (!dailyData) return null;
 
@@ -376,16 +207,13 @@ export default function HintsPage({ language = 'en' }) {
   };
 
   const translateDifficulty = (diff) => {
-    if (language === 'es') {
-      switch (diff) {
-        case 'Easy': return 'Fácil';
-        case 'Medium': return 'Medio';
-        case 'Hard': return 'Difícil';
-        case 'Ultra-Hard': return 'Ultra-Difícil';
-        default: return diff;
-      }
+    switch (diff) {
+      case 'Easy': return 'Fácil';
+      case 'Medium': return 'Medio';
+      case 'Hard': return 'Difícil';
+      case 'Ultra-Hard': return 'Ultra-Difícil';
+      default: return diff;
     }
-    return diff;
   };
 
   const puzzleNumber = getWordleNumber(targetDate);
@@ -404,11 +232,11 @@ export default function HintsPage({ language = 'en' }) {
     }
     const vowels = (upper.match(/[AEIOU]/g) || []).length;
     
-    if (rareCount > 0 && hasDuplicate) return { diff: 'Ultra-Hard', reason: `Contains the rare letter "${upper.split('').find(l => rareLetters.includes(l))}" and has duplicate letters.` };
-    if (rareCount > 0) return { diff: 'Hard', reason: `Contains the uncommon letter "${upper.split('').find(l => rareLetters.includes(l))}".` };
-    if (hasDuplicate) return { diff: 'Medium', reason: `Has a duplicate letter which makes it slightly tricky.` };
-    if (vowels >= 3) return { diff: 'Easy', reason: `Contains multiple vowels making it easier to guess.` };
-    return { diff: 'Medium', reason: `A standard word with common consonants and no duplicate letters.` };
+    if (rareCount > 0 && hasDuplicate) return { diff: 'Ultra-Hard', reason: `Contiene la letra poco común "${upper.split('').find(l => rareLetters.includes(l))}" y tiene letras repetidas.` };
+    if (rareCount > 0) return { diff: 'Hard', reason: `Contiene la letra poco común "${upper.split('').find(l => rareLetters.includes(l))}".` };
+    if (hasDuplicate) return { diff: 'Medium', reason: `Tiene una letra repetida, lo que añade dificultad.` };
+    if (vowels >= 3) return { diff: 'Easy', reason: `Contiene múltiples vocales facilitando los aciertos.` };
+    return { diff: 'Medium', reason: `Palabra equilibrada con consonantes habituales y sin duplicados.` };
   };
 
   const diffAnalysis = analyzeWordDifficulty(dailyData.word);
@@ -427,19 +255,9 @@ export default function HintsPage({ language = 'en' }) {
     'Ultra-Hard': '5.3'
   }[diffAnalysis.diff] || '4.2';
 
-  const tips = TIPS[language] || TIPS.en;
-  const starters = BEST_STARTERS[language] || BEST_STARTERS.en;
-  const faqs = FAQS[language] || FAQS.en;
-
-  const dynamicTitle = language === 'es'
-    ? `Pistas Wordle de Hoy (#${puzzleNumber}) – Clues y Respuesta para ${formattedDate}`
-    : language === 'uk'
-    ? `Wordle Hints Today UK (#${puzzleNumber}) – Clues & Answer for ${formattedDate}`
-    : `Wordle Hints Today (#${puzzleNumber}) – Clues & Answer for ${formattedDate}`;
-
-  const dynamicDescription = language === 'es'
-    ? `Obtén pistas sin spoilers para Wordle #${puzzleNumber} el ${formattedDate}, incluyendo la letra inicial, vocales, letras repetidas, dificultad y la respuesta de hoy.`
-    : `Get spoiler-free hints for Wordle #${puzzleNumber} on ${formattedDate}, including the starting letter, vowels, repeated letters, difficulty and today's answer.`;
+  const tips = TIPS.es;
+  const starters = BEST_STARTERS.es;
+  const faqs = FAQS.es;
 
   return (
     <div className="hints-page" style={{
@@ -449,13 +267,11 @@ export default function HintsPage({ language = 'en' }) {
       animation: 'fadeIn 0.5s ease-out',
       lineHeight: '1.7'
     }}>
-      
-
       <div style={{ marginTop: '40px' }}>
         <Breadcrumbs
-          language={language}
+          language="es"
           items={[
-            { name: language === 'es' ? 'Wordle Diario' : 'Daily Wordle', path: language === 'en' ? '/wordle-today/' : `/${language}/${language === 'es' ? 'palabra-del-dia' : 'wordle-today'}/` },
+            { name: 'Palabra del Día', path: '/wordle-today/' },
             { name: c.title }
           ]}
         />
@@ -504,7 +320,7 @@ export default function HintsPage({ language = 'en' }) {
           background: 'var(--color-tab-bg)',
           fontSize: '13px',
           fontWeight: '700'
-        }}>{language === 'es' ? 'Promedio de intentos' : 'Avg. guesses'}: {avgGuesses}</span>
+        }}>Promedio de intentos: {avgGuesses}</span>
       </div>
 
       <nav aria-label="Table of contents" style={{
@@ -516,7 +332,7 @@ export default function HintsPage({ language = 'en' }) {
         fontSize: '14px'
       }}>
         <strong style={{ display: 'block', marginBottom: '8px', color: 'var(--color-text-dark)' }}>
-          {language === 'es' ? 'En esta página:' : 'On this page:'}
+          En esta página:
         </strong>
         <ul style={{ margin: 0, paddingLeft: '18px', display: 'grid', gap: '4px', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))' }}>
           <li><a href="#hints">{c.structuredHintsTitle}</a></li>
@@ -542,9 +358,7 @@ export default function HintsPage({ language = 'en' }) {
       }}>
         <h2 style={{ fontSize: '1.4rem', fontWeight: '800', marginTop: 0, marginBottom: '16px' }}>{c.structuredHintsTitle}</h2>
         <p style={{ marginTop: 0, marginBottom: '20px', color: 'var(--color-text-secondary)' }}>
-          {language === 'es'
-            ? 'Cada pista revela una propiedad sin spoiler. Haz clic para desbloquear una a una.'
-            : 'Each hint reveals one non-spoiler property of today\'s Wordle answer. Click to unlock them one at a time.'}
+          Cada pista revela una propiedad sin spoiler. Haz clic para desbloquearlas una a una.
         </p>
 
         <div className="hints-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -572,7 +386,7 @@ export default function HintsPage({ language = 'en' }) {
         {Array.isArray(dailyData.hints) && dailyData.hints.length > 0 && (
           <details style={{ marginTop: '20px' }}>
             <summary style={{ cursor: 'pointer', fontWeight: '700', color: 'var(--color-text-secondary)' }}>
-              {language === 'es' ? 'Pistas adicionales del editor' : 'Editor\'s extra hints'}
+              Pistas adicionales
             </summary>
             <ul style={{ marginTop: '12px', paddingLeft: '20px' }}>
               {dailyData.hints.map((h, i) => <li key={i} style={{ marginBottom: '6px' }}>{h}</li>)}
@@ -614,9 +428,7 @@ export default function HintsPage({ language = 'en' }) {
       <section id="meaning" style={{ marginBottom: '40px' }}>
         <h2 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '12px' }}>{c.meaningTitle}</h2>
         <p>
-          {language === 'es'
-            ? `La palabra del día pertenece a la categoría "${dailyData.category || 'general'}".`
-            : `Today's Wordle answer is a strong example of common 5-letter English vocabulary. It falls under the "${dailyData.category || 'general'}" category.`}
+          La palabra del día pertenece a la categoría "{dailyData.category || 'general'}".
         </p>
         
         <details style={{
@@ -627,21 +439,16 @@ export default function HintsPage({ language = 'en' }) {
             marginTop: '16px'
         }}>
             <summary style={{ cursor: 'pointer', fontWeight: '800', color: '#6aaa64', fontSize: '1.1rem' }}>
-              {language === 'es' ? 'Revelar Significado Completo (Spoiler)' : 'Reveal Full Meaning (Spoiler)'}
+              Revelar Significado Completo (Spoiler)
             </summary>
             
-            <h3 style={{ fontSize: '1.05rem', fontWeight: '700', marginTop: '20px', marginBottom: '6px' }}>{language === 'es' ? 'Definición' : 'Definition'}</h3>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: '700', marginTop: '20px', marginBottom: '6px' }}>Definición</h3>
             <p style={{ fontStyle: 'italic', color: 'var(--color-text-secondary)', margin: 0 }}>
-              {dictionaryData.partOfSpeech && <span style={{fontWeight: 'bold', color: '#555', marginRight: '8px'}}>{dictionaryData.partOfSpeech}.</span>}
-              {dictionaryData.definition || dailyData.definition || (language === 'es' ? 'Consulta un diccionario como la RAE para la definición completa.' : 'Look the word up in a dictionary like Merriam-Webster for the full definition.')}
-            </p>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: '700', marginTop: '20px', marginBottom: '6px' }}>{language === 'es' ? 'Ejemplo de uso' : 'Usage example'}</h3>
-            <p style={{ background: 'rgba(0,0,0,0.03)', padding: '14px 16px', borderRadius: '8px', borderLeft: '4px solid #6aaa64', margin: 0 }}>
-              "{dictionaryData.example || (language === 'es' ? 'No hay ejemplo disponible.' : 'No example available.')}"
+              {dailyData.definition || 'Consulta el diccionario de la Real Academia Española (RAE) para la definición completa.'}
             </p>
             
             <div style={{marginTop: '20px', padding: '16px', background: '#f8f9fa', borderRadius: '8px', border: '1px solid #e9ecef'}}>
-              <h3 style={{ fontSize: '1rem', fontWeight: '700', margin: '0 0 8px 0' }}>Why is today's Wordle {diffAnalysis.diff}?</h3>
+              <h3 style={{ fontSize: '1rem', fontWeight: '700', margin: '0 0 8px 0' }}>¿Por qué la palabra de hoy es de dificultad {translateDifficulty(diffAnalysis.diff)}?</h3>
               <p style={{margin: 0, fontSize: '0.95rem', color: '#495057'}}>{diffAnalysis.reason}</p>
             </div>
         </details>
@@ -663,7 +470,7 @@ export default function HintsPage({ language = 'en' }) {
           }}>
             <div>
               <div style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-text-secondary)' }}>
-                {c.puzzleNumber} #{getWordleNumber(new Date(yesterday.puzzle_date || (() => { const d = new Date(targetDate); d.setDate(d.getDate() - 1); return d; })()))} · {formatShortDate(new Date(yesterday.puzzle_date || (() => { const d = new Date(targetDate); d.setDate(d.getDate() - 1); return d; })()), language)}
+                {c.puzzleNumber} #{getWordleNumber(new Date(yesterday.puzzle_date || (() => { const d = new Date(targetDate); d.setDate(d.getDate() - 1); return d; })()))} · {formatShortDate(new Date(yesterday.puzzle_date || (() => { const d = new Date(targetDate); d.setDate(d.getDate() - 1); return d; })()), 'es')}
               </div>
               <div style={{ fontSize: '2rem', fontWeight: '900', letterSpacing: '6px', color: '#6aaa64' }}>
                 {(yesterday.word || '').toUpperCase()}
@@ -679,12 +486,10 @@ export default function HintsPage({ language = 'en' }) {
             }}>{translateDifficulty(analyzeWordDifficulty(yesterday.word).diff)}</span>
           </div>
         ) : (
-          <p>{language === 'es' ? 'Cargando…' : 'Loading…'}</p>
+          <p>Cargando…</p>
         )}
         <p style={{ marginTop: '12px', color: 'var(--color-text-secondary)', fontSize: '14px' }}>
-          {language === 'es'
-            ? 'Cada respuesta de Wordle se guarda automáticamente en nuestra base de datos para que puedas consultar la palabra de cualquier día anterior.'
-            : 'Every daily Wordle answer is saved to our database so you can look up the answer for any previous day below.'}
+          Cada respuesta de Wordle se guarda para que puedas consultar la palabra de cualquier día anterior.
         </p>
       </section>
 
@@ -704,7 +509,7 @@ export default function HintsPage({ language = 'en' }) {
                 borderRadius: '12px'
               }}>
                 <span style={{ fontSize: '13px', fontWeight: '700' }}>
-                  {c.puzzleNumber} #{getWordleNumber(dateObj)} · {formatShortDate(dateObj, language)}
+                  {c.puzzleNumber} #{getWordleNumber(dateObj)} · {formatShortDate(dateObj, 'es')}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <span style={{
@@ -723,9 +528,7 @@ export default function HintsPage({ language = 'en' }) {
       <section id="starters" style={{ marginBottom: '40px' }}>
         <h2 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '12px' }}>{c.bestStartersTitle}</h2>
         <p>
-          {language === 'es'
-            ? 'Una buena palabra inicial cubre vocales frecuentes y consonantes de alta frecuencia. Estas son las aperturas más recomendadas:'
-            : 'A strong opening word covers the most frequent vowels and high-frequency consonants. These are the most widely recommended Wordle openers:'}
+          Una buena palabra inicial cubre vocales frecuentes y consonantes de alta frecuencia. Estas son las aperturas más recomendadas:
         </p>
         <ul style={{ paddingLeft: 0, listStyle: 'none', display: 'grid', gap: '10px', marginTop: '14px' }}>
           {starters.map((s) => (
@@ -781,14 +584,10 @@ export default function HintsPage({ language = 'en' }) {
       <section id="history" style={{ marginBottom: '40px' }}>
         <h2 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '12px' }}>{c.historyTitle}</h2>
         <p>
-          {language === 'es'
-            ? 'Wordle es un juego diario de adivinanza de palabras de 5 letras creado por el ingeniero Josh Wardle en 2021. Fue adquirido por The New York Times y se convirtió en un fenómeno global. Cada día hay una sola palabra y los jugadores tienen 6 intentos.'
-            : 'Wordle is a daily 5-letter word-guessing game created by software engineer Josh Wardle in 2021. It was acquired by The New York Times and grew into a global phenomenon. Each day there\'s a single hidden word and players have 6 guesses to find it.'}
+          Wordle es un juego diario de adivinanza de palabras de 5 letras. Cada día se presenta una nueva palabra secreta y los jugadores tienen 6 intentos para descubrirla usando las pistas de color.
         </p>
         <p style={{ marginTop: '10px' }}>
-          {language === 'es'
-            ? 'En esta página actualizamos las pistas y la respuesta del Wordle todos los días para que puedas resolver el puzle sin spoilers — y revisar respuestas anteriores como las de ayer o de la semana pasada.'
-            : 'On this page we refresh the hints and answer for today\'s Wordle every day, so you can solve the puzzle without spoilers — and look up previous answers like yesterday\'s Wordle or last week\'s puzzles.'}
+          En esta página actualizamos las pistas y la respuesta de la Palabra del Día para que puedas resolver el reto sin spoilers — o consultar palabras de días anteriores.
         </p>
       </section>
 

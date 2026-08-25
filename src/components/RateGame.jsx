@@ -25,14 +25,12 @@ const getFingerprint = () => {
   return hash.toString();
 };
 
-export default function RateGame({ language = 'en' }) {
+export default function RateGame({ language = 'es' }) {
   const content = {
-
-    uk: {
-      title: 'Rate the Game',
-      votes: '3,690 votes'
+    es: {
+      title: 'Valora el Juego',
+      votes: '3.690 votos'
     },
-
   };
 
   const [hasRated, setHasRated] = useState(false);

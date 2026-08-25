@@ -16,112 +16,88 @@ const liStyle = { marginBottom: '8px' };
 const updatedStyle = { fontSize: '0.9rem', color: 'var(--color-text-secondary)', marginBottom: '28px' };
 
 const PRIVACY = {
-
-  uk: {
-    title: 'Privacy Policy',
-    updated: 'Last updated: 12 May 2026',
-    intro: 'Welcome to Wordle Unlimited ("we", "us", or "our"), accessible at wordlegame.co.uk. Your privacy is important to us. This Privacy Policy explains what information we collect, how we use it, and your rights regarding your data.',
+  es: {
+    title: 'Política de Privacidad',
+    updated: 'Última actualización: 12 de mayo de 2026',
+    intro: 'Bienvenido a La Palabra del Día ("nosotros", "nuestro"), accesible en lapalabradeldia.co. Tu privacidad es fundamental para nosotros. Esta Política de Privacidad describe qué información tratamos, cómo la utilizamos y tus derechos.',
     sections: [
       {
-        heading: 'Information We Collect',
-        content: 'We do not require you to create an account or provide any personal information to play our game. However, we may collect limited data automatically:',
+        heading: 'Información que Recopilamos',
+        content: 'No requerimos registro de usuario ni datos personales para jugar. No obstante, recopilamos datos técnicos mínimos de forma automática:',
         list: [
-          'Game statistics and preferences — stored locally on your device via browser localStorage. This data never leaves your device.',
-          'Anonymous usage data — we may use privacy-friendly analytics to understand how visitors interact with the site (e.g. page views, country-level location). No personally identifiable information is collected.',
-          'Device fingerprint for ratings — when you submit a game rating, we generate an anonymous device fingerprint to prevent duplicate votes. This is not linked to your identity.'
+          'Estadísticas y preferencias de juego — guardadas exclusivamente de forma local en tu dispositivo mediante localStorage del navegador. Estos datos nunca salen de tu equipo.',
+          'Datos anónimos de uso — empleamos analítica anónima y respetuosa con la privacidad para entender cómo interactúan los usuarios con el sitio (ej. páginas vistas, país). No recopilamos información de identificación personal.',
+          'Huella anónima de dispositivo para valoraciones — cuando calificas el juego, se genera un identificador anónimo local para evitar votos duplicados sin vincularlo a tu identidad.'
         ]
       },
       {
-        heading: 'Cookies and Local Storage',
-        content: 'We use browser localStorage to save your game progress, statistics, streaks, and display preferences (such as dark mode). We do not use tracking cookies. Third-party services embedded on our site (such as Cloudflare) may set their own cookies for security and performance purposes.'
+        heading: 'Cookies y Almacenamiento Local',
+        content: 'Utilizamos el almacenamiento local (localStorage) del navegador para recordar tu progreso, estadísticas y preferencias (como el modo oscuro). No usamos cookies de seguimiento publicitario. Servicios de infraestructura como Cloudflare pueden aplicar cookies técnicas de seguridad y rendimiento.'
       },
       {
-        heading: 'Third-Party Services',
-        content: 'We use the following third-party services:',
+        heading: 'Servicios de Terceros',
+        content: 'Utilizamos los siguientes servicios de terceros:',
         list: [
-          'Cloudflare — for content delivery, security, and bot protection (Turnstile).',
-          'Supabase — for storing anonymous game ratings and feedback submissions.',
-          'Hostinger — for web hosting.'
+          'Cloudflare — para entrega de contenido, seguridad y protección contra bots (Turnstile).',
+          'Supabase — para almacenar valoraciones anónimas y comentarios voluntarios.',
+          'Hostinger — para alojamiento web.'
         ],
-        after: 'These services have their own privacy policies. We encourage you to review them.'
+        after: 'Dichos servicios cuentan con sus propias políticas de privacidad independientes.'
       },
       {
-        heading: 'Data Retention',
-        content: 'All game data is stored locally on your device and can be cleared at any time by clearing your browser data. Anonymous rating and feedback data stored on our servers is retained indefinitely but contains no personally identifiable information.'
+        heading: 'Conservación de Datos',
+        content: 'Tus datos de juego se almacenan únicamente en tu navegador y puedes eliminarlos en cualquier momento borrando los datos de navegación.'
       },
       {
-        heading: 'Children\'s Privacy',
-        content: 'Our game is suitable for all ages. We do not knowingly collect personal information from children under 13. Since we do not collect personal data, no special provisions are required under the UK Age Appropriate Design Code or similar regulations.'
+        heading: 'Privacidad de Menores',
+        content: 'Nuestro juego es apto para todas las edades. No recopilamos conscientemente datos de menores de 13 años.'
       },
       {
-        heading: 'Your Rights (UK GDPR)',
-        content: 'Under the UK General Data Protection Regulation (UK GDPR), you have the right to access, rectify, and erase your personal data. Since we do not collect personal data, there is typically no information to act upon. If you have submitted feedback and wish to have it removed, please contact us.'
+        heading: 'Tus Derechos de Privacidad',
+        content: 'Conforme a la normativa general de protección de datos (RGPD), tienes derecho de acceso, rectificación y supresión. Al no almacenar datos personales vinculados a identidades individuales, no mantenemos perfiles nominativos.'
       },
       {
-        heading: 'Changes to This Policy',
-        content: 'We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated revision date. Continued use of the site after changes constitutes acceptance of the updated policy.'
+        heading: 'Modificaciones',
+        content: 'Podemos actualizar esta política periódicamente. Cualquier cambio se publicará en esta página con la fecha de revisión actualizada.'
       },
       {
-        heading: 'Contact Us',
-        content: 'If you have any questions about this Privacy Policy, you can reach us at: privacy@wordlegame.co.uk'
+        heading: 'Contacto',
+        content: 'Si tienes alguna duda sobre esta Política de Privacidad, puedes escribirnos a: privacy@lapalabradeldia.co'
       }
     ]
   },
-
 };
 
 const TERMS = {
-
-  uk: {
-    title: 'Terms of Service',
-    updated: 'Last updated: 12 May 2026',
-    intro: 'By accessing and using Wordle Unlimited at wordlegame.co.uk ("the Service"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use the Service.',
+  es: {
+    title: 'Términos de Servicio',
+    updated: 'Última actualización: 12 de mayo de 2026',
+    intro: 'Al acceder y utilizar La Palabra del Día en lapalabradeldia.co ("el Servicio"), aceptas estos Términos de Servicio. Si no estás de acuerdo con alguno de ellos, te rogamos no utilizar el sitio.',
     sections: [
       {
-        heading: '1. Use of the Service',
-        content: 'Wordle Unlimited is a free, browser-based word puzzle game. You may use the Service for personal, non-commercial entertainment purposes. You agree not to:',
+        heading: '1. Uso del Servicio',
+        content: 'La Palabra del Día es un juego de palabras gratuito accesible a través del navegador web para entretenimiento personal y no comercial. Te comprometes a no:',
         list: [
-          'Use automated tools, bots, or scripts to interact with the game.',
-          'Attempt to scrape, reverse-engineer, or extract the word databases.',
-          'Interfere with or disrupt the Service or its infrastructure.',
-          'Use the Service for any unlawful purpose.'
+          'Utilizar bots, scripts automatizados o herramientas de extracción masiva.',
+          'Intentar realizar ingeniería inversa o extraer indebidamente las bases de datos de palabras.',
+          'Interferir o alterar la infraestructura y normal funcionamiento del Servicio.',
+          'Utilizar el Servicio con fines ilícitos o fraudulentos.'
         ]
       },
       {
-        heading: '2. Intellectual Property',
-        content: 'All content on this site, including game logic, design, graphics, and text, is the property of Wordle Unlimited or its licensors. You may not reproduce, distribute, or create derivative works without our written permission. The word puzzle concept is in the public domain, but our specific implementation is proprietary.'
+        heading: '2. Propiedad Intelectual',
+        content: 'Todo el contenido del sitio, incluyendo diseño, código, elementos gráficos e interfaz, pertenece a La Palabra del Día o a sus licenciantes. El concepto de puzle de palabras es de dominio público, pero nuestra implementación concreta es propietaria.'
       },
       {
-        heading: '3. User-Generated Content',
-        content: 'When you submit feedback or feature requests through our platform, you grant us a non-exclusive, royalty-free licence to use that content to improve the Service. Do not submit any content that is offensive, harmful, or infringes on the rights of others.'
+        heading: '3. Exención de Garantías',
+        content: 'El Servicio se proporciona "tal cual" y "según disponibilidad", sin garantías expresas o implícitas sobre continuidad o ausencia de errores.'
       },
       {
-        heading: '4. Disclaimer of Warranties',
-        content: 'The Service is provided "as is" and "as available" without warranties of any kind, either express or implied. We do not guarantee that the Service will be uninterrupted, error-free, or free of harmful components. You use the Service at your own risk.'
-      },
-      {
-        heading: '5. Limitation of Liability',
-        content: 'To the fullest extent permitted by applicable UK law, Wordle Unlimited shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Service. Nothing in these terms excludes or limits our liability for death or personal injury caused by negligence, fraud, or any other liability that cannot be excluded under UK law.'
-      },
-      {
-        heading: '6. Third-Party Services',
-        content: 'The Service may contain links to third-party websites or use third-party services (Cloudflare, Supabase). We are not responsible for the content, privacy policies, or practices of these third-party services.'
-      },
-      {
-        heading: '7. Modifications',
-        content: 'We reserve the right to modify or discontinue the Service at any time without notice. We may also update these Terms of Service from time to time. Continued use of the Service after changes constitutes acceptance of the updated terms.'
-      },
-      {
-        heading: '8. Governing Law',
-        content: 'These terms shall be governed by and construed in accordance with the laws of England and Wales. Any disputes arising from these terms or the use of the Service shall be subject to the exclusive jurisdiction of the courts of England and Wales.'
-      },
-      {
-        heading: '9. Contact',
-        content: 'If you have questions about these Terms of Service, you can reach us at: legal@wordlegame.co.uk'
+        heading: '4. Contacto',
+        content: 'Para consultas relativas a estos Términos de Servicio, puedes contactar con: legal@lapalabradeldia.co'
       }
     ]
   },
-
 };
 
 function renderSections(sections) {
@@ -141,8 +117,8 @@ function renderSections(sections) {
   ));
 }
 
-export function PrivacyPage({ language = 'en' }) {
-  const c = PRIVACY[language] || PRIVACY.en;
+export function PrivacyPage({ language = 'es' }) {
+  const c = PRIVACY.es;
   return (
     <div style={containerStyle}>
       <h1 style={h1Style}>{c.title}</h1>
@@ -153,8 +129,8 @@ export function PrivacyPage({ language = 'en' }) {
   );
 }
 
-export function TermsPage({ language = 'en' }) {
-  const c = TERMS[language] || TERMS.en;
+export function TermsPage({ language = 'es' }) {
+  const c = TERMS.es;
   return (
     <div style={containerStyle}>
       <h1 style={h1Style}>{c.title}</h1>

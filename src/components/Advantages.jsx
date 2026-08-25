@@ -1,45 +1,43 @@
 const CONTENT = {
-
-  uk: {
-    heading: 'Key Advantages',
+  es: {
+    heading: 'Ventajas Principales',
     advantages: [
       {
         icon: "📖",
-        title: "Expand Your Vocabulary",
-        desc: "Regular play exposes you to uncommon 5-letter words, actively building your vocabulary and spelling recall in a fun, natural way."
+        title: "Amplía tu Vocabulario",
+        desc: "Jugar con regularidad te expone a diversas palabras de 5 letras en español, enriqueciendo tu léxico y ortografía de forma amena."
       },
       {
         icon: "🎮",
-        title: "100% Free & No Downloads",
-        desc: "Play instantly in any modern web browser. There are no hidden fees, paywalls, or annoying app installations required."
+        title: "100% Gratis y Sin Descargas",
+        desc: "Juega al instante desde cualquier navegador web moderno sin pagos ocultos, suscripciones ni instalaciones molestas."
       },
       {
         icon: "🧠",
-        title: "Enhance Cognitive Function",
-        desc: "Deducing the correct word from colour-coded clues requires logical deduction and pattern recognition, keeping your mind sharp."
+        title: "Estimula tu Mente",
+        desc: "Deducir la palabra correcta mediante pistas de color ejercita la lógica, la concentración y el reconocimiento de patrones."
       },
       {
         icon: "🏋️‍♂️",
-        title: "Daily Mental Stimulation",
-        desc: "Whether you play the daily challenge or unlimited mode, this quick mental workout is the perfect way to stimulate your brain during a break."
+        title: "Gimnasia Cerebral Diaria",
+        desc: "Tanto en el reto de la palabra del día como en el modo ilimitado, es el ejercicio mental perfecto para tus pausas cotidianas."
       },
       {
         icon: "⏳",
-        title: "Stress-Free Gameplay",
-        desc: "Take a deep breath. There are no ticking clocks or stressful timers here—just you, the grid, and all the time you need to make the perfect guess."
+        title: "Partidas Sin Estrés",
+        desc: "Sin cronómetros ni prisas: tómate todo el tiempo que necesites para pensar detenidamente cada uno de tus intentos."
       },
       {
         icon: "🌐",
-        title: "Connect with Friends",
-        desc: "Copy your coloured emoji grid with a single click and share your puzzle-solving triumphs on social media without giving away the answer."
+        title: "Comparte con tus Amigos",
+        desc: "Copia la cuadrícula de colores con un solo clic y comparte tus resultados en redes sociales sin revelar la palabra secreta."
       }
     ]
   },
-
 };
 
-export default function Advantages({ language = 'en' }) {
-  const c = CONTENT.uk;
+export default function Advantages({ language = 'es' }) {
+  const c = CONTENT.es;
 
   return (
     <section className="advantages" id="advantages">

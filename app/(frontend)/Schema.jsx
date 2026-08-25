@@ -6,22 +6,22 @@ export default function Schema({ seo }) {
   const webAppSchema = {
     "@context": "http://schema.org",
     "@type": "WebApplication",
-    "name": "Wordle Game UK - Guess Word of the Day",
-    "description": "Play today's Wordle game! Solve a new word every day, test your vocabulary, and improve your guessing skills. Start playing Wordle now!",
+    "name": "La Palabra del Día - Wordle Español",
+    "description": "¡Juega al Wordle en español! Resuelve una nueva palabra cada día, pon a prueba tu vocabulario y disfruta de partidas ilimitadas.",
     "applicationCategory": "GameApplication",
     "operatingSystem": "Any",
     "offers": {
       "@type": "Offer",
       "price": "0",
-      "priceCurrency": "GBP"
+      "priceCurrency": "EUR"
     },
-    "image": "https://wordlegame.co.uk/og-image.png",
+    "image": "https://lapalabradeldia.co/og-image.png",
     "aggregateRating": {
       "@type": "AggregateRating",
       "worstRating": "1",
       "bestRating": "5",
       "ratingValue": "4.8",
-      "ratingCount": "2512"
+      "ratingCount": "3690"
     }
   };
 
@@ -30,42 +30,42 @@ export default function Schema({ seo }) {
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://wordlegame.co.uk/#organization",
-        "name": "Wordle Game UK",
-        "url": "https://wordlegame.co.uk/",
+        "@id": "https://lapalabradeldia.co/#organization",
+        "name": "La Palabra del Día",
+        "url": "https://lapalabradeldia.co/",
         "sameAs": []
       },
       {
         "@type": "WebSite",
-        "@id": "https://wordlegame.co.uk/#website",
-        "url": "https://wordlegame.co.uk/",
-        "name": "Wordle Game UK",
+        "@id": "https://lapalabradeldia.co/#website",
+        "url": "https://lapalabradeldia.co/",
+        "name": "La Palabra del Día",
         "publisher": {
-          "@id": "https://wordlegame.co.uk/#organization"
+          "@id": "https://lapalabradeldia.co/#organization"
         }
       },
       {
         "@type": "WebPage",
-        "@id": `${canonical || 'https://wordlegame.co.uk/'}#webpage`,
-        "url": canonical || 'https://wordlegame.co.uk/',
-        "inLanguage": "en-GB",
-        "name": title || "Wordle Game UK",
+        "@id": `${canonical || 'https://lapalabradeldia.co/'}#webpage`,
+        "url": canonical || 'https://lapalabradeldia.co/',
+        "inLanguage": "es-ES",
+        "name": title || "La Palabra del Día - Wordle Español",
         "isPartOf": {
-          "@id": "https://wordlegame.co.uk/#website"
+          "@id": "https://lapalabradeldia.co/#website"
         },
         "image": {
           "@type": "ImageObject",
-          "@id": `${canonical || 'https://wordlegame.co.uk/'}#primaryimage`,
-          "url": "https://wordlegame.co.uk/og-image.png",
+          "@id": `${canonical || 'https://lapalabradeldia.co/'}#primaryimage`,
+          "url": "https://lapalabradeldia.co/og-image.png",
           "width": 1200,
           "height": 630
         },
         "primaryImageOfPage": {
-          "@id": `${canonical || 'https://wordlegame.co.uk/'}#primaryimage`
+          "@id": `${canonical || 'https://lapalabradeldia.co/'}#primaryimage`
         },
-        "datePublished": "2021-04-12T19:42:27-12:00",
+        "datePublished": "2022-01-01T00:00:00Z",
         "dateModified": modifiedDate || new Date().toISOString(),
-        "description": description || "Play Wordle UK daily."
+        "description": description || "Juega a Wordle en español a diario."
       }
     ]
   };
@@ -76,82 +76,42 @@ export default function Schema({ seo }) {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Why was my guess rejected as 'Not in word list'?",
+        "name": "¿Por qué mi intento fue rechazado como 'No está en la lista'?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Wordle UK uses a strict British English dictionary. If your guess is rejected, it may be a proper noun, an invalid word, or spelled using US conventions instead of UK conventions (e.g., try 'COLOUR' instead of 'COLOR')."
+          "text": "Wordle en Español utiliza un diccionario verificado de palabras válidas de 5 letras en español. Si tu palabra no es aceptada, puede ser un nombre propio o no encontrarse en el diccionario estándar."
         }
       },
       {
         "@type": "Question",
-        "name": "Are British spellings supported in this version?",
+        "name": "¿Se admiten acentos y tildes en el juego?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! Unlike generic versions of the game, Wordle UK natively accepts and occasionally features words with British English spellings as the daily solution."
+          "text": "Para facilitar la jugabilidad, el juego procesa las palabras en mayúsculas sin distinguir tildes gráficas."
         }
       },
       {
         "@type": "Question",
-        "name": "What happens to my stats if I clear my browser cache?",
+        "name": "¿Qué ocurre con mis estadísticas si borro los datos de navegación?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Your game statistics, including win rate and daily streaks, are saved locally in your browser's storage. If you clear your cache or use a private browsing window, your stats will be reset."
+          "text": "Tus estadísticas (partidas jugadas, victorias y rachas) se guardan localmente en tu navegador. Si limpias los datos, el historial se reiniciará."
         }
       },
       {
         "@type": "Question",
-        "name": "Can I transfer my stats to a new phone or computer?",
+        "name": "¿Puedo jugar más de una partida al día?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Currently, all game data is stored locally on the device you are using. Because there is no central account system, transferring stats across different devices is not supported."
+          "text": "¡Sí! Puedes resolver la 'Palabra del Día' diaria o jugar tantas partidas consecutivas como desees en el modo 'Ilimitado'."
         }
       },
       {
         "@type": "Question",
-        "name": "How do I turn on Hard Mode?",
+        "name": "¿Es necesario descargar alguna app para jugar?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "You can enable Hard Mode by clicking the gear icon (Settings) in the top right corner and toggling the Hard Mode switch. It must be turned on before making your first guess."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What makes Hard Mode different from the standard game?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "In Hard Mode, any clues you uncover must be used in all subsequent guesses. For example, if you find a green 'A', every following guess must contain an 'A' in that exact position."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Why am I seeing the same daily word as yesterday?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The daily puzzle updates at midnight local time. If you are seeing yesterday's word, try refreshing the page or checking that your device's timezone and date are set correctly."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "The game froze or isn't loading properly, how do I fix it?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "This is usually caused by a network glitch or a strict ad-blocker. Try refreshing the page, disabling aggressive content blockers, or updating your browser to the latest version."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I play previous daily puzzles that I missed?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The 'UK Wordle Today' puzzle is locked to the current calendar date. However, you can play as many random puzzles as you like in the 'Unlimited' mode to make up for missed days."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does Wordle UK require an active internet connection?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "An internet connection is required to load the page initially and to fetch the daily puzzle. Once loaded, you can finish your current game offline, but you'll need a connection to start a new one."
+          "text": "No se requiere ninguna descarga ni registro. Puedes jugar directamente en la web desde tu smartphone, tablet u ordenador."
         }
       }
     ]
@@ -166,13 +126,13 @@ export default function Schema({ seo }) {
         {
           "@type": "ListItem",
           "position": 1,
-          "name": "Home",
-          "item": "https://wordlegame.co.uk/"
+          "name": "Inicio",
+          "item": "https://lapalabradeldia.co/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "name": canonical.includes('/wordle-today/') ? "Wordle Today" : "Wordle Hints Today",
+          "name": canonical.includes('/wordle-today/') ? "Palabra del Día" : "Pistas de Hoy",
           "item": canonical
         }
       ]

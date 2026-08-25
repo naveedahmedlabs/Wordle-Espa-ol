@@ -6,7 +6,7 @@ import { getNYTDate } from '../src/dateUtils.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const domain = 'https://wordlegame.co.uk';
+const domain = 'https://lapalabradeldia.co';
 
 const nytDate = getNYTDate();
 const year = nytDate.getFullYear();

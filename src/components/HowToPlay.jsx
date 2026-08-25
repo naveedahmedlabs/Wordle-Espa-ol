@@ -1,39 +1,37 @@
 const CONTENT = {
-
-  uk: {
-    heading: 'How to Play',
+  es: {
+    heading: 'Cómo Jugar a Wordle',
     steps: [
       {
         num: 1,
-        title: 'Make a Guess',
-        desc: 'Type any valid 5-letter word and press Enter to submit your guess.',
+        title: 'Haz un Intento',
+        desc: 'Escribe cualquier palabra válida de 5 letras y presiona Enter para enviar tu intento.',
         img: '/img/howto-1.webp',
       },
       {
         num: 2,
-        title: 'Understand the Colours',
-        desc: 'The game provides feedback with three colours:\n🟩 Green: Correct letter in the right position.\n🟨 Yellow: Correct letter in the wrong position.\n⬜ Grey: Letter is not in the word.',
+        title: 'Interpreta los Colores',
+        desc: 'El juego te dará pistas con tres colores:\n🟩 Verde: Letra correcta en la posición exacta.\n🟨 Amarillo: Letra correcta pero en la posición equivocada.\n⬜ Gris: La letra no forma parte de la palabra.',
         img: '/img/howto-2.webp',
       },
       {
         num: 3,
-        title: 'Make Subsequent Guesses',
-        desc: 'Each new guess must be a valid 5-letter word. You have a maximum of 6 attempts to solve the puzzle.',
+        title: 'Realiza Nuevos Intentos',
+        desc: 'Cada nuevo intento debe ser una palabra válida de 5 letras. Tienes un máximo de 6 intentos para resolver el puzle.',
         img: '/img/howto-3.webp',
       },
       {
         num: 4,
-        title: 'Win or Lose',
-        desc: 'Guess the word correctly within 6 tries to win, or the game will reveal the correct answer.',
+        title: 'Victoria o Derrota',
+        desc: 'Adivina la palabra en 6 intentos o menos para ganar, o el juego te revelará la solución al finalizar.',
         img: '/img/howto-4.webp',
       },
     ]
   },
-
 };
 
-export default function HowToPlay({ language = 'en' }) {
-  const c = CONTENT.uk;
+export default function HowToPlay({ language = 'es' }) {
+  const c = CONTENT.es;
 
   return (
     <section className="howto" id="how-to-play">

@@ -1,24 +1,21 @@
 import { Fragment } from 'react';
 
 const CONTENT = {
-
-  uk: {
+  es: {
     links: [
-      { label: 'Wordle UK', href: '/' },
-      { label: 'UK Wordle Today', href: '/wordle-today/' },
-      { label: 'UK Daily Hints', href: '/wordle-hints-today/' },
-      { label: 'Wordle Solver', href: '/wordle-solver/' },
+      { label: 'Wordle Español', href: '/' },
+      { label: 'Palabra del Día', href: '/wordle-today/' },
+      { label: 'Pistas de Hoy', href: '/wordle-hints-today/' },
       { label: 'Blog', href: '/blogs/' },
-      { label: 'How to Play', href: '#how-to-play' },
-      { label: 'FAQ', href: '#faq' },
-      { label: 'Privacy Policy', href: '/privacy/' }
+      { label: 'Cómo Jugar', href: '#how-to-play' },
+      { label: 'Preguntas Frecuentes', href: '#faq' },
+      { label: 'Política de Privacidad', href: '/privacy/' }
     ]
   },
-
 };
 
-export default function Footer({ language = 'en' }) {
-  const c = CONTENT.uk;
+export default function Footer({ language = 'es' }) {
+  const c = CONTENT.es;
 
   return (
     <footer className="footer" id="footer">

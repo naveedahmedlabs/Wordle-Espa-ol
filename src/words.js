@@ -1,18 +1,12 @@
-import { ALL_WORDS, getDailyWord as getDailyWordEn } from './wordDb';
-import { ALL_WORDS_ES, getDailyWordEs } from './wordDbEs';
-import { ALL_WORDS_UK, getDailyWordUk } from './wordDbUk';
+import { WORDS_DB_ES, ALL_WORDS_ES, getDailyWordEs } from './wordDbEs';
 import { getNYTDate } from './dateUtils';
 
-export function getDailyWord(lang = 'en', targetDate = getNYTDate()) {
-  if (lang === 'es') return getDailyWordEs(targetDate);
-  if (lang === 'uk') return getDailyWordUk(targetDate);
-  return getDailyWordEn(targetDate);
+export function getDailyWord(lang = 'es', targetDate = getNYTDate()) {
+  return getDailyWordEs(targetDate);
 }
 
-export function getAllWords(lang = 'en') {
-  if (lang === 'es') return ALL_WORDS_ES;
-  if (lang === 'uk') return ALL_WORDS_UK;
-  return ALL_WORDS;
+export function getAllWords(lang = 'es') {
+  return ALL_WORDS_ES;
 }
 
 const WORDS_4 = ["able", "acid", "also", "area", "army", "away", "baby", "back", "ball", "band", "bank", "base", "bath", "bear", "beat", "been", "beer", "bell", "belt", "best", "bill", "bird", "blow", "blue", "boat", "body", "bomb", "bond", "bone", "book", "boom", "born", "boss", "both", "bowl", "bulk", "burn", "bush", "busy", "cake", "call", "calm", "came", "camp", "card", "care", "case", "cash", "cast", "cell", "chat", "chip", "city", "club", "coal", "coat", "code", "cold", "come", "cook", "cool", "copy", "core", "cost", "crew", "crop", "dark", "data", "date", "dawn", "days", "dead", "deal", "dean", "dear", "debt", "deep", "deny", "desk", "dial", "diet", "disc", "dish", "does", "done", "door", "dose", "down", "draw", "drew", "drop", "drug", "drum", "dual", "duke", "dust", "duty", "each", "earn", "ease", "east", "easy", "edge", "else", "even", "ever", "exam", "exit", "face", "fact", "fail", "fair", "fall", "farm", "fast", "fate", "fear", "feed", "feel", "feet", "fell", "felt", "file", "fill", "film", "find", "fine", "fire", "firm", "fish", "five", "flat", "flow", "food", "foot", "ford", "form", "fort", "four", "free", "from", "fuel", "full", "fund", "gain", "game", "gate", "gave", "gear", "gene", "gift", "girl", "give", "glad", "goal", "gold", "gone", "good", "gray", "grew", "grey", "grow", "gulf", "hair", "half", "hall", "hand", "hang", "hard", "harm", "hate", "have", "head", "hear", "heat", "held", "hell", "help", "here", "hero", "high", "hill", "hire", "hold", "hole", "holy", "home", "hope", "host", "hour", "huge", "hung", "hunt", "hurt", "idea", "inch", "into", "iron", "item", "jack", "jane", "jean", "john", "join", "jump", "jury", "just", "keen", "keep", "kent", "kept", "kick", "kill", "kind", "king", "knee", "knew", "know", "lack", "lady", "laid", "lake", "land", "lane", "last", "late", "lead", "left", "less", "life", "lift", "like", "line", "link", "list", "live", "load", "loan", "lock", "logo", "long", "look", "lord", "lose", "loss", "lost", "love", "luck", "made", "mail", "main", "make", "male", "many", "mark", "mass", "matt", "meal", "mean", "meat", "meet", "menu", "mere", "mike", "mild", "milk", "mill", "mind", "mine", "miss", "mode", "mood", "moon", "more", "most", "move", "much", "must", "name", "navy", "near", "neck", "need", "news", "next", "nice", "nick", "nine", "none", "nose", "note", "okay", "once", "only", "onto", "open", "oral", "over", "pace", "pack", "page", "paid", "pain", "pair", "palm", "park", "part", "pass", "past", "path", "peak", "pick", "pile", "pink", "pipe", "plan", "play", "plot", "plug", "plus", "poll", "pool", "poor", "port", "post", "pull", "pure", "push", "race", "rail", "rain", "rank", "rare", "rate", "read", "real", "rear", "rely", "rent", "rest", "rice", "rich", "ride", "ring", "rise", "risk", "road", "rock", "role", "roll", "roof", "room", "root", "rose", "rule", "rush", "ruth", "safe", "said", "sake", "sale", "salt", "same", "sand", "save", "seat", "seed", "seek", "seem", "seen", "self", "sell", "send", "sent", "sept", "ship", "shop", "shot", "show", "shut", "sick", "side", "sign", "site", "size", "skin", "slip", "slow", "snow", "soft", "soil", "sold", "sole", "some", "song", "soon", "sort", "soul", "soup", "spot", "star", "stay", "step", "stop", "such", "suit", "sure", "take", "tale", "talk", "tall", "tank", "tape", "task", "team", "tech", "tell", "tend", "term", "test", "than", "that", "them", "then", "they", "thin", "this", "thus", "till", "time", "tiny", "told", "toll", "tone", "tony", "took", "tool", "tour", "town", "tree", "trip", "true", "tune", "turn", "twin", "type", "unit", "upon", "used", "user", "vary", "very", "vice", "view", "vote", "wage", "wait", "wake", "walk", "wall", "want", "ward", "warm", "wash", "wave", "ways", "weak", "wear", "week", "well", "went", "were", "west", "what", "when", "whom", "wide", "wife", "wild", "will", "wind", "wine", "wing", "wire", "wise", "wish", "with", "wood", "word", "wore", "work", "yard", "yeah", "year", "your", "zero", "zone"];
@@ -139,7 +133,7 @@ const BANNED_SET = new Set(BANNED_WORDS);
 
 export const TARGET_WORDS = VALID_WORDS;
 
-export function getRandomWord(lang = 'en', length = 5) {
+export function getRandomWord(lang = 'es', length = 5) {
   if (lang === 'en' && length !== 5) {
      const lists = {
       4: WORDS_4,
@@ -157,7 +151,7 @@ export function getRandomWord(lang = 'en', length = 5) {
   return words[Math.floor(Math.random() * words.length)].toLowerCase();
 }
 
-export function isValidWord(word, lang = 'en') {
+export function isValidWord(word, lang = 'es') {
   const words = getAllWords(lang);
   return words.includes(word.toUpperCase());
 }
@@ -168,7 +162,7 @@ const LANG_API_MAP = {
   'es': 'es'
 };
 
-export async function validateWordOnline(word, lang = 'en') {
+export async function validateWordOnline(word, lang = 'es') {
   const cleanWord = word.toLowerCase();
   const upperWord = word.toUpperCase();
   

@@ -66,9 +66,9 @@ export async function generateMetadata({ params }) {
   }
 
   const post = data.post;
-  const title = post.metaTitle || `${post.title} - Wordle Unlimited Blog`;
+  const title = post.metaTitle || `${post.title} - Blog de Wordle en Español`;
   const description = post.metaDescription || '';
-  const url = `https://wordlegame.co.uk/blogs/${slug}/`;
+  const url = `https://lapalabradeldia.co/blogs/${slug}/`;
 
   return {
     title,
@@ -91,7 +91,7 @@ export async function generateMetadata({ params }) {
       type: 'article',
       publishedTime: post.createdAt,
       modifiedTime: post.updatedAt || post.createdAt,
-      authors: ['Wordle Unlimited'],
+      authors: ['La Palabra del Día'],
       images: post.metaImage?.url
         ? [
             {
@@ -122,9 +122,9 @@ export default async function Page({ params }) {
   const { post, relatedPosts } = data;
 
   const seo = {
-    title: post.metaTitle || post.title || 'Wordle Unlimited Blog',
+    title: post.metaTitle || post.title || 'Blog de Wordle en Español',
     description: post.metaDescription || '',
-    canonical: `https://wordlegame.co.uk/blogs/${slug}/`,
+    canonical: `https://lapalabradeldia.co/blogs/${slug}/`,
     modifiedDate: post.updatedAt || post.createdAt,
   };
 

@@ -3,14 +3,12 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const CONTENT = {
-  
-  uk: {
-    daily: 'Daily',
-    unlimited: 'Unlimited',
-    hints: 'Hints',
-    giveUp: 'Give up'
+  es: {
+    daily: 'Diario',
+    unlimited: 'Ilimitado',
+    hints: 'Pistas',
+    giveUp: 'Rendirse'
   },
-  
 };
 
 export default function Header({ 
@@ -26,11 +24,11 @@ export default function Header({
   onViewChange,
   onFeedback,
   currentView,
-  language = 'en'
+  language = 'es'
 }) {
   const router = useRouter();
   const navigate = (path) => router.push(path);
-  const c = CONTENT[language] || CONTENT.en;
+  const c = CONTENT.es;
 
 
 
@@ -98,8 +96,8 @@ export default function Header({
               }}
             >
               <img 
-                src="https://flagcdn.com/w40/gb.png" 
-                alt="UK English" 
+                src="https://flagcdn.com/w40/es.png" 
+                alt="Español" 
                 width="24" 
                 height="18" 
                 style={{ display: 'block', borderRadius: '2px' }} 

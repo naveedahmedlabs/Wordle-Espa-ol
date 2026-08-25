@@ -1,11 +1,10 @@
 const CONTENT = {
-
-  uk: {
-    heading: 'Play Other Games',
+  es: {
+    heading: 'Juega a Otros Juegos',
     games: [
       {
         name: 'Strands',
-        desc: 'Uncover words to find the theme',
+        desc: 'Descubre palabras para encontrar el tema',
         icon: '/images/games/strands-icon.png',
         url: 'https://gamestrands.com/',
         accentColor: '#4A90D9',
@@ -13,19 +12,18 @@ const CONTENT = {
       },
       {
         name: 'Connections',
-        desc: 'Group words that share a common thread',
+        desc: 'Agrupa palabras que compartan una temática común',
         icon: '/images/games/connections-icon.webp',
         url: 'https://unlimitedconnections.net/',
         accentColor: '#9B8FD9',
         bgColor: '#F0EEFF',
       },
-      ]
+    ]
   },
-
 };
 
-export default function GameCards({ language = 'en' }) {
-  const c = CONTENT.uk;
+export default function GameCards({ language = 'es' }) {
+  const c = CONTENT.es;
 
   return (
     <section className="game-cards" id="play-other-games">

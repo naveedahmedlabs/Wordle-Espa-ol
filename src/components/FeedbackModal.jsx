@@ -32,7 +32,7 @@ const getDeviceType = () => {
   return "Desktop";
 };
 
-export default function FeedbackModal({ language = 'en', onClose }) {
+export default function FeedbackModal({ language = 'es', onClose }) {
   const [type, setType] = useState('feedback');
   const [message, setMessage] = useState('');
   const [token, setToken] = useState(null);
@@ -41,19 +41,19 @@ export default function FeedbackModal({ language = 'en', onClose }) {
   const turnstileRef = useRef(null);
 
   const ui = {
-    uk: {
-      title: "Send Feedback",
-      type: "Feedback Type",
-      feedback: "General Feedback",
-      feature: "Feature Request",
-      placeholder: "Tell us what you think...",
-      send: "Send",
-      success: "Thank you for your feedback!",
-      close: "Close"
+    es: {
+      title: "Enviar Comentarios",
+      type: "Tipo de Mensaje",
+      feedback: "Comentario General",
+      feature: "Sugerir Función",
+      placeholder: "Cuéntanos tu opinión o sugerencia...",
+      send: "Enviar",
+      success: "¡Muchas gracias por tus comentarios!",
+      close: "Cerrar"
     }
   };
 
-  const c = ui.uk;
+  const c = ui.es;
 
 
 
@@ -65,7 +65,7 @@ export default function FeedbackModal({ language = 'en', onClose }) {
     try {
       const subject = encodeURIComponent(`Wordle Feedback: ${type === 'feature' ? 'Feature Request' : 'General'}`);
       const body = encodeURIComponent(message);
-      window.location.href = `mailto:naveed.ahmed.swe@gmail.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:contact@lapalabradeldia.co?subject=${subject}&body=${body}`;
       
       setIsSuccess(true);
     } catch (err) {

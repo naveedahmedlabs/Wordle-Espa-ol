@@ -3,28 +3,42 @@ import { isValidWord, validateWordOnline } from '../words';
 import html2canvas from 'html2canvas';
 
 const CONTENT = {
-
-  uk: {
-    help: { title: 'How to Play', line1: 'Guess the Wordle in 6 tries.', line2: 'Each guess must be a valid word.', line3: 'The colour of the tiles will change to show how close your guess was.' },
-    settings: { title: 'Settings', dark: 'Dark Mode', hard: 'Hard Mode' },
-    stats: { title: 'Statistics', played: 'Played', won: 'Won', newGame: 'New Game' },
-    challenge: { title: 'Challenge a Friend', prompt: 'Enter a word to generate a challenge link:', placeholder: 'ENTER WORD', btn: 'Generate & Copy', validating: 'Validating...', copied: 'Link copied to clipboard!', btnAnother: 'Create Another', errorLength: 'Word must be 4-11 letters', errorBanned: 'Word is not allowed', errorInvalid: 'Not a valid dictionary word' },
+  es: {
+    help: { 
+      title: 'Cómo Jugar', 
+      line1: 'Adivina la palabra oculta en 6 intentos.', 
+      line2: 'Cada intento debe ser una palabra válida de 5 letras.', 
+      line3: 'El color de las casillas cambiará para mostrarte qué tan cerca estás de acertar.' 
+    },
+    settings: { title: 'Ajustes', dark: 'Modo Oscuro', hard: 'Modo Difícil' },
+    stats: { title: 'Estadísticas', played: 'Jugadas', won: 'Victorias', newGame: 'Nueva Partida' },
+    challenge: { 
+      title: 'Desafiar a un Amigo', 
+      prompt: 'Introduce una palabra para generar el enlace del desafío:', 
+      placeholder: 'ESCRIBE UNA PALABRA', 
+      btn: 'Generar y Copiar', 
+      validating: 'Comprobando...', 
+      copied: '¡Enlace copiado al portapapeles!', 
+      btnAnother: 'Crear Otro', 
+      errorLength: 'La palabra debe tener entre 4 y 11 letras', 
+      errorBanned: 'Palabra no permitida', 
+      errorInvalid: 'Palabra no válida en el diccionario' 
+    },
     finish: { 
-      won: 'You Won!', 
-      lost: 'You Lost!', 
-      answer: 'The answer was:', 
-      meaning: 'What does this word mean?', 
-      newGame: 'New Game', 
-      enterAgain: 'or press Enter to play again', 
-      copyLink: 'Copy link to this word', 
-      downloadImg: 'Download puzzle image', 
-      linkCopied: 'Link copied to clipboard!',
-      dailyFinished: 'You have finished today\'s Wordle!',
-      nextWord: 'Next word in:',
-      tryUnlimited: 'Try Wordle Unlimited'
+      won: '¡Has Ganado!', 
+      lost: '¡Has Perdido!', 
+      answer: 'La palabra era:', 
+      meaning: '¿Qué significa esta palabra?', 
+      newGame: 'Nueva Partida', 
+      enterAgain: 'o pulsa Enter para jugar de nuevo', 
+      copyLink: 'Copiar enlace a esta palabra', 
+      downloadImg: 'Descargar imagen del resultado', 
+      linkCopied: '¡Enlace copiado al portapapeles!',
+      dailyFinished: '¡Ya has completado el Wordle de hoy!',
+      nextWord: 'Siguiente palabra en:',
+      tryUnlimited: 'Probar Wordle Ilimitado'
     }
   },
-
 };
 
 export default function Modal({ isOpen, onClose, children }) {
@@ -87,8 +101,8 @@ function ModalHeader({ title, onClose }) {
   );
 }
 
-export function HelpModal({ onClose, language = 'en' }) {
-  const c = (CONTENT.uk).help;
+export function HelpModal({ onClose, language = 'es' }) {
+  const c = (CONTENT.es).help;
   return (
     <div>
       <ModalHeader title={c.title} onClose={onClose} />
@@ -103,8 +117,8 @@ export function HelpModal({ onClose, language = 'en' }) {
   );
 }
 
-export function SettingsModal({ onClose, darkMode, onDarkMode, hardMode, onHardMode, colorBlind, onColorBlind, language = 'en' }) {
-  const c = (CONTENT.uk).settings;
+export function SettingsModal({ onClose, darkMode, onDarkMode, hardMode, onHardMode, colorBlind, onColorBlind, language = 'es' }) {
+  const c = (CONTENT.es).settings;
   return (
     <div>
       <ModalHeader title={c.title} onClose={onClose} />
@@ -122,8 +136,8 @@ export function SettingsModal({ onClose, darkMode, onDarkMode, hardMode, onHardM
   );
 }
 
-export function StatsModal({ stats, onNewGame, gameState, onClose, language = 'en' }) {
-  const c = (CONTENT.uk).stats;
+export function StatsModal({ stats, onNewGame, gameState, onClose, language = 'es' }) {
+  const c = (CONTENT.es).stats;
   return (
     <div>
       <ModalHeader title={c.title} onClose={onClose} />
@@ -156,8 +170,8 @@ export function StatsModal({ stats, onNewGame, gameState, onClose, language = 'e
   );
 }
 
-export function ChallengeModal({ onClose, language = 'en' }) {
-  const c = (CONTENT.uk).challenge;
+export function ChallengeModal({ onClose, language = 'es' }) {
+  const c = (CONTENT.es).challenge;
   const [word, setWord] = useState('');
   const [shake, setShake] = useState(false);
   const [error, setError] = useState('');
@@ -235,9 +249,9 @@ export function ChallengeModal({ onClose, language = 'en' }) {
   );
 }
 
-export function FinishModal({ isWin, answer, onNewGame, onClose, language = 'en', gameMode = 'unlimited', onSwitchMode }) {
-  const c = (CONTENT.uk).finish;
-  const challengeUrl = `${window.location.origin}${false ? '' : '/' + language}?challenge=wu_${btoa(answer.toLowerCase())}`;
+export function FinishModal({ isWin, answer, onNewGame, onClose, language = 'es', gameMode = 'unlimited', onSwitchMode }) {
+  const c = (CONTENT.es).finish;
+  const challengeUrl = `${window.location.origin}${window.location.pathname}?challenge=wu_${btoa(answer.toLowerCase())}`;
   
   const [timeLeft, setTimeLeft] = useState('');
 
@@ -304,7 +318,7 @@ export function FinishModal({ isWin, answer, onNewGame, onClose, language = 'en'
 
         <div style={{ marginBottom: '24px' }}>
           <a 
-            href={`https://wordfind.org/dictionary/${answer.toLowerCase()}`} 
+            href={`https://dle.rae.es/${answer.toLowerCase()}`} 
             target="_blank" 
             rel="noopener noreferrer"
             style={{ color: '#4486f4', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600' }}
