@@ -19,12 +19,16 @@ export const ROUTE_GROUPS = {
     'es-ES': '/',
   },
   today: {
-    'es': '/wordle-today/',
-    'es-ES': '/wordle-today/',
+    'es': '/palabra-del-dia/',
+    'es-ES': '/palabra-del-dia/',
   },
   hints: {
-    'es': '/wordle-hints-today/',
-    'es-ES': '/wordle-hints-today/',
+    'es': '/wordle-respuesta-hoy/',
+    'es-ES': '/wordle-respuesta-hoy/',
+  },
+  archive: {
+    'es': '/archive/',
+    'es-ES': '/archive/',
   },
   privacy: {
     'es': '/privacy/',
@@ -39,17 +43,29 @@ export const SEO_DATA = {
     isoLang: 'es-ES',
     group: 'unlimited',
   },
-  '/wordle-today/': {
+  '/palabra-del-dia/': {
     title: 'Palabra del Día - Juega al Wordle de Hoy en Español',
     description: 'Juega a la Palabra del Día en español y resuelve el puzle diario. Un nuevo reto de Wordle en español disponible cada día.',
     isoLang: 'es-ES',
     group: 'today',
   },
-  '/wordle-hints-today/': {
-    title: 'Pistas Wordle Hoy - Claves y Solución de la Palabra del Día',
-    description: 'Consigue las mejores pistas sin spoilers para el Wordle en español de hoy. Pistas por categorías, número de vocales y solución diaria.',
+  '/wordle-respuesta-hoy/': {
+    title: 'Wordle Respuesta Hoy - Solución y Pistas de la Palabra del Día',
+    description: 'Descubre la respuesta y pistas sin spoilers del Wordle en español de hoy. Solución diaria, número de vocales, letra inicial y más.',
     isoLang: 'es-ES',
     group: 'hints',
+  },
+  '/archive/': {
+    title: 'Archivo Wordle Español - Juega Puzles y Días Anteriores',
+    description: 'Explora el archivo completo de Wordle en español. Juega cualquier reto del pasado por fecha o número de puzle sin límites.',
+    isoLang: 'es-ES',
+    group: 'archive',
+  },
+  '/wordle-archive/': {
+    title: 'Archivo Wordle Español - Juega Puzles y Días Anteriores',
+    description: 'Explora el archivo completo de Wordle en español. Juega cualquier reto del pasado por fecha o número de puzle sin límites.',
+    isoLang: 'es-ES',
+    group: 'archive',
   },
   '/privacy/': {
     title: 'Política de Privacidad - La Palabra del Día',

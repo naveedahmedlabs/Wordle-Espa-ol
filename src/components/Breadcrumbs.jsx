@@ -18,7 +18,7 @@ export default function Breadcrumbs({ items, language = 'en' }) {
       }}>
         <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span 
-            onClick={() => navigate(language === 'en' ? '/' : `/${language}/`)}
+            onClick={() => navigate('/')}
             style={{ cursor: 'pointer', fontWeight: '600', color: 'var(--color-text-dark)' }}
           >
             Home

@@ -18,8 +18,8 @@ export default function WordleIntro({ language = 'es', mode = 'unlimited' }) {
         { label: 'Preguntas Frecuentes', href: '#faq' }
       ],
       pageLinks: [
-        { label: 'Palabra del Día', to: '/wordle-today/' },
-        { label: 'Pistas de Hoy', to: '/wordle-hints-today/' }
+        { label: 'Palabra del Día', to: '/palabra-del-dia/' },
+        { label: 'Wordle Respuesta Hoy', to: '/wordle-respuesta-hoy/' }
       ]
     },
   };

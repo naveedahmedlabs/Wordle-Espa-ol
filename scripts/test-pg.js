@@ -1,10 +1,9 @@
 import pg from 'pg';
-
 async function test() {
   console.log('Testing pg pool with ssl rejectUnauthorized false:');
   try {
     const pool = new pg.Pool({
-      connectionString: urlClean,
+      connectionString: process.env.DATABASE_URL,
       ssl: { rejectUnauthorized: false },
       connectionTimeoutMillis: 5000
     });

@@ -25,9 +25,50 @@ import SEO from './components/SEO';
 import { BASE_URL, getSEO } from './seo';
 import SolverPage from './views/SolverPage';
 import VariantsPage from './views/VariantsPage';
+import ArchivePage from './views/ArchivePage';
+import Link from 'next/link';
 
 import BlogHeader from './components/BlogHeader';
-import { getNYTDate } from './dateUtils';
+import { getNYTDate, getWordleNumber } from './dateUtils';
+
+function getTargetDateFromParams(params) {
+  if (!params) return null;
+  const dateParam = params.get('date');
+  if (dateParam) {
+    const isoMatch = dateParam.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (isoMatch) {
+      const y = parseInt(isoMatch[1], 10);
+      const m = parseInt(isoMatch[2], 10);
+      const d = parseInt(isoMatch[3], 10);
+      return new Date(y, m - 1, d);
+    }
+    if (/^\d{8}$/.test(dateParam)) {
+      const y = parseInt(dateParam.substring(0, 4), 10);
+      const m = parseInt(dateParam.substring(4, 6), 10);
+      const d = parseInt(dateParam.substring(6, 8), 10);
+      return new Date(y, m - 1, d);
+    }
+  }
+  const seedParam = params.get('seed');
+  if (seedParam && /^\d{8}$/.test(seedParam)) {
+    const y = parseInt(seedParam.substring(0, 4), 10);
+    const m = parseInt(seedParam.substring(4, 6), 10);
+    const d = parseInt(seedParam.substring(6, 8), 10);
+    return new Date(y, m - 1, d);
+  }
+  return null;
+}
+
+function getDailyStateStorageKey(params, language) {
+  const targetDate = getTargetDateFromParams(params);
+  if (targetDate) {
+    const y = targetDate.getFullYear();
+    const m = String(targetDate.getMonth() + 1).padStart(2, '0');
+    const d = String(targetDate.getDate()).padStart(2, '0');
+    return `wordle-state-daily-${language}-${y}-${m}-${d}`;
+  }
+  return `wordle-state-daily-${language}`;
+}
 
 const UI_TEXT = {
   es: {
@@ -119,9 +160,10 @@ export default function App() {
     if (typeof window === 'undefined') return 'unlimited';
     const params = new URLSearchParams(window.location.search);
     if (params.get('challenge')) return 'unlimited';
+    if (params.get('date') || params.get('seed')) return 'daily';
     
     const path = window.location.pathname;
-    if (path.includes('wordle-today') || path.includes('palabra-del-dia')) return 'daily';
+    if (path.includes('palabra-del-dia') || path.includes('wordle-today')) return 'daily';
     const normPath = path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path;
     const isRoot = normPath === '' || normPath === '/';
     if (isRoot) return 'unlimited';
@@ -137,8 +179,9 @@ export default function App() {
     if (normPath === '' || normPath === '/') return 'game';
     if (normPath === '/blogs') return 'blogs';
     if (path.startsWith('/blogs/') && path.length > 7) return 'single-blog';
-    if (normPath.includes('wordle-hints-today') || normPath.includes('pistas-de-hoy')) return 'hints';
-    if (normPath.includes('wordle-today') || normPath.includes('palabra-del-dia')) return 'game';
+    if (normPath.includes('/archive') || normPath.includes('/wordle-archive') || normPath.includes('/archivo')) return 'archive';
+    if (normPath.includes('wordle-respuesta-hoy') || normPath.includes('pistas-de-hoy') || normPath.includes('wordle-hints-today')) return 'hints';
+    if (normPath.includes('palabra-del-dia') || normPath.includes('wordle-today')) return 'game';
     if (normPath.includes('/privacy') || normPath.includes('/privacidad')) return 'privacy';
     if (normPath.includes('/wordle-solver')) return 'solver';
     const variantMatch = normPath.match(/\/(\d+)-letter-words/);
@@ -151,15 +194,27 @@ export default function App() {
   useEffect(() => {
     const path = location.pathname;
     
+    // Automatically strip legacy /es/ or /es prefix and redirect
+    if (path.startsWith('/es/') || path === '/es') {
+      const cleanPath = path.replace(/^\/es(\/|$)/, '/') || '/';
+      const search = location.search || '';
+      navigate(`${cleanPath}${search}`, { replace: true });
+      return;
+    }
+    
     let newView = 'game';
-    const validSlugs = ['wordle-today', 'palabra-del-dia', 'wordle-hints-today', 'pistas-de-hoy', 'privacy', 'privacidad', 'daily', 'hints', 'wordle-solver', '-letter-words'];
+    const validSlugs = ['palabra-del-dia', 'wordle-today', 'wordle-respuesta-hoy', 'pistas-de-hoy', 'wordle-hints-today', 'archive', 'wordle-archive', 'archivo', 'privacy', 'privacidad', 'daily', 'hints', 'wordle-solver', '-letter-words'];
     const isRoot = path === '/';
     
-    const newMode = (path.includes('wordle-today') || path.includes('palabra-del-dia') || path.includes('wordle-hints-today') || path.includes('pistas-de-hoy') || path.includes('/daily/')) ? 'daily' : 'unlimited';
+    const params = new URLSearchParams(location.search);
+    const hasDateParam = Boolean(params.get('date') || params.get('seed'));
+    const isDailyRoute = hasDateParam || path.includes('palabra-del-dia') || path.includes('wordle-today') || path.includes('wordle-respuesta-hoy') || path.includes('pistas-de-hoy') || path.includes('wordle-hints-today') || path.includes('/daily/');
+    const newMode = isDailyRoute ? 'daily' : 'unlimited';
     
     if (path.startsWith('/blogs/') && path.length > 7) newView = 'single-blog';
     else if (path === '/blogs' || path === '/blogs/') newView = 'blogs';
-    else if (path.includes('wordle-hints-today') || path.includes('pistas-de-hoy') || path.includes('/hints/')) newView = 'hints';
+    else if (path.includes('/archive') || path.includes('/wordle-archive') || path.includes('/archivo')) newView = 'archive';
+    else if (path.includes('wordle-respuesta-hoy') || path.includes('pistas-de-hoy') || path.includes('wordle-hints-today') || path.includes('/hints/')) newView = 'hints';
     else if (path.includes('/privacy') || path.includes('/privacidad')) newView = 'privacy';
     else if (path.includes('/wordle-solver')) newView = 'solver';
     else if (path.match(/\/\d+-letter-words/)) newView = `variants:${path.match(/\/(\d+)-letter-words/)[1]}`;
@@ -172,7 +227,7 @@ export default function App() {
     if (newView !== 'single-blog' && newView !== 'blogs') {
       setTimeout(() => document.dispatchEvent(new Event('prerender-trigger')), 1500);
     }
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   const ui = UI_TEXT.es;
 
@@ -334,20 +389,16 @@ export default function App() {
       } catch (e) {}
     }
 
-    const seed = params.get('seed');
-    const key = gameMode === 'daily' ? `wordle-state-daily-${language}` : `wordle-state-${language}`;
+    const targetDate = getTargetDateFromParams(params);
+    const isDaily = gameMode === 'daily' || Boolean(targetDate);
+    const dailyKey = getDailyStateStorageKey(params, language);
+    const key = isDaily ? dailyKey : `wordle-state-${language}`;
     const saved = localStorage.getItem(key);
     const parsed = saved ? JSON.parse(saved) : null;
 
-    if (gameMode === 'daily') {
-      let targetDate = getNYTDate();
-      if (seed && /^\d{8}$/.test(seed)) {
-        const y = seed.substring(0, 4);
-        const m = seed.substring(4, 6);
-        const d = seed.substring(6, 8);
-        targetDate = new Date(y, m - 1, d);
-      }
-      return getDailyWord(language, targetDate).word.toLowerCase();
+    if (isDaily) {
+      const d = targetDate || getNYTDate();
+      return getDailyWord(language, d).word.toLowerCase();
     } else {
       // In unlimited mode, if we have a saved answer, use it
       if (parsed && parsed.answer && !challengeParam) {
@@ -360,25 +411,20 @@ export default function App() {
   
   const [guesses, setGuesses] = useState(() => {
     if (typeof window === 'undefined') return [];
-    const key = gameMode === 'daily' ? `wordle-state-daily-${language}` : `wordle-state-${language}`;
+    const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+    const targetDate = getTargetDateFromParams(params);
+    const isDaily = gameMode === 'daily' || Boolean(targetDate);
+    const dailyKey = getDailyStateStorageKey(params, language);
+    const key = isDaily ? dailyKey : `wordle-state-${language}`;
     const saved = localStorage.getItem(key);
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (gameMode === 'daily') {
+      if (isDaily) {
         // Only restore if the word matches
-        const params = new URLSearchParams(window.location.search);
-        const seed = params.get('seed');
-        let targetDate = getNYTDate();
-        if (seed && /^\d{8}$/.test(seed)) {
-          const y = seed.substring(0, 4);
-          const m = seed.substring(4, 6);
-          const d = seed.substring(6, 8);
-          targetDate = new Date(y, m - 1, d);
-        }
-        const currentDaily = getDailyWord(language, targetDate).word.toLowerCase();
+        const d = targetDate || getNYTDate();
+        const currentDaily = getDailyWord(language, d).word.toLowerCase();
         if (parsed.answer.toLowerCase() === currentDaily) return parsed.guesses;
       } else {
-        const params = new URLSearchParams(window.location.search);
         if (!params.get('challenge')) return parsed.guesses;
       }
     }
@@ -389,24 +435,19 @@ export default function App() {
 
   const [gameState, setGameState] = useState(() => {
     if (typeof window === 'undefined') return 'playing';
-    const key = gameMode === 'daily' ? `wordle-state-daily-${language}` : `wordle-state-${language}`;
+    const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+    const targetDate = getTargetDateFromParams(params);
+    const isDaily = gameMode === 'daily' || Boolean(targetDate);
+    const dailyKey = getDailyStateStorageKey(params, language);
+    const key = isDaily ? dailyKey : `wordle-state-${language}`;
     const saved = localStorage.getItem(key);
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (gameMode === 'daily') {
-        const params = new URLSearchParams(window.location.search);
-        const seed = params.get('seed');
-        let targetDate = getNYTDate();
-        if (seed && /^\d{8}$/.test(seed)) {
-          const y = seed.substring(0, 4);
-          const m = seed.substring(4, 6);
-          const d = seed.substring(6, 8);
-          targetDate = new Date(y, m - 1, d);
-        }
-        const currentDaily = getDailyWord(language, targetDate).word.toLowerCase();
+      if (isDaily) {
+        const d = targetDate || getNYTDate();
+        const currentDaily = getDailyWord(language, d).word.toLowerCase();
         if (parsed.answer.toLowerCase() === currentDaily) return parsed.gameState;
       } else {
-        const params = new URLSearchParams(window.location.search);
         if (!params.get('challenge')) return parsed.gameState;
       }
     }
@@ -415,24 +456,19 @@ export default function App() {
 
   const [keyStates, setKeyStates] = useState(() => {
     if (typeof window === 'undefined') return {};
-    const key = gameMode === 'daily' ? `wordle-state-daily-${language}` : `wordle-state-${language}`;
+    const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+    const targetDate = getTargetDateFromParams(params);
+    const isDaily = gameMode === 'daily' || Boolean(targetDate);
+    const dailyKey = getDailyStateStorageKey(params, language);
+    const key = isDaily ? dailyKey : `wordle-state-${language}`;
     const saved = localStorage.getItem(key);
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (gameMode === 'daily') {
-        const params = new URLSearchParams(window.location.search);
-        const seed = params.get('seed');
-        let targetDate = getNYTDate();
-        if (seed && /^\d{8}$/.test(seed)) {
-          const y = seed.substring(0, 4);
-          const m = seed.substring(4, 6);
-          const d = seed.substring(6, 8);
-          targetDate = new Date(y, m - 1, d);
-        }
-        const currentDaily = getDailyWord(language, targetDate).word.toLowerCase();
+      if (isDaily) {
+        const d = targetDate || getNYTDate();
+        const currentDaily = getDailyWord(language, d).word.toLowerCase();
         if (parsed.answer.toLowerCase() === currentDaily) return parsed.keyStates;
       } else {
-        const params = new URLSearchParams(window.location.search);
         if (!params.get('challenge')) return parsed.keyStates;
       }
     }
@@ -696,14 +732,11 @@ export default function App() {
     setStats(loadStats(mode));
     
     // Update URL slug with seed for daily mode
-    const prefix = '';
-    let dailySlug = 'wordle-today';
-    
-    let newPath = prefix || '/';
+    let newPath = '/';
     if (mode === 'daily') {
       const now = getNYTDate();
       const seed = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
-      newPath = `${prefix}/${dailySlug}/?seed=${seed}`;
+      newPath = `/palabra-del-dia/?seed=${seed}`;
     }
     
     navigate(newPath);
@@ -758,22 +791,16 @@ export default function App() {
     }
 
     const path = location.pathname;
-    const isDailyPath = path.includes('wordle-today') || path.includes('palabra-del-dia');
-    const isHintsPath = path.includes('wordle-hints-today') || path.includes('pistas-de-hoy');
+    const isDailyPath = path.includes('palabra-del-dia') || path.includes('wordle-today');
+    const isHintsPath = path.includes('wordle-respuesta-hoy') || path.includes('pistas-de-hoy') || path.includes('wordle-hints-today');
 
-    if ((isDailyPath || isHintsPath) && !params.get('seed')) {
+    if ((isDailyPath || isHintsPath) && !params.get('seed') && !params.get('date')) {
       const now = getNYTDate();
       const seed = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
       
-      const prefix = '';
-      let slug = '';
-      if (isHintsPath) {
-        slug = language === 'es' ? 'pistas-de-hoy' : 'wordle-hints-today';
-      } else {
-        slug = language === 'es' ? 'palabra-del-dia' : 'wordle-today';
-      }
+      const slug = isHintsPath ? 'wordle-respuesta-hoy' : 'palabra-del-dia';
       
-      const newPath = `${prefix}/${slug}/?seed=${seed}`;
+      const newPath = `/${slug}/?seed=${seed}`;
       navigate(newPath, { replace: true });
     }
   }, [language, location.pathname, location.search]);
@@ -789,20 +816,26 @@ export default function App() {
     }));
   }, [guesses, gameState, answer, keyStates, gameMode, language]);
 
+  const activeArchiveDate = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    const dateParam = params.get('date');
+    if (!dateParam) return null;
+    return getTargetDateFromParams(params);
+  }, [location.search]);
+
   const handleViewChange = (view) => {
     setCurrentView(view);
     const now = getNYTDate();
     const seed = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
     
-    const prefix = (language === 'en' || language === 'uk') ? '' : `/${language}`;
-    let newPath = prefix || '/';
+    let newPath = '/';
     
     if (view === 'hints') {
-      const slug = language === 'es' ? 'pistas-de-hoy' : 'wordle-hints-today';
-      newPath = `${prefix}/${slug}/?seed=${seed}`;
+      newPath = `/wordle-respuesta-hoy/?seed=${seed}`;
+    } else if (view === 'archive') {
+      newPath = `/archive/`;
     } else if (gameMode === 'daily') {
-      const slug = language === 'es' ? 'palabra-del-dia' : 'wordle-today';
-      newPath = `${prefix}/${slug}/?seed=${seed}`;
+      newPath = `/palabra-del-dia/?seed=${seed}`;
     }
     
     navigate(newPath);
@@ -849,10 +882,12 @@ export default function App() {
         />
       )}
 
-      <main style={{ flex: 1, marginTop: '80px' }}>
-        <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', borderWidth: 0 }}>Wordle UK - Unlimited Free Word Puzzle Game Online</h1>
+      <main style={{ flex: 1, marginTop: '110px', paddingTop: '10px' }}>
+        <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', borderWidth: 0 }}>Wordle Español - Juego de Palabras Gratis e Ilimitado Online</h1>
         {currentView === 'hints' ? (
           <HintsPage language={language} onBack={() => handleViewChange('game')} />
+        ) : currentView === 'archive' ? (
+          <ArchivePage language={language} onBack={() => handleViewChange('game')} />
         ) : currentView === 'privacy' ? (
           <PrivacyPage language={language} />
         ) : currentView === 'solver' ? (
@@ -860,10 +895,34 @@ export default function App() {
         ) : currentView.startsWith('variants:') ? (
           <VariantsPage length={currentView.split(':')[1]} language={language} />
         ) : currentView === '404' ? (
-          <NotFound language={language} onHome={() => navigate(language === 'en' ? '/' : `/${language}/`)} />
+          <NotFound language={language} onHome={() => navigate('/')} />
         ) : (
           <>
-                {isChallengeMode && (
+            {activeArchiveDate && (
+              <div className="archive-active-banner" style={{
+                background: 'rgba(99, 175, 78, 0.1)',
+                border: '1px solid rgba(99, 175, 78, 0.3)',
+                color: 'var(--color-text-dark)',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                fontSize: '13px',
+                fontWeight: '600',
+                maxWidth: '560px',
+                margin: '0 auto 12px auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '10px',
+                flexWrap: 'wrap'
+              }}>
+                <span>🗓️ Jugando puzle del archivo: <strong>{activeArchiveDate.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</strong> (Wordle #{getWordleNumber(activeArchiveDate)})</span>
+                <Link href="/" style={{ color: 'var(--color-correct)', fontWeight: '700', textDecoration: 'underline' }}>
+                  Volver al Wordle de Hoy →
+                </Link>
+              </div>
+            )}
+            
+            {isChallengeMode && (
               <div className="challenge-banner" style={{
                 background: '#e9ecef',
                 color: '#495057',
@@ -910,10 +969,10 @@ export default function App() {
               </div>
             )}
             
-            <div className="uk-spelling-callout" style={{
+            <div className="es-spelling-callout" style={{
               background: '#f8f9fa',
               color: '#495057',
-              padding: '8px 16px',
+              padding: '10px 16px',
               borderRadius: '8px',
               textAlign: 'center',
               fontSize: '14px',
@@ -922,7 +981,7 @@ export default function App() {
               margin: '0 auto 16px auto',
               border: '1px solid #dee2e6'
             }}>
-              🇬🇧 UK-only word list — British spellings accepted!
+              🇪🇸 Diccionario en Español — ¡Palabras en español aceptadas!
             </div>
 
             <div className="game" id="game" style={{ marginTop: isChallengeMode ? '60px' : '0' }}>

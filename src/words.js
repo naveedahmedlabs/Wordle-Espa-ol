@@ -100,7 +100,7 @@ const WORDS_5 = [
 export let VALID_WORDS = [
   ...WORDS_4,
   ...WORDS_5,
-  ...ALL_WORDS.map(w => w.toLowerCase()),
+  ...ALL_WORDS_ES.map(w => w.toLowerCase()),
   ...WORDS_6,
   ...WORDS_7,
   ...WORDS_8,
@@ -144,16 +144,18 @@ export function getRandomWord(lang = 'es', length = 5) {
       10: WORDS_10,
       11: WORDS_11
     };
-    const list = lists[length] || ALL_WORDS;
+    const list = lists[length] || ALL_WORDS_ES;
     return list[Math.floor(Math.random() * list.length)].toLowerCase();
   }
   const words = getAllWords(lang);
   return words[Math.floor(Math.random() * words.length)].toLowerCase();
 }
 
+const ALL_WORDS_ES_SET = new Set(ALL_WORDS_ES.map(w => w.toUpperCase()));
+
 export function isValidWord(word, lang = 'es') {
-  const words = getAllWords(lang);
-  return words.includes(word.toUpperCase());
+  if (!word) return false;
+  return ALL_WORDS_ES_SET.has(word.toUpperCase());
 }
 
 const LANG_API_MAP = {
@@ -171,10 +173,8 @@ export async function validateWordOnline(word, lang = 'es') {
     return { valid: false, reason: 'banned' };
   }
 
-  // 2. Check local dictionary (Instant)
-  // First check the main language database
-  const localWords = getAllWords(lang);
-  if (localWords.includes(upperWord)) {
+  // 2. Check local dictionary (Instant O(1))
+  if (ALL_WORDS_ES_SET.has(upperWord)) {
     return { valid: true, reason: 'local' };
   }
 

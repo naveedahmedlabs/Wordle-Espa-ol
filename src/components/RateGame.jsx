@@ -29,8 +29,22 @@ export default function RateGame({ language = 'es' }) {
   const content = {
     es: {
       title: 'Valora el Juego',
-      votes: '3.690 votos'
+      thanks: '¡Gracias por calificar!',
+      votes: 'votos',
+      voteCount: '3.690'
     },
+    uk: {
+      title: 'Rate this Game',
+      thanks: 'Thanks for Rating!',
+      votes: 'votes',
+      voteCount: '3,690'
+    },
+    en: {
+      title: 'Rate this Game',
+      thanks: 'Thanks for Rating!',
+      votes: 'votes',
+      voteCount: '3,690'
+    }
   };
 
   const [hasRated, setHasRated] = useState(false);
@@ -89,14 +103,14 @@ export default function RateGame({ language = 'es' }) {
     }
   };
 
-  const c = content.uk;
+  const c = content[language] || content.es || content.uk;
 
   return (
     <section className="rating section-indent" id="rating">
       <div className="container">
         <div className="section-heading" style={{ background: '#f3eed3' }}>
           <h2 className="section-heading__title">
-            {hasRated ? (false ? '¡Gracias por calificar!' : 'Thanks for Rating!') : c.title}
+            {hasRated ? c.thanks : c.title}
           </h2>
         </div>
         <div className="rating__wrapper">
@@ -120,7 +134,7 @@ export default function RateGame({ language = 'es' }) {
           </div>
           <div className="rating__group">
             <span className="rating__value">4.3</span>
-            <span className="rating__help"><span>{totalVotes.toLocaleString()}</span> {false ? 'votos' : 'votes'}</span>
+            <span className="rating__help"><span>{totalVotes.toLocaleString()}</span> {c.votes}</span>
           </div>
         </div>
       </div>

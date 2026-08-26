@@ -4,8 +4,9 @@ const CONTENT = {
   es: {
     links: [
       { label: 'Wordle Español', href: '/' },
-      { label: 'Palabra del Día', href: '/wordle-today/' },
-      { label: 'Pistas de Hoy', href: '/wordle-hints-today/' },
+      { label: 'Palabra del Día', href: '/palabra-del-dia/' },
+      { label: 'Wordle Respuesta Hoy', href: '/wordle-respuesta-hoy/' },
+      { label: 'Archivo de Puzles', href: '/archive/' },
       { label: 'Blog', href: '/blogs/' },
       { label: 'Cómo Jugar', href: '#how-to-play' },
       { label: 'Preguntas Frecuentes', href: '#faq' },

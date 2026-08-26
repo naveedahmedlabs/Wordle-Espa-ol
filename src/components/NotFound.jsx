@@ -1,18 +1,28 @@
 import React from 'react';
 
-export default function NotFound({ language = 'en', onHome }) {
+export default function NotFound({ language = 'es', onHome }) {
   const content = {
-
+    es: {
+      title: '404',
+      subtitle: 'Palabra no encontrada',
+      message: "La página que buscas no existe. Es como una palabra de 5 letras que no está en nuestro diccionario.",
+      back: 'Volver al Inicio'
+    },
     uk: {
       title: '404',
       subtitle: 'Word Not Found',
       message: "The page you're looking for doesn't exist. It's like a 5-letter word that isn't in our dictionary.",
       back: 'Back to Home'
     },
-
+    en: {
+      title: '404',
+      subtitle: 'Word Not Found',
+      message: "The page you're looking for doesn't exist. It's like a 5-letter word that isn't in our dictionary.",
+      back: 'Back to Home'
+    }
   };
 
-  const c = content.uk;
+  const c = content[language] || content.es || content.uk;
 
   return (
     <div style={{

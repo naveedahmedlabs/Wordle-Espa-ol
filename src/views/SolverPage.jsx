@@ -142,9 +142,9 @@ export default function SolverPage({ language = 'uk' }) {
   return (
     <div className="solver-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 10px', minHeight: '80vh', maxWidth: '800px', margin: '0 auto', gap: '20px' }}>
       <div style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '10px', color: '#1a1a1b' }}>Wordle UK Solver</h1>
+        <h1 style={{ fontSize: '2rem', marginBottom: '10px', color: '#1a1a1b' }}>Solucionador de Wordle en Español</h1>
         <p style={{ color: '#6c757d', marginBottom: '0', fontSize: '1.1rem' }}>
-          Type your guess and hit Enter. Click the tiles to match the colours from your game.
+          Escribe tu palabra y presiona Enter. Haz clic en las casillas para hacer coincidir los colores de tu partida.
         </p>
       </div>
 
