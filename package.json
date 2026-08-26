@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "cf:build": "opennextjs-cloudflare build",
-    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "build": "next build --webpack",
+    "cf:build": "npx @opennextjs/cloudflare build",
+    "cf:preview": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare preview",
+    "cf:deploy": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare deploy",
     "start": "next start",
     "lint": "next lint",
     "generate:types": "payload generate:types"
