@@ -1,4 +1,9 @@
 import { withPayload } from "@payloadcms/next/withPayload";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -20,6 +25,10 @@ const nextConfig = {
     "pg",
   ],
   webpack: (config, { isServer }) => {
+    config.resolve = config.resolve || {};
+    config.resolve.alias = config.resolve.alias || {};
+    config.resolve.alias["@next/env"] = path.resolve(dirname, "src/shims/next-env.js");
+
     if (isServer) {
       config.externals = config.externals || [];
       config.externals.push("pg-cloudflare", "drizzle-kit", "drizzle-kit/api", "jose");
