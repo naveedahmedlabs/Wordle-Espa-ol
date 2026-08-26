@@ -28,6 +28,8 @@ const nextConfig = {
     config.resolve = config.resolve || {};
     config.resolve.alias = config.resolve.alias || {};
     config.resolve.alias["@next/env"] = path.resolve(dirname, "src/shims/next-env.js");
+    config.resolve.alias["payload/dist/bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
+    config.resolve.alias["../bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
 
     if (isServer) {
       config.externals = config.externals || [];
@@ -37,4 +39,25 @@ const nextConfig = {
   },
 };
 
-export default withPayload(nextConfig);
+const finalConfig = withPayload(nextConfig);
+
+// Ensure custom shims run on top of withPayload webpack modifications
+const originalWebpack = finalConfig.webpack;
+finalConfig.webpack = (config, options) => {
+  if (originalWebpack) {
+    config = originalWebpack(config, options);
+  }
+  config.resolve = config.resolve || {};
+  config.resolve.alias = config.resolve.alias || {};
+  config.resolve.alias["@next/env"] = path.resolve(dirname, "src/shims/next-env.js");
+  config.resolve.alias["payload/dist/bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
+  config.resolve.alias["../bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
+
+  if (options.isServer) {
+    config.externals = config.externals || [];
+    config.externals.push("pg-cloudflare", "drizzle-kit", "drizzle-kit/api", "jose");
+  }
+  return config;
+};
+
+export default finalConfig;
