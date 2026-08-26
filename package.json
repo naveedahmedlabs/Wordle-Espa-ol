@@ -4,8 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "postinstall": "node scripts/patch-payload.js",
+    "prebuild": "node scripts/patch-payload.js",
     "dev": "next dev",
-    "build": "next build --webpack",
+    "build": "node scripts/patch-payload.js && next build --webpack",
     "cf:build": "npx @opennextjs/cloudflare build",
     "cf:preview": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare preview",
     "cf:deploy": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare deploy",
