@@ -1,7 +1,5 @@
 import pg from 'pg';
 
-const urlClean = 'postgresql://neondb_owner:npg_7koJrb8jQZSy@ep-morning-dream-athlchqe-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require';
-
 async function test() {
   console.log('Testing pg pool with ssl rejectUnauthorized false:');
   try {
