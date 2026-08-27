@@ -1,5 +1,4 @@
 import App from '../../../src/App';
-import { Suspense } from 'react';
 import { getSEO, SEO_DATA } from '../../../src/seo';
 import Schema from '../Schema';
 
@@ -46,6 +45,7 @@ export async function generateMetadata({ params }) {
       description: seo.description,
       url: seo.canonical,
       siteName: 'La Palabra del Día',
+      locale: 'es_ES',
       images: [
         {
           url: 'https://lapalabradeldia.co/og-image.png',
@@ -53,7 +53,6 @@ export async function generateMetadata({ params }) {
           height: 630,
         },
       ],
-      locale: 'es_ES',
       type: 'website',
       modifiedTime: seo.modifiedDate,
     },
@@ -75,9 +74,7 @@ export default async function Page({ params }) {
   return (
     <>
       <Schema seo={seo} />
-      <Suspense fallback={<div>Loading...</div>}>
-        <App />
-      </Suspense>
+      <App initialPathname={pathname} />
     </>
   );
 }

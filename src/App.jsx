@@ -140,10 +140,18 @@ function loadStats(mode = 'unlimited') {
   };
 }
 
-export default function App() {
-  const pathname = usePathname() || '/';
-  const searchParams = useSearchParams();
-  const location = { pathname, search: searchParams ? '?' + searchParams.toString() : '' };
+export default function App({ initialPathname = '/' }) {
+  const nextPathname = usePathname();
+  const pathname = nextPathname || initialPathname || '/';
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setSearchQuery(window.location.search);
+    }
+  }, [pathname]);
+
+  const location = { pathname, search: searchQuery };
   const router = useRouter();
   const navigate = (path, options) => {
     if (options?.replace) {
@@ -156,35 +164,37 @@ export default function App() {
   const language = 'es';
 
   const [gameMode, setGameMode] = useState(() => {
-    if (typeof window === 'undefined') return 'unlimited';
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('challenge')) return 'unlimited';
-    if (params.get('date') || params.get('seed')) return 'daily';
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('challenge')) return 'unlimited';
+      if (params.get('date') || params.get('seed')) return 'daily';
+    }
     
-    const path = window.location.pathname;
+    const path = (typeof window !== 'undefined' ? window.location.pathname : pathname) || '/';
     if (path.includes('palabra-del-dia') || path.includes('wordle-today')) return 'daily';
     const normPath = path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path;
     const isRoot = normPath === '' || normPath === '/';
     if (isRoot) return 'unlimited';
-    return localStorage.getItem('wordle-mode') || 'unlimited';
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('wordle-mode') || 'unlimited';
+    }
+    return 'unlimited';
   });
 
   const [currentView, setCurrentView] = useState(() => {
-    if (typeof window === 'undefined') return 'game';
-    const path = window.location.pathname;
-    // Normalize path for comparison
+    const path = (typeof window !== 'undefined' ? window.location.pathname : pathname) || '/';
     const normPath = path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path;
     
     if (normPath === '' || normPath === '/') return 'game';
-    if (normPath.includes('/archive') || normPath.includes('/wordle-archive') || normPath.includes('/archivo')) return 'archive';
+    if (normPath.includes('archive') || normPath.includes('wordle-archive') || normPath.includes('archivo')) return 'archive';
     if (normPath.includes('wordle-respuesta-hoy') || normPath.includes('pistas-de-hoy') || normPath.includes('wordle-hints-today')) return 'hints';
     if (normPath.includes('palabra-del-dia') || normPath.includes('wordle-today')) return 'game';
-    if (normPath.includes('/privacy') || normPath.includes('/privacidad')) return 'privacy';
-    if (normPath.includes('/wordle-solver')) return 'solver';
+    if (normPath.includes('privacy') || normPath.includes('privacidad')) return 'privacy';
+    if (normPath.includes('wordle-solver')) return 'solver';
     const variantMatch = normPath.match(/\/(\d+)-letter-words/);
     if (variantMatch) return `variants:${variantMatch[1]}`;
     
-    return '404';
+    return 'game';
   });
 
   // Sync state with location
