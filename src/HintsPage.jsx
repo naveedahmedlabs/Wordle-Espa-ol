@@ -229,6 +229,13 @@ function formatShortDate(d) {
   });
 }
 
+function getDateSeed(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}${m}${day}`;
+}
+
 export default function HintsPage({ language = 'es', onBack }) {
   const [dailyData, setDailyData] = useState(null);
   const [unlockedHints, setUnlockedHints] = useState(() => new Set([0]));
@@ -269,6 +276,21 @@ export default function HintsPage({ language = 'es', onBack }) {
   }, [language]);
 
   const c = CONTENT.es;
+
+  const prevDate = useMemo(() => {
+    const d = new Date(targetDate);
+    d.setDate(d.getDate() - 1);
+    return d;
+  }, [targetDate]);
+
+  const nextDate = useMemo(() => {
+    const d = new Date(targetDate);
+    d.setDate(d.getDate() + 1);
+    return d;
+  }, [targetDate]);
+
+  const todayDate = useMemo(() => getNYTDate(), []);
+  const hasNextDay = nextDate <= todayDate;
 
   const structuredHints = useMemo(() => {
     if (!dailyData) return [];
@@ -428,6 +450,25 @@ export default function HintsPage({ language = 'es', onBack }) {
           <a href="#answer" className="hints-hero__jump-btn">
             👁️ Ir a la Solución
           </a>
+        </div>
+
+        {/* Date Navigation Bar (Yesterday / Tomorrow / Archive) */}
+        <div className="hints-date-nav-row" style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '16px' }}>
+          <Link href={`/wordle-respuesta-hoy/?seed=${getDateSeed(prevDate)}`} className="hints-chip" style={{ textDecoration: 'none' }}>
+            ⬅️ Pistas de Ayer (#{puzzleNumber - 1})
+          </Link>
+          <Link href="/archive/" className="hints-chip" style={{ textDecoration: 'none' }}>
+            📅 Archivo Completo
+          </Link>
+          {hasNextDay ? (
+            <Link href={`/wordle-respuesta-hoy/?seed=${getDateSeed(nextDate)}`} className="hints-chip" style={{ textDecoration: 'none' }}>
+              ➡️ Día Siguiente (#{puzzleNumber + 1})
+            </Link>
+          ) : (
+            <Link href="/palabra-del-dia/" className="hints-chip" style={{ textDecoration: 'none', background: 'rgba(106, 170, 100, 0.15)', borderColor: '#6aaa64', color: '#538d4e' }}>
+              🎯 Jugar Reto de Hoy en Vivo
+            </Link>
+          )}
         </div>
       </div>
 
@@ -721,7 +762,12 @@ export default function HintsPage({ language = 'es', onBack }) {
             const itemDiff = analyzeWordDifficulty(item.word).diff;
 
             return (
-              <div key={(item.puzzle_date || idx) + '-' + (item.word || idx)} className="history-row">
+              <Link 
+                key={(item.puzzle_date || idx) + '-' + (item.word || idx)} 
+                href={`/wordle-respuesta-hoy/?seed=${getDateSeed(dateObj)}`}
+                className="history-row history-row--link"
+                style={{ textDecoration: 'none', color: 'inherit', display: 'flex', cursor: 'pointer' }}
+              >
                 <div className="history-row__left">
                   <span className="history-row__num">#{getWordleNumber(dateObj)}</span>
                   <span className="history-row__date">{formatDate(dateObj)}</span>
@@ -737,7 +783,7 @@ export default function HintsPage({ language = 'es', onBack }) {
                     {(item.word || '').toUpperCase()}
                   </span>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

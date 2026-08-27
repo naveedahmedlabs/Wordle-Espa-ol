@@ -1,0 +1,29 @@
+# Wordle en Español - La Palabra del Día
+
+> Wordle en Español (https://lapalabradeldia.co/) es la versión oficial y gratuita del juego de palabras diario en español. Permite adivinar una palabra secreta de 5 letras en 6 intentos, o jugar partidas ilimitadas sin tiempo de espera.
+
+## Enlaces Principales y Recursos
+- [Juego Principal / Ilimitado](https://lapalabradeldia.co/): Juega tantas partidas como quieras sin esperas de 24 horas.
+- [Palabra del Día](https://lapalabradeldia.co/palabra-del-dia/): El reto diario oficial en español, sincronizado con la fecha actual.
+- [Pistas y Solución de Hoy](https://lapalabradeldia.co/wordle-respuesta-hoy/): Guía con pistas progresivas sin spoilers, número de vocales, letra inicial/final y solución.
+- [Archivo de Puzles Anteriores](https://lapalabradeldia.co/archive/): Biblioteca histórica completa para jugar cualquier puzle pasado desde 2024.
+- [Solucionador de Wordle](https://lapalabradeldia.co/wordle-solver/): Herramienta para encontrar palabras válidas según patrones y letras disponibles.
+
+## Reglas del Juego (Wordle en Español)
+1. El objetivo es adivinar una palabra oculta de 5 letras en español en un máximo de 6 intentos.
+2. Cada intento debe ser una palabra válida en español.
+3. Retroalimentación por colores tras cada intento:
+   - 🟩 **Verde**: La letra está en la palabra y en la posición exacta.
+   - 🟨 **Amarillo**: La letra está en la palabra, pero en una posición diferente.
+   - ⬜ **Gris**: La letra no forma parte de la palabra oculta.
+
+## Mejores Palabras para Empezar en Español
+- **AIRES**: Cubre 3 vocales (A, I, E) y 2 consonantes frecuentes (R, S).
+- **TENIA**: Gran balance entre consonantes dentales (T, N) y tres vocales (E, I, A).
+- **OREAS**: Excelente para comprobar vocales abiertas (O, E, A) y la letra S.
+- **PLANO**: Ideal para testear consonantes sólidas (P, L, N) y vocales A/O.
+- **CASOS**: Útil para comprobar si la letra S o C se repite en el vocablo.
+
+## Frecuencia de Actualización
+- La **Palabra del Día** se actualiza automáticamente cada medianoche (00:00) según la hora local de cada jugador.
+- Las **Pistas Diarias** y la solución se sincronizan en tiempo real en https://lapalabradeldia.co/wordle-respuesta-hoy/

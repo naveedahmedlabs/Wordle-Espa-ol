@@ -188,6 +188,19 @@ export default function ArchivePage({ language = 'es', onBack }) {
           Explora la colección completa de retos diarios de Wordle en español. Selecciona cualquier día del calendario o introduce una fecha específica para jugar el desafío oficial de ese día.
         </p>
 
+        {/* Quick Links Row */}
+        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '16px' }}>
+          <Link href="/palabra-del-dia/" className="archive-pill archive-pill--active" style={{ textDecoration: 'none', padding: '8px 18px', fontWeight: 'bold' }}>
+            🎯 Jugar Palabra del Día de Hoy
+          </Link>
+          <Link href="/wordle-respuesta-hoy/" className="archive-pill" style={{ textDecoration: 'none', padding: '8px 18px' }}>
+            💡 Pistas y Solución de Hoy
+          </Link>
+          <Link href="/" className="archive-pill" style={{ textDecoration: 'none', padding: '8px 18px' }}>
+            ♾️ Modo Ilimitado
+          </Link>
+        </div>
+
         {/* Quick Date Jump Form */}
         <form onSubmit={handleCustomDateSubmit} className="archive-quick-jump">
           <label htmlFor="custom-date-input" className="archive-quick-jump__label">
