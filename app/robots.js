@@ -1,3 +1,5 @@
+export const dynamic = 'force-static';
+
 export default function robots() {
   return {
     rules: {
@@ -5,5 +7,5 @@ export default function robots() {
       allow: '/',
     },
     sitemap: 'https://lapalabradeldia.co/sitemap.xml',
-  }
+  };
 }

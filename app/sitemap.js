@@ -1,5 +1,7 @@
 import { getSEO, SEO_DATA } from '../src/seo';
 
+export const dynamic = 'force-static';
+
 export default function sitemap() {
   const routes = Object.keys(SEO_DATA);
 

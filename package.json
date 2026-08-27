@@ -5,10 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build --webpack",
-    "cf:build": "npx @opennextjs/cloudflare build && node scripts/prepare-cloudflare.js",
-    "cf:preview": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare preview",
-    "cf:deploy": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare deploy",
+    "build": "next build",
+    "cf:build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -16,13 +14,11 @@
     "@types/node": "^18",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "esbuild": "^0.25.0",
     "next-sitemap": "^4.2.3",
     "typescript": "~5.8.3",
     "wrangler": "^4"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "1.20.3",
     "html2canvas": "^1.4.1",
     "next": "16.3.3",
     "react": "^19.2.7",
