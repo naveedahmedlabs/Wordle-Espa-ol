@@ -29,6 +29,7 @@ const URLS = [
   ['/', today, '1.00', 'daily'],
   ['/wordle-today/', today, '0.80', 'daily'],
   ['/wordle-hints-today/', today, '0.80', 'daily'],
+  ['/blogs/', today, '0.80', 'daily'],
   ['/privacy/', STATIC_DATE, '0.30', 'monthly'],
 ];
 
@@ -48,44 +49,6 @@ async function buildXml() {
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>\n`;
-  }
-
-  // Fetch blogs dynamically from Sanity
-  try {
-    const query = encodeURIComponent('*[_type == "post" && defined(slug.current)]{ "slug": slug.current, _updatedAt, publishedAt }');
-    const res = await fetch(`https://v4hsbbd1.api.sanity.io/v2024-01-01/data/query/production?query=${query}`);
-    const data = await res.json();
-    
-    if (data && data.result) {
-      xml += `  <url>
-    <loc>${DOMAIN}/blogs/</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.80</priority>
-  </url>\n`;
-
-      const totalPages = Math.ceil(data.result.length / 10);
-      for (let i = 2; i <= totalPages; i++) {
-        xml += `  <url>
-    <loc>${DOMAIN}/blogs/page/${i}/</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.60</priority>
-  </url>\n`;
-      }
-
-      data.result.forEach(post => {
-        const lastmod = post._updatedAt || post.publishedAt || STATIC_DATE;
-        xml += `  <url>
-    <loc>${DOMAIN}/blogs/${post.slug}/</loc>
-    <lastmod>${new Date(lastmod).toISOString()}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.70</priority>
-  </url>\n`;
-      });
-    }
-  } catch (error) {
-    log('error', `Failed to fetch Sanity blogs: ${error.message}`);
   }
 
   xml += `</urlset>`;
@@ -114,7 +77,7 @@ async function main() {
     return;
   }
 
-  log('info', `sitemap written: ${targetPath} (${URLS.length} static urls + blogs, ${xml.length} bytes)`);
+  log('info', `sitemap written: ${targetPath} (${URLS.length} static urls, ${xml.length} bytes)`);
 }
 
 if (process.argv.includes('--run-once')) {

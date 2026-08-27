@@ -1,6 +1,5 @@
 import SingleBlogPage from '../../../../src/views/SingleBlogPage';
 import Schema from '../../Schema';
-import { fetchSanityPostBySlug } from '../../../../src/lib/sanity';
 import config from '@payload-config';
 import { getPayload } from 'payload';
 import { notFound } from 'next/navigation';
@@ -8,16 +7,6 @@ import { notFound } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 
 async function getPostData(slug) {
-  try {
-    const sanityData = await fetchSanityPostBySlug(slug);
-    if (sanityData && sanityData.post) {
-      return sanityData;
-    }
-  } catch (err) {
-    console.error('Error fetching post from Sanity:', err);
-  }
-
-  // Fallback to Payload
   try {
     const payload = await getPayload({ config });
     const result = await payload.find({
@@ -46,7 +35,7 @@ async function getPostData(slug) {
 
     return {
       post,
-      relatedPosts: relatedResult.docs,
+      relatedPosts: relatedResult.docs || [],
     };
   } catch (err) {
     console.error('Error fetching post from Payload:', err);

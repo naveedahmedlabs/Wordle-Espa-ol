@@ -20,28 +20,9 @@ async function generateSitemap() {
     ['/', today, '1.00', 'daily'],
     ['/wordle-today/', today, '1.00', 'daily'],
     ['/wordle-hints-today/', today, '1.00', 'daily'],
+    ['/blogs/', today, '0.80', 'daily'],
     ['/privacy/', staticDate, '0.30', 'monthly'],
   ];
-
-  try {
-    const query = encodeURIComponent('*[_type == "post" && defined(slug.current)]{ "slug": slug.current, _updatedAt, publishedAt }');
-    const res = await fetch(`https://v4hsbbd1.api.sanity.io/v2024-01-01/data/query/production?query=${query}`);
-    const data = await res.json();
-    
-    if (data && data.result) {
-      urls.push(['/blogs/', today, '0.80', 'daily']);
-      const totalPages = Math.ceil(data.result.length / 10);
-      for (let i = 2; i <= totalPages; i++) {
-        urls.push([`/blogs/page/${i}/`, today, '0.60', 'daily']);
-      }
-      data.result.forEach(post => {
-        const pubDate = post._updatedAt || post.publishedAt || staticDate;
-        urls.push([`/blogs/${post.slug}/`, new Date(pubDate).toISOString(), '0.70', 'weekly']);
-      });
-    }
-  } catch (error) {
-    console.error('Failed to fetch Sanity blogs for sitemap:', error);
-  }
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;

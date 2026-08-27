@@ -1,7 +1,6 @@
 import BlogsPage from '../../../src/views/BlogsPage';
 import { Suspense } from 'react';
 import Schema from '../Schema';
-import { fetchSanityPosts } from '../../../src/lib/sanity';
 import config from '@payload-config';
 import { getPayload } from 'payload';
 
@@ -47,24 +46,17 @@ export default async function Page() {
   let totalPages = 1;
 
   try {
-    const sanityData = await fetchSanityPosts(0, 10);
-    initialPosts = sanityData.posts;
-    totalPages = sanityData.totalPages;
-  } catch (err) {
-    console.error('Error fetching Sanity posts:', err);
-    try {
-      const payload = await getPayload({ config });
-      const result = await payload.find({
-        collection: 'posts',
-        limit: 10,
-        page: 1,
-        sort: '-createdAt',
-      });
-      initialPosts = result.docs;
-      totalPages = result.totalPages;
-    } catch (e) {
-      console.error('Fallback Payload error:', e);
-    }
+    const payload = await getPayload({ config });
+    const result = await payload.find({
+      collection: 'posts',
+      limit: 10,
+      page: 1,
+      sort: '-createdAt',
+    });
+    initialPosts = result.docs || [];
+    totalPages = result.totalPages || 1;
+  } catch (e) {
+    console.error('Payload fetch error on blogs page:', e);
   }
 
   return (

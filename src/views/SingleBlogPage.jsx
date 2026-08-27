@@ -2,32 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { RichText } from '@payloadcms/richtext-lexical/react';
-import { PortableText } from '@portabletext/react';
-import { urlForSanityImage } from '../lib/sanity';
-
-const ptComponents = {
-  types: {
-    image: ({ value }) => {
-      if (!value) return null;
-      const imageUrl = urlForSanityImage(value)?.url();
-      if (!imageUrl) return null;
-      return (
-        <figure style={{ margin: '2em 0' }}>
-          <img
-            src={imageUrl}
-            alt={value.alt || ''}
-            style={{ width: '100%', height: 'auto', borderRadius: '12px', display: 'block', maxWidth: '100%' }}
-          />
-          {value.caption && (
-            <figcaption style={{ fontSize: '14px', color: 'var(--color-text-secondary)', textAlign: 'center', marginTop: '8px' }}>
-              {value.caption}
-            </figcaption>
-          )}
-        </figure>
-      );
-    },
-  },
-};
 
 // Wordle Green
 const PRIMARY_COLOR = '#5BAD6F';
@@ -146,9 +120,7 @@ export default function SingleBlogPage({ post, relatedPosts = [] }) {
 
         {/* Article body */}
         <div className="blog-content" style={{ paddingBottom: '16px' }}>
-          {Array.isArray(post.body) ? (
-            <PortableText value={post.body} components={ptComponents} />
-          ) : post.content ? (
+          {post.content ? (
             <RichText data={post.content} />
           ) : null}
         </div>
