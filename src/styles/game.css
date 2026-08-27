@@ -775,10 +775,128 @@ header.top-header-wrapper,
   line-height: 1.5;
 }
 
-.howto__img {
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius);
+.howto-tiles-visual {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.howto-tile-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.howto-tile {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  border-radius: 6px;
+  text-transform: uppercase;
+  user-select: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.howto-tile--typed {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border-dark, #878a8c);
+  color: var(--color-text-dark, #1a1a1b);
+}
+
+.howto-tile--default {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border, #d3d6da);
+  color: var(--color-text-dark, #1a1a1b);
+}
+
+.howto-tile--correct {
+  background: #6aaa64;
+  border: 2px solid #6aaa64;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(106, 170, 100, 0.35);
+}
+
+.howto-tile--present {
+  background: #c9b458;
+  border: 2px solid #c9b458;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(201, 180, 88, 0.35);
+}
+
+.howto-tile--absent {
+  background: #787c7e;
+  border: 2px solid #787c7e;
+  color: #ffffff;
+}
+
+.howto-tile--win {
+  animation: winPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes winPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+.howto-tile-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted, #787c7e);
+  text-transform: uppercase;
+}
+
+.howto-tiles-visual--examples {
+  align-items: stretch;
+  gap: 14px;
+}
+
+.howto-example-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.howto-example-desc {
+  font-size: 12px;
+  color: var(--color-text);
+  margin: 0;
+  text-align: center;
+}
+
+.color-correct-text { color: #538d4e; }
+.color-present-text { color: #b59f3b; }
+.color-absent-text { color: #787c7e; }
+
+.howto-grid-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.howto-victory-badge {
+  background: rgba(106, 170, 100, 0.15);
+  border: 1px solid #6aaa64;
+  color: #538d4e;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-align: center;
 }
 
 /* ===== PLAY OTHER GAMES ===== */
