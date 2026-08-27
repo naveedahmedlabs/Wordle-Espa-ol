@@ -8,7 +8,7 @@
     "prebuild": "node scripts/patch-payload.js",
     "dev": "next dev",
     "build": "node scripts/patch-payload.js && next build --webpack",
-    "cf:build": "npx @opennextjs/cloudflare build",
+    "cf:build": "npx @opennextjs/cloudflare build && node scripts/prepare-cloudflare.js",
     "cf:preview": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare preview",
     "cf:deploy": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare deploy",
     "start": "next start",
