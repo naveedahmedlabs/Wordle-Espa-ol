@@ -20,6 +20,46 @@ function copyRecursive(src, dest) {
   }
 }
 
+function sanitizeFiles(dir) {
+  if (!fs.existsSync(dir)) return;
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      sanitizeFiles(fullPath);
+    } else if (entry.isFile() && (entry.name.endsWith(".js") || entry.name.endsWith(".mjs") || entry.name.endsWith(".cjs"))) {
+      let content = fs.readFileSync(fullPath, "utf8");
+      let modified = false;
+
+      // Replace node:sqlite require calls with empty object
+      if (content.includes("node:sqlite")) {
+        content = content.replace(/require\((["'])node:sqlite\1\)/g, "({})");
+        content = content.replace(/import\((["'])node:sqlite\1\)/g, "Promise.resolve({})");
+        modified = true;
+      }
+
+      // Replace better-sqlite3 require calls
+      if (content.includes("better-sqlite3")) {
+        content = content.replace(/require\((["'])better-sqlite3\1\)/g, "({})");
+        content = content.replace(/import\((["'])better-sqlite3\1\)/g, "Promise.resolve({})");
+        modified = true;
+      }
+
+      // Replace sqlite3 require calls
+      if (content.includes("sqlite3")) {
+        content = content.replace(/require\((["'])sqlite3\1\)/g, "({})");
+        content = content.replace(/import\((["'])sqlite3\1\)/g, "Promise.resolve({})");
+        modified = true;
+      }
+
+      if (modified) {
+        fs.writeFileSync(fullPath, content, "utf8");
+        console.log(`[prepare-cloudflare] Sanitized unsupported SQLite imports in: ${path.relative(rootDir, fullPath)}`);
+      }
+    }
+  }
+}
+
 try {
   if (fs.existsSync(openNextDir) && fs.existsSync(assetsDir)) {
     const entries = fs.readdirSync(openNextDir);
@@ -36,6 +76,9 @@ try {
     const workerWrapper = `export * from "./worker.js";\nexport { default } from "./worker.js";\n`;
     fs.writeFileSync(path.join(assetsDir, "_worker.js"), workerWrapper, "utf8");
     console.log("[prepare-cloudflare] Successfully created .open-next/assets/_worker.js");
+
+    // Sanitize any unsupported native imports before Wrangler bundling
+    sanitizeFiles(assetsDir);
   } else {
     console.warn("[prepare-cloudflare] .open-next or .open-next/assets directory not found");
   }

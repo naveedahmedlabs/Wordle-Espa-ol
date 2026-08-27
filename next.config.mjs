@@ -30,6 +30,9 @@ const nextConfig = {
     config.resolve.alias["@next/env"] = path.resolve(dirname, "src/shims/next-env.js");
     config.resolve.alias["payload/dist/bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
     config.resolve.alias["../bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
+    config.resolve.alias["node:sqlite"] = path.resolve(dirname, "src/shims/empty.js");
+    config.resolve.alias["better-sqlite3"] = path.resolve(dirname, "src/shims/empty.js");
+    config.resolve.alias["sqlite3"] = path.resolve(dirname, "src/shims/empty.js");
 
     if (isServer) {
       config.externals = config.externals || [];
@@ -52,6 +55,9 @@ finalConfig.webpack = (config, options) => {
   config.resolve.alias["@next/env"] = path.resolve(dirname, "src/shims/next-env.js");
   config.resolve.alias["payload/dist/bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
   config.resolve.alias["../bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
+  config.resolve.alias["node:sqlite"] = path.resolve(dirname, "src/shims/empty.js");
+  config.resolve.alias["better-sqlite3"] = path.resolve(dirname, "src/shims/empty.js");
+  config.resolve.alias["sqlite3"] = path.resolve(dirname, "src/shims/empty.js");
 
   if (options.isServer) {
     config.externals = config.externals || [];
