@@ -6,6 +6,7 @@ const openNextDir = path.join(rootDir, ".open-next");
 const assetsDir = path.join(openNextDir, "assets");
 
 function copyRecursive(src, dest) {
+  if (!fs.existsSync(src)) return;
   const stat = fs.statSync(src);
   if (stat.isDirectory()) {
     if (!fs.existsSync(dest)) {
@@ -13,6 +14,10 @@ function copyRecursive(src, dest) {
     }
     const entries = fs.readdirSync(src);
     for (const entry of entries) {
+      // Exclude heavy dev and cache directories from function bundle
+      if (entry === "node_modules" || entry === "cache" || entry === "dynamodb-provider" || entry === ".next") {
+        continue;
+      }
       copyRecursive(path.join(src, entry), path.join(dest, entry));
     }
   } else {
@@ -54,7 +59,7 @@ function sanitizeFiles(dir) {
 
       if (modified) {
         fs.writeFileSync(fullPath, content, "utf8");
-        console.log(`[prepare-cloudflare] Sanitized unsupported SQLite imports in: ${path.relative(rootDir, fullPath)}`);
+        console.log(`[prepare-cloudflare] Sanitized unsupported imports in: ${path.relative(rootDir, fullPath)}`);
       }
     }
   }
@@ -63,23 +68,33 @@ function sanitizeFiles(dir) {
 function run() {
   try {
     if (fs.existsSync(openNextDir) && fs.existsSync(assetsDir)) {
-      const entries = fs.readdirSync(openNextDir);
-      for (const entry of entries) {
-        // Don't copy assets into itself
-        if (entry === "assets") continue;
-        const srcPath = path.join(openNextDir, entry);
-        const destPath = path.join(assetsDir, entry);
-        copyRecursive(srcPath, destPath);
-        console.log(`[prepare-cloudflare] Copied .open-next/${entry} -> .open-next/assets/${entry}`);
+      // Only copy the essential directories needed by worker.js
+      const targetDirs = [".build", "cloudflare", "middleware", "server-functions"];
+      for (const dir of targetDirs) {
+        const srcPath = path.join(openNextDir, dir);
+        const destPath = path.join(assetsDir, dir);
+        if (fs.existsSync(srcPath)) {
+          copyRecursive(srcPath, destPath);
+          console.log(`[prepare-cloudflare] Copied .open-next/${dir} -> .open-next/assets/${dir}`);
+        }
       }
 
-      // Create _worker.js that re-exports everything from worker.js
+      // Copy worker.js
+      const workerSrc = path.join(openNextDir, "worker.js");
+      const workerDest = path.join(assetsDir, "worker.js");
+      if (fs.existsSync(workerSrc)) {
+        fs.copyFileSync(workerSrc, workerDest);
+        console.log("[prepare-cloudflare] Copied .open-next/worker.js -> .open-next/assets/worker.js");
+      }
+
+      // Create _worker.js that re-exports from worker.js
       const workerWrapper = `export * from "./worker.js";\nexport { default } from "./worker.js";\n`;
       fs.writeFileSync(path.join(assetsDir, "_worker.js"), workerWrapper, "utf8");
-      console.log("[prepare-cloudflare] Successfully created .open-next/assets/_worker.js");
+      console.log("[prepare-cloudflare] Created .open-next/assets/_worker.js");
 
-      // Sanitize any unsupported native imports before Wrangler bundling
+      // Sanitize files
       sanitizeFiles(assetsDir);
+      console.log("[prepare-cloudflare] Assets and Worker successfully prepared for Cloudflare Pages.");
     } else {
       console.warn("[prepare-cloudflare] .open-next or .open-next/assets directory not found");
     }

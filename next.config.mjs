@@ -27,12 +27,24 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     config.resolve = config.resolve || {};
     config.resolve.alias = config.resolve.alias || {};
+
+    const emptyShim = path.resolve(dirname, "src/shims/empty.js");
+
     config.resolve.alias["@next/env"] = path.resolve(dirname, "src/shims/next-env.js");
     config.resolve.alias["payload/dist/bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
     config.resolve.alias["../bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
-    config.resolve.alias["node:sqlite"] = path.resolve(dirname, "src/shims/empty.js");
-    config.resolve.alias["better-sqlite3"] = path.resolve(dirname, "src/shims/empty.js");
-    config.resolve.alias["sqlite3"] = path.resolve(dirname, "src/shims/empty.js");
+
+    // Remove heavy unneeded modules from edge server bundle
+    config.resolve.alias["prettier"] = emptyShim;
+    config.resolve.alias["prettier/plugins/typescript"] = emptyShim;
+    config.resolve.alias["prettier/plugins/babel"] = emptyShim;
+    config.resolve.alias["prettier/plugins/html"] = emptyShim;
+    config.resolve.alias["prettier/plugins/postcss"] = emptyShim;
+    config.resolve.alias["prettier/plugins/estree"] = emptyShim;
+    config.resolve.alias["sharp"] = emptyShim;
+    config.resolve.alias["node:sqlite"] = emptyShim;
+    config.resolve.alias["better-sqlite3"] = emptyShim;
+    config.resolve.alias["sqlite3"] = emptyShim;
 
     if (isServer) {
       config.externals = config.externals || [];
@@ -52,12 +64,24 @@ finalConfig.webpack = (config, options) => {
   }
   config.resolve = config.resolve || {};
   config.resolve.alias = config.resolve.alias || {};
+
+  const emptyShim = path.resolve(dirname, "src/shims/empty.js");
+
   config.resolve.alias["@next/env"] = path.resolve(dirname, "src/shims/next-env.js");
   config.resolve.alias["payload/dist/bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
   config.resolve.alias["../bin/loadEnv.js"] = path.resolve(dirname, "src/shims/loadEnv.js");
-  config.resolve.alias["node:sqlite"] = path.resolve(dirname, "src/shims/empty.js");
-  config.resolve.alias["better-sqlite3"] = path.resolve(dirname, "src/shims/empty.js");
-  config.resolve.alias["sqlite3"] = path.resolve(dirname, "src/shims/empty.js");
+
+  // Remove heavy unneeded modules from edge server bundle
+  config.resolve.alias["prettier"] = emptyShim;
+  config.resolve.alias["prettier/plugins/typescript"] = emptyShim;
+  config.resolve.alias["prettier/plugins/babel"] = emptyShim;
+  config.resolve.alias["prettier/plugins/html"] = emptyShim;
+  config.resolve.alias["prettier/plugins/postcss"] = emptyShim;
+  config.resolve.alias["prettier/plugins/estree"] = emptyShim;
+  config.resolve.alias["sharp"] = emptyShim;
+  config.resolve.alias["node:sqlite"] = emptyShim;
+  config.resolve.alias["better-sqlite3"] = emptyShim;
+  config.resolve.alias["sqlite3"] = emptyShim;
 
   if (options.isServer) {
     config.externals = config.externals || [];
