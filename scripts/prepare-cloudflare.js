@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import esbuild from "esbuild";
 
 const rootDir = process.cwd();
 const openNextDir = path.join(rootDir, ".open-next");
@@ -15,7 +16,7 @@ function copyRecursive(src, dest) {
     const entries = fs.readdirSync(src);
     for (const entry of entries) {
       // Exclude heavy dev and cache directories from function bundle
-      if (entry === "node_modules" || entry === "cache" || entry === "dynamodb-provider" || entry === ".next") {
+      if (entry === "node_modules" || entry === "cache" || entry === "dynamodb-provider") {
         continue;
       }
       copyRecursive(path.join(src, entry), path.join(dest, entry));
@@ -25,41 +26,47 @@ function copyRecursive(src, dest) {
   }
 }
 
-function sanitizeFiles(dir) {
+function processAndMinifyFiles(dir) {
   if (!fs.existsSync(dir)) return;
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      sanitizeFiles(fullPath);
+      processAndMinifyFiles(fullPath);
     } else if (entry.isFile() && (entry.name.endsWith(".js") || entry.name.endsWith(".mjs") || entry.name.endsWith(".cjs"))) {
       let content = fs.readFileSync(fullPath, "utf8");
-      let modified = false;
+      const beforeSize = content.length;
 
-      // Replace node:sqlite require calls with empty object
+      // 1. Replace unsupported node built-ins in edge environment
       if (content.includes("node:sqlite")) {
         content = content.replace(/require\((["'])node:sqlite\1\)/g, "({})");
         content = content.replace(/import\((["'])node:sqlite\1\)/g, "Promise.resolve({})");
-        modified = true;
       }
-
-      // Replace better-sqlite3 require calls
       if (content.includes("better-sqlite3")) {
         content = content.replace(/require\((["'])better-sqlite3\1\)/g, "({})");
         content = content.replace(/import\((["'])better-sqlite3\1\)/g, "Promise.resolve({})");
-        modified = true;
       }
-
-      // Replace sqlite3 require calls
       if (content.includes("sqlite3")) {
         content = content.replace(/require\((["'])sqlite3\1\)/g, "({})");
         content = content.replace(/import\((["'])sqlite3\1\)/g, "Promise.resolve({})");
-        modified = true;
       }
 
-      if (modified) {
-        fs.writeFileSync(fullPath, content, "utf8");
-        console.log(`[prepare-cloudflare] Sanitized unsupported imports in: ${path.relative(rootDir, fullPath)}`);
+      // 2. Perform AST minification using esbuild transformSync (pure syntax compression)
+      try {
+        const result = esbuild.transformSync(content, {
+          minify: true,
+          legalComments: "none",
+          target: "es2022",
+        });
+        content = result.code;
+      } catch (e) {
+        console.warn(`[prepare-cloudflare] Minify notice for ${path.relative(rootDir, fullPath)}: ${e.message}`);
+      }
+
+      fs.writeFileSync(fullPath, content, "utf8");
+      const afterSize = content.length;
+      if (beforeSize > 50000) {
+        console.log(`[prepare-cloudflare] Minified ${path.relative(rootDir, fullPath)}: ${(beforeSize / 1024).toFixed(1)}KB -> ${(afterSize / 1024).toFixed(1)}KB`);
       }
     }
   }
@@ -92,9 +99,10 @@ function run() {
       fs.writeFileSync(path.join(assetsDir, "_worker.js"), workerWrapper, "utf8");
       console.log("[prepare-cloudflare] Created .open-next/assets/_worker.js");
 
-      // Sanitize files
-      sanitizeFiles(assetsDir);
-      console.log("[prepare-cloudflare] Assets and Worker successfully prepared for Cloudflare Pages.");
+      // Sanitize and minify all function scripts in assets
+      console.log("[prepare-cloudflare] Starting full AST minification on assets...");
+      processAndMinifyFiles(assetsDir);
+      console.log("[prepare-cloudflare] Assets and Worker successfully minified and prepared for Cloudflare Pages.");
     } else {
       console.warn("[prepare-cloudflare] .open-next or .open-next/assets directory not found");
     }
