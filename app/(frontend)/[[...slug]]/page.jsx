@@ -1,7 +1,17 @@
 import App from '../../../src/App';
 import { Suspense } from 'react';
-import { getSEO } from '../../../src/seo';
+import { getSEO, SEO_DATA } from '../../../src/seo';
 import Schema from '../Schema';
+
+export function generateStaticParams() {
+  const routes = Object.keys(SEO_DATA);
+  return routes.map((route) => {
+    const cleanRoute = route.replace(/^\/|\/$/g, '');
+    return {
+      slug: cleanRoute ? cleanRoute.split('/') : [],
+    };
+  });
+}
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;

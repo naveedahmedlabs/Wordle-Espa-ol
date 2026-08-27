@@ -23,9 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
-# Next.js
+# Next.js & OpenNext
 .next
 out
+.open-next
 
 # Env
 .env
