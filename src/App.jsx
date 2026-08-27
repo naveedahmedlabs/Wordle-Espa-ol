@@ -28,7 +28,6 @@ import VariantsPage from './views/VariantsPage';
 import ArchivePage from './views/ArchivePage';
 import Link from 'next/link';
 
-import BlogHeader from './components/BlogHeader';
 import { getNYTDate, getWordleNumber } from './dateUtils';
 
 function getTargetDateFromParams(params) {
@@ -177,8 +176,6 @@ export default function App() {
     const normPath = path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path;
     
     if (normPath === '' || normPath === '/') return 'game';
-    if (normPath === '/blogs') return 'blogs';
-    if (path.startsWith('/blogs/') && path.length > 7) return 'single-blog';
     if (normPath.includes('/archive') || normPath.includes('/wordle-archive') || normPath.includes('/archivo')) return 'archive';
     if (normPath.includes('wordle-respuesta-hoy') || normPath.includes('pistas-de-hoy') || normPath.includes('wordle-hints-today')) return 'hints';
     if (normPath.includes('palabra-del-dia') || normPath.includes('wordle-today')) return 'game';
@@ -211,9 +208,7 @@ export default function App() {
     const isDailyRoute = hasDateParam || path.includes('palabra-del-dia') || path.includes('wordle-today') || path.includes('wordle-respuesta-hoy') || path.includes('pistas-de-hoy') || path.includes('wordle-hints-today') || path.includes('/daily/');
     const newMode = isDailyRoute ? 'daily' : 'unlimited';
     
-    if (path.startsWith('/blogs/') && path.length > 7) newView = 'single-blog';
-    else if (path === '/blogs' || path === '/blogs/') newView = 'blogs';
-    else if (path.includes('/archive') || path.includes('/wordle-archive') || path.includes('/archivo')) newView = 'archive';
+    if (path.includes('/archive') || path.includes('/wordle-archive') || path.includes('/archivo')) newView = 'archive';
     else if (path.includes('wordle-respuesta-hoy') || path.includes('pistas-de-hoy') || path.includes('wordle-hints-today') || path.includes('/hints/')) newView = 'hints';
     else if (path.includes('/privacy') || path.includes('/privacidad')) newView = 'privacy';
     else if (path.includes('/wordle-solver')) newView = 'solver';
@@ -224,9 +219,7 @@ export default function App() {
     if (newView !== currentView) setCurrentView(newView);
 
     // Global prerender trigger for static pages
-    if (newView !== 'single-blog' && newView !== 'blogs') {
-      setTimeout(() => document.dispatchEvent(new Event('prerender-trigger')), 1500);
-    }
+    setTimeout(() => document.dispatchEvent(new Event('prerender-trigger')), 1500);
   }, [location.pathname, location.search]);
 
   const ui = UI_TEXT.es;
@@ -301,8 +294,7 @@ export default function App() {
           "publisher": { "@id": `${baseUrl}/#organization` },
           "inLanguage": isoLang
         },
-
-        ...(!['single-blog', 'blogs'].includes(currentView) ? [{
+        {
           "@type": "WebPage",
           "@id": `${baseUrl}${seoPath}#webpage`,
           "url": `${baseUrl}${seoPath}`,
@@ -314,8 +306,8 @@ export default function App() {
           "description": desc,
           "inLanguage": isoLang,
           "potentialAction": [{ "@type": "ReadAction", "target": [`${baseUrl}${seoPath}`] }]
-        }] : []),
-        ...(!['single-blog', 'blogs'].includes(currentView) && !isHints ? [{
+        },
+        ...(!isHints ? [{
           "@type": "WebApplication",
           "@id": `${baseUrl}/#webapp`,
           "name": "Wordle Español Ilimitado",
@@ -339,7 +331,7 @@ export default function App() {
             "ratingCount": "3690"
           }
         }] : []),
-        ...(!['single-blog', 'blogs'].includes(currentView) && !isPrivacy && !isHints ? [{
+        ...(!isPrivacy && !isHints ? [{
           "@type": "FAQPage",
           "@id": `${baseUrl}${seoPath}#faq`,
           "mainEntity": currentFaqs.map(faq => ({
@@ -351,7 +343,7 @@ export default function App() {
             }
           }))
         }] : []),
-        ...(!['single-blog', 'blogs'].includes(currentView) ? [{
+        {
           "@type": "BreadcrumbList",
           "@id": `${baseUrl}${seoPath}#breadcrumb`,
           "itemListElement": [
@@ -366,7 +358,7 @@ export default function App() {
               "item": { "@type": "WebPage", "@id": `${baseUrl}${seoPath}`, "url": `${baseUrl}${seoPath}`, "name": title }
             }] : [])
           ]
-        }] : [])
+        }
       ]
     };
 
@@ -862,25 +854,21 @@ export default function App() {
       */}
       <SEO />
       
-      {currentView === 'blogs' || currentView === 'single-blog' ? (
-        <BlogHeader />
-      ) : (
-        <Header
-          gameMode={gameMode}
-          currentView={currentView}
-          onModeChange={handleModeChange}
-          onViewChange={handleViewChange}
-          onFeedback={() => setFeedbackOpen(true)}
-          onHelp={() => setHelpOpen(true)}
-          onSettings={() => setSettingsOpen(true)}
-          onStats={() => setStatsOpen(true)}
-          onGiveUp={handleGiveUp}
-          onChallenge={() => setChallengeOpen(true)}
-          gameState={gameState}
-          guessesCount={guesses.length}
-          language={language}
-        />
-      )}
+      <Header
+        gameMode={gameMode}
+        currentView={currentView}
+        onModeChange={handleModeChange}
+        onViewChange={handleViewChange}
+        onFeedback={() => setFeedbackOpen(true)}
+        onHelp={() => setHelpOpen(true)}
+        onSettings={() => setSettingsOpen(true)}
+        onStats={() => setStatsOpen(true)}
+        onGiveUp={handleGiveUp}
+        onChallenge={() => setChallengeOpen(true)}
+        gameState={gameState}
+        guessesCount={guesses.length}
+        language={language}
+      />
 
       <main style={{ flex: 1, marginTop: '110px', paddingTop: '10px' }}>
         <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', borderWidth: 0 }}>Wordle Español - Juego de Palabras Gratis e Ilimitado Online</h1>

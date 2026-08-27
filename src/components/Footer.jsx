@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import Link from 'next/link';
 
 const CONTENT = {
   es: {
@@ -7,7 +8,6 @@ const CONTENT = {
       { label: 'Palabra del Día', href: '/palabra-del-dia/' },
       { label: 'Wordle Respuesta Hoy', href: '/wordle-respuesta-hoy/' },
       { label: 'Archivo de Puzles', href: '/archive/' },
-      { label: 'Blog', href: '/blogs/' },
       { label: 'Cómo Jugar', href: '#how-to-play' },
       { label: 'Preguntas Frecuentes', href: '#faq' },
       { label: 'Política de Privacidad', href: '/privacy/' }
@@ -43,5 +43,3 @@ export default function Footer({ language = 'es' }) {
     </footer>
   );
 }
-
-import Link from 'next/link';
