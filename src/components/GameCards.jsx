@@ -6,7 +6,7 @@ const CONTENT = {
     games: [
       {
         name: 'Strands NYT',
-        desc: 'Encuentra las palabras ocultas para descubrir el tema del día',
+        desc: 'Encuentra las palabras ocultas para descubrir la temática del día',
         icon: '/images/games/strands-icon.svg',
         url: 'https://strandsgames.org/',
         cta: 'Jugar Strands Aquí',
@@ -14,11 +14,11 @@ const CONTENT = {
         bgColor: '#EBF4FF',
       },
       {
-        name: 'Wordle Game UK',
-        desc: 'Play the classic Wordle word guessing game in English',
+        name: 'Wordle en Inglés (UK)',
+        desc: 'Juega a la versión original de Wordle en inglés online',
         icon: '/images/games/wordle-icon.svg',
         url: 'https://wordlegame.co.uk/',
-        cta: 'Play Wordle UK Here',
+        cta: 'Jugar Wordle UK Aquí',
         accentColor: '#538d4e',
         bgColor: '#EAF5E8',
       },

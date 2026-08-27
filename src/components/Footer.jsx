@@ -22,7 +22,7 @@ export default function Footer({ language = 'es' }) {
     <footer className="footer" id="footer">
       <div className="footer__logo">
         <span className="footer__logo-icon">W</span>
-        <span className="footer__logo-text">Wordle Unlimited</span>
+        <span className="footer__logo-text">Wordle en Español</span>
       </div>
       <nav className="footer__links">
         {c.links.map((link, idx) => (
@@ -37,8 +37,8 @@ export default function Footer({ language = 'es' }) {
         ))}
       </nav>
       <div className="footer__info">
-        <p className="footer__copy">&copy; {new Date().getFullYear()} Wordle Unlimited</p>
-        <span className="footer__version">Version 1.2.4</span>
+        <p className="footer__copy">&copy; {new Date().getFullYear()} Wordle en Español — Todos los derechos reservados.</p>
+        <span className="footer__version">Versión 1.2.4</span>
       </div>
     </footer>
   );
