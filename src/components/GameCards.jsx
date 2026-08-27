@@ -7,7 +7,7 @@ const CONTENT = {
       {
         name: 'Strands NYT',
         desc: 'Encuentra las palabras ocultas para descubrir el tema del día',
-        icon: '/images/games/strands-icon.png',
+        icon: '/images/games/strands-icon.svg',
         url: 'https://strandsgames.org/',
         cta: 'Jugar Strands Aquí',
         accentColor: '#4A90D9',
@@ -16,7 +16,7 @@ const CONTENT = {
       {
         name: 'Wordle Game UK',
         desc: 'Play the classic Wordle word guessing game in English',
-        icon: '/images/games/wordle-icon.png',
+        icon: '/images/games/wordle-icon.svg',
         url: 'https://wordlegame.co.uk/',
         cta: 'Play Wordle UK Here',
         accentColor: '#538d4e',
@@ -46,13 +46,13 @@ export default function GameCards({ language = 'es' }) {
             id={`card-${game.name.toLowerCase().replace(/\s/g, '-')}`}
             style={{ '--card-accent': game.accentColor }}
           >
-            <div className="game-card__icon-wrap" style={{ background: game.bgColor }}>
+            <div className="game-card__icon-wrap" style={{ background: game.bgColor, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '16px', flexShrink: 0 }}>
               <img
                 src={game.icon}
                 alt={`${game.name} game icon`}
-                width={56}
-                height={56}
-                style={{ borderRadius: '12px', objectFit: 'cover' }}
+                width={48}
+                height={48}
+                style={{ borderRadius: '10px', display: 'block' }}
                 className="game-card__img"
               />
             </div>
