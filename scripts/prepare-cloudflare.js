@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import esbuild from "esbuild";
 
 const rootDir = process.cwd();
 const openNextDir = path.join(rootDir, ".open-next");
@@ -60,29 +61,53 @@ function sanitizeFiles(dir) {
   }
 }
 
-try {
-  if (fs.existsSync(openNextDir) && fs.existsSync(assetsDir)) {
-    const entries = fs.readdirSync(openNextDir);
-    for (const entry of entries) {
-      // Don't copy assets into itself
-      if (entry === "assets") continue;
-      const srcPath = path.join(openNextDir, entry);
-      const destPath = path.join(assetsDir, entry);
-      copyRecursive(srcPath, destPath);
-      console.log(`[prepare-cloudflare] Copied .open-next/${entry} -> .open-next/assets/${entry}`);
+async function run() {
+  try {
+    if (fs.existsSync(openNextDir) && fs.existsSync(assetsDir)) {
+      const entries = fs.readdirSync(openNextDir);
+      for (const entry of entries) {
+        // Don't copy assets into itself
+        if (entry === "assets") continue;
+        const srcPath = path.join(openNextDir, entry);
+        const destPath = path.join(assetsDir, entry);
+        copyRecursive(srcPath, destPath);
+        console.log(`[prepare-cloudflare] Copied .open-next/${entry} -> .open-next/assets/${entry}`);
+      }
+
+      // Create _worker.js that re-exports everything from worker.js
+      const workerWrapper = `export * from "./worker.js";\nexport { default } from "./worker.js";\n`;
+      fs.writeFileSync(path.join(assetsDir, "_worker.js"), workerWrapper, "utf8");
+      console.log("[prepare-cloudflare] Successfully created .open-next/assets/_worker.js");
+
+      // Sanitize any unsupported native imports before Wrangler bundling
+      sanitizeFiles(assetsDir);
+
+      // Minify worker and server function files with esbuild to keep size well under 3MB
+      const workerPath = path.join(assetsDir, "worker.js");
+      if (fs.existsSync(workerPath)) {
+        try {
+          await esbuild.build({
+            entryPoints: [workerPath],
+            outfile: workerPath,
+            allowOverwrite: true,
+            minify: true,
+            treeShaking: true,
+            legalComments: "none",
+            format: "esm",
+            target: "es2022",
+          });
+          console.log("[prepare-cloudflare] Successfully minified .open-next/assets/worker.js with esbuild");
+        } catch (e) {
+          console.warn("[prepare-cloudflare] Warning during worker minification:", e.message);
+        }
+      }
+    } else {
+      console.warn("[prepare-cloudflare] .open-next or .open-next/assets directory not found");
     }
-
-    // Create _worker.js that re-exports everything from worker.js
-    const workerWrapper = `export * from "./worker.js";\nexport { default } from "./worker.js";\n`;
-    fs.writeFileSync(path.join(assetsDir, "_worker.js"), workerWrapper, "utf8");
-    console.log("[prepare-cloudflare] Successfully created .open-next/assets/_worker.js");
-
-    // Sanitize any unsupported native imports before Wrangler bundling
-    sanitizeFiles(assetsDir);
-  } else {
-    console.warn("[prepare-cloudflare] .open-next or .open-next/assets directory not found");
+  } catch (err) {
+    console.error("[prepare-cloudflare] Error preparing Cloudflare Pages assets:", err);
+    process.exit(1);
   }
-} catch (err) {
-  console.error("[prepare-cloudflare] Error preparing Cloudflare Pages assets:", err);
-  process.exit(1);
 }
+
+run();
