@@ -61,6 +61,27 @@ function sanitizeFiles(dir) {
   }
 }
 
+async function minifyFile(filePath) {
+  if (!fs.existsSync(filePath)) return;
+  try {
+    const beforeSize = fs.statSync(filePath).size;
+    await esbuild.build({
+      entryPoints: [filePath],
+      outfile: filePath,
+      allowOverwrite: true,
+      minify: true,
+      treeShaking: true,
+      legalComments: "none",
+      format: "esm",
+      target: "es2022",
+    });
+    const afterSize = fs.statSync(filePath).size;
+    console.log(`[prepare-cloudflare] Minified ${path.basename(filePath)}: ${(beforeSize / 1024 / 1024).toFixed(2)}MB -> ${(afterSize / 1024 / 1024).toFixed(2)}MB`);
+  } catch (e) {
+    console.warn(`[prepare-cloudflare] Minification notice for ${path.basename(filePath)}:`, e.message);
+  }
+}
+
 async function run() {
   try {
     if (fs.existsSync(openNextDir) && fs.existsSync(assetsDir)) {
@@ -82,25 +103,10 @@ async function run() {
       // Sanitize any unsupported native imports before Wrangler bundling
       sanitizeFiles(assetsDir);
 
-      // Minify worker and server function files with esbuild to keep size well under 3MB
-      const workerPath = path.join(assetsDir, "worker.js");
-      if (fs.existsSync(workerPath)) {
-        try {
-          await esbuild.build({
-            entryPoints: [workerPath],
-            outfile: workerPath,
-            allowOverwrite: true,
-            minify: true,
-            treeShaking: true,
-            legalComments: "none",
-            format: "esm",
-            target: "es2022",
-          });
-          console.log("[prepare-cloudflare] Successfully minified .open-next/assets/worker.js with esbuild");
-        } catch (e) {
-          console.warn("[prepare-cloudflare] Warning during worker minification:", e.message);
-        }
-      }
+      // Minify both worker.js and server function handler to drastically reduce bundle size
+      await minifyFile(path.join(assetsDir, "worker.js"));
+      await minifyFile(path.join(assetsDir, "server-functions", "default", "handler.mjs"));
+      await minifyFile(path.join(assetsDir, "middleware", "handler.mjs"));
     } else {
       console.warn("[prepare-cloudflare] .open-next or .open-next/assets directory not found");
     }
